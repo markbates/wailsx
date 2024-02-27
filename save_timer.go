@@ -6,10 +6,6 @@ import (
 	"time"
 )
 
-type Saver interface {
-	Save(ctx context.Context) error
-}
-
 type SaveTimer struct {
 	Duration      time.Duration // save duration, if zero, save once and exit
 	DisableEvents bool          // disable save events
