@@ -88,6 +88,15 @@ func Test_ErrorMessage_MarshalJSON(t *testing.T) {
 			err:  true,
 		},
 		{
+			name: "no_error",
+			msg: ErrorMessage{
+				Message: Message{
+					Event: "no error",
+				},
+			},
+			err: true,
+		},
+		{
 			name: "no_time",
 			msg: ErrorMessage{
 				Err: io.EOF,

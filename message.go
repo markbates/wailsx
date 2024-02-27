@@ -25,7 +25,7 @@ type Message struct {
 }
 
 func (ee Message) MarshalJSON() ([]byte, error) {
-	mm, err := ee.jsonMap()
+	mm, err := ee.JSONMap()
 	if err != nil {
 		return nil, err
 	}
@@ -49,7 +49,7 @@ func (ee Message) MsgData() any {
 	return ee.Data
 }
 
-func (ee Message) jsonMap() (map[string]any, error) {
+func (ee Message) JSONMap() (map[string]any, error) {
 	if len(ee.Event) == 0 {
 		return nil, fmt.Errorf("event is required: %+v", ee)
 	}

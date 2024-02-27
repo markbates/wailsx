@@ -21,8 +21,21 @@ type ErrorMessage struct {
 	Err error
 }
 
+func (ee ErrorMessage) MsgError() error {
+	return ee.Err
+}
+
 func (ee ErrorMessage) MarshalJSON() ([]byte, error) {
-	mm, err := ee.jsonMap()
+	mm, err := ee.JSONMap()
+	if err != nil {
+		return nil, err
+	}
+
+	return json.Marshal(mm)
+}
+
+func (ee ErrorMessage) JSONMap() (map[string]any, error) {
+	mm, err := ee.Message.JSONMap()
 	if err != nil {
 		return nil, err
 	}
@@ -51,9 +64,5 @@ func (ee ErrorMessage) MarshalJSON() ([]byte, error) {
 		}
 	}
 
-	return json.Marshal(mm)
-}
-
-func (ee ErrorMessage) MsgError() error {
-	return ee.Err
+	return mm, nil
 }

@@ -35,11 +35,11 @@ func assertJSON(t testing.TB, fp string, data any) {
 
 	fp = filepath.Join("testdata", fp+".json")
 
-	os.MkdirAll(filepath.Dir(fp), 0755)
-	f, err := os.Create(fp)
-	r.NoError(err)
-	f.Write([]byte(act))
-	r.NoError(f.Close())
+	// os.MkdirAll(filepath.Dir(fp), 0755)
+	// f, err := os.Create(fp)
+	// r.NoError(err)
+	// f.Write([]byte(act))
+	// r.NoError(f.Close())
 
 	b, err = os.ReadFile(fp)
 	r.NoError(err)

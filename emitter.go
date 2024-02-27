@@ -2,6 +2,7 @@ package wailsx
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -59,7 +60,10 @@ func (em Emitter) Emit(ctx context.Context, event string, args ...any) {
 		fn = wailsrun.EventsEmit
 	}
 
-	fmt.Printf("emitting event: %q: %+v\n", event, args)
+	go func() {
+		b, _ := json.MarshalIndent(args, "", "  ")
+		fmt.Printf("emitting event: %q: %s\n", event, string(b))
+	}()
 
 	if !em.DisableWildcard {
 		fn(ctx, "*", args...)
