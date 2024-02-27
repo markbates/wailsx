@@ -20,12 +20,12 @@ func newEmitter() (Emitter, *EmitCatcher) {
 	}, ec
 }
 
-func assertJSON(t testing.TB, fp string, msg Messenger) {
+func assertJSON(t testing.TB, fp string, data any) {
 	t.Helper()
 
 	r := require.New(t)
 
-	b, err := json.MarshalIndent(msg, "", "  ")
+	b, err := json.MarshalIndent(data, "", "  ")
 	r.NoError(err)
 
 	act := string(b)
@@ -35,11 +35,11 @@ func assertJSON(t testing.TB, fp string, msg Messenger) {
 
 	fp = filepath.Join("testdata", fp+".json")
 
-	// os.MkdirAll(filepath.Dir(fp), 0755)
-	// f, err := os.Create(fp)
-	// r.NoError(err)
-	// f.Write([]byte(act))
-	// r.NoError(f.Close())
+	os.MkdirAll(filepath.Dir(fp), 0755)
+	f, err := os.Create(fp)
+	r.NoError(err)
+	f.Write([]byte(act))
+	r.NoError(f.Close())
 
 	b, err = os.ReadFile(fp)
 	r.NoError(err)

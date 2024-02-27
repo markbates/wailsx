@@ -36,7 +36,6 @@ func Test_Message_MarshalJSON(t *testing.T) {
 	tcs := []struct {
 		name string
 		msg  Message
-		exp  string
 		err  bool
 	}{
 		{
