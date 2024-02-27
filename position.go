@@ -124,3 +124,15 @@ func (pos *Position) Update(ctx context.Context) {
 	pos.W = w
 	pos.H = h
 }
+
+func (pos *Position) Layout(ctx context.Context) {
+	if pos == nil {
+		pos = NewPosition()
+	}
+
+	pos.mu.RLock()
+	defer pos.mu.RUnlock()
+
+	pos.WindowSetPosition(ctx, pos.X, pos.Y)
+	pos.WindowSetSize(ctx, pos.W, pos.H)
+}

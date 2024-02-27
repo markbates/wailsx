@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/markbates/wailsx/wailstest"
 	"github.com/stretchr/testify/require"
 )
 
@@ -68,12 +69,8 @@ func Test_Position_Update(t *testing.T) {
 			name: "default",
 			pos: &Position{
 				Positioner: Positioner{
-					GetPositionFn: func(ctx context.Context) (int, int) {
-						return 0, 0
-					},
-					GetSizeFn: func(ctx context.Context) (int, int) {
-						return 0, 0
-					},
+					GetPositionFn: wailstest.PositionGet(0, 0),
+					GetSizeFn:     wailstest.PositionGet(0, 0),
 				},
 			},
 			exp: dp,
@@ -82,12 +79,8 @@ func Test_Position_Update(t *testing.T) {
 			name: "with values",
 			pos: &Position{
 				Positioner: Positioner{
-					GetPositionFn: func(ctx context.Context) (int, int) {
-						return 1, 2
-					},
-					GetSizeFn: func(ctx context.Context) (int, int) {
-						return 3, 4
-					},
+					GetPositionFn: wailstest.PositionGet(1, 2),
+					GetSizeFn:     wailstest.PositionGet(3, 4),
 				},
 			},
 			exp: &Position{X: 1, Y: 2, W: 3, H: 4},
@@ -151,5 +144,26 @@ func Test_Position_MarshalJSON(t *testing.T) {
 			assertJSON(t, filepath.Join("positions", tc.name), tc.pos)
 		})
 	}
+
+}
+
+func Test_Position_Layout(t *testing.T) {
+	t.Parallel()
+
+	r := require.New(t)
+
+	catcher := &wailstest.PositionCatcher{}
+	pos := NewPosition()
+	pos.Positioner = Positioner{
+		SetPositionFn: catcher.WindowSetPosition,
+		SetSizeFn:     catcher.WindowSetSize,
+	}
+
+	pos.Layout(context.Background())
+
+	r.Equal(pos.PosX(), catcher.X)
+	r.Equal(pos.PosY(), catcher.Y)
+	r.Equal(pos.Width(), catcher.W)
+	r.Equal(pos.Height(), catcher.H)
 
 }

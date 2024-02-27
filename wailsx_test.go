@@ -2,18 +2,18 @@ package wailsx
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/markbates/wailsx/wailstest"
 	"github.com/stretchr/testify/require"
 )
 
-func newEmitter() (Emitter, *EmitCatcher) {
-	ec := &EmitCatcher{}
+func newEmitter() (Emitter, *wailstest.EmitCatcher) {
+	ec := &wailstest.EmitCatcher{}
 	return Emitter{
 		EmitFn:          ec.Emit,
 		DisableWildcard: true,
@@ -31,7 +31,7 @@ func assertJSON(t testing.TB, fp string, data any) {
 	act := string(b)
 	act = strings.TrimSpace(act)
 
-	fmt.Println(act)
+	// fmt.Println(act)
 
 	fp = filepath.Join("testdata", fp+".json")
 

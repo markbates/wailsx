@@ -1,4 +1,4 @@
-package wailsx
+package wailstest
 
 import "context"
 
