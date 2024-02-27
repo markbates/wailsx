@@ -12,11 +12,21 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func newState(t testing.TB, name string) *State {
+	t.Helper()
+
+	st, err := NewState(name)
+	require.NoError(t, err)
+
+	return st
+}
+
 func newEmitter() (Emitter, *wailstest.EmitCatcher) {
 	ec := &wailstest.EmitCatcher{}
 	return Emitter{
 		EmitFn:          ec.Emit,
 		DisableWildcard: true,
+		nowFn:           nowTime,
 	}, ec
 }
 

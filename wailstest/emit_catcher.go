@@ -1,6 +1,9 @@
 package wailstest
 
-import "context"
+import (
+	"context"
+	"fmt"
+)
 
 // EmitCatcher is a test helper to catch emitted events
 type EmitCatcher struct {
@@ -12,13 +15,15 @@ type CaughtEvent struct {
 	Args  []any
 }
 
-func (ec *EmitCatcher) Emit(ctx context.Context, event string, args ...any) {
+func (ec *EmitCatcher) Emit(ctx context.Context, event string, args ...any) error {
 	if ec == nil {
-		return
+		return fmt.Errorf("catcher is nil")
 	}
 
 	ec.Events = append(ec.Events, CaughtEvent{
 		Event: event,
 		Args:  args,
 	})
+
+	return nil
 }

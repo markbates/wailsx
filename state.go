@@ -9,6 +9,10 @@ import (
 	"sync"
 )
 
+var _ Saver = &State{}
+var _ Shutdowner = &State{}
+var _ Startuper = &State{}
+
 type State struct {
 	*Position
 
@@ -17,8 +21,11 @@ type State struct {
 	// save function, if nil, save to file in ~/.config/<name>/state.json
 	SaveFn func(ctx context.Context) error `json:"-"`
 
-	// load function, if nil, load from file in ~/.config/<name>/state.json
-	LoadFn func(ctx context.Context) error `json:"-"`
+	// startup function, if nil, load from file in ~/.config/<name>/state.json
+	StartupFn func(ctx context.Context) error `json:"-"`
+
+	// shutdown function, if nil, call Save
+	ShutdownFn func(ctx context.Context) error `json:"-"`
 
 	mu sync.RWMutex
 }
@@ -34,6 +41,109 @@ func NewState(name string) (*State, error) {
 	}
 
 	return st, nil
+}
+
+func (st *State) Save(ctx context.Context) (err error) {
+	if st == nil {
+		return fmt.Errorf("state is nil")
+	}
+
+	st.mu.RLock()
+	name := st.Name
+	fn := st.SaveFn
+	st.mu.RUnlock()
+
+	if len(name) == 0 {
+		return fmt.Errorf("name is required: %+v", st)
+	}
+
+	// recover from external function call
+	defer func() {
+		r := recover()
+		if r == nil {
+			return
+		}
+
+		switch t := r.(type) {
+		case error:
+			err = t
+		default:
+			err = fmt.Errorf("%v", t)
+		}
+	}()
+
+	if fn == nil {
+		fn = st.saveToFile
+	}
+
+	return fn(ctx)
+}
+
+func (st *State) Startup(ctx context.Context) (err error) {
+	if st == nil {
+		return fmt.Errorf("state is nil")
+	}
+
+	st.mu.RLock()
+	name := st.Name
+	fn := st.StartupFn
+	st.mu.RUnlock()
+
+	if len(name) == 0 {
+		return fmt.Errorf("name is required: %+v", st)
+	}
+
+	// recover from external function call
+	defer func() {
+		r := recover()
+		if r == nil {
+			return
+		}
+
+		switch t := r.(type) {
+		case error:
+			err = t
+		default:
+			err = fmt.Errorf("%v", t)
+		}
+	}()
+
+	if fn == nil {
+		fn = st.loadFromFile
+	}
+
+	return fn(ctx)
+}
+
+func (st *State) Shutdown(ctx context.Context) (err error) {
+	if st == nil {
+		return nil
+	}
+
+	st.mu.RLock()
+	fn := st.ShutdownFn
+	st.mu.RUnlock()
+
+	// recover from external function call
+	defer func() {
+		r := recover()
+		if r == nil {
+			return
+		}
+
+		switch t := r.(type) {
+		case error:
+			err = t
+		default:
+			err = fmt.Errorf("%v", t)
+		}
+	}()
+
+	if fn == nil {
+		fn = st.Save
+	}
+
+	return fn(ctx)
 }
 
 func (st *State) MarshalJSON() ([]byte, error) {
@@ -58,45 +168,7 @@ func (st *State) JSONMap() (map[string]any, error) {
 	return mm, nil
 }
 
-func (st *State) Save(ctx context.Context) error {
-	if st == nil {
-		return fmt.Errorf("state is nil")
-	}
-
-	st.mu.Lock()
-	defer st.mu.Unlock()
-
-	if len(st.Name) == 0 {
-		return fmt.Errorf("name is required: %+v", st)
-	}
-
-	if st.SaveFn != nil {
-		return st.SaveFn(ctx)
-	}
-
-	return st.saveToFile()
-}
-
-func (st *State) Load(ctx context.Context) error {
-	if st == nil {
-		return fmt.Errorf("state is nil")
-	}
-
-	st.mu.Lock()
-	defer st.mu.Unlock()
-
-	if len(st.Name) == 0 {
-		return fmt.Errorf("name is required: %+v", st)
-	}
-
-	if st.LoadFn != nil {
-		return st.LoadFn(ctx)
-	}
-
-	return st.loadFromFile()
-}
-
-func (st *State) saveToFile() error {
+func (st *State) saveToFile(ctx context.Context) error {
 	if st == nil {
 		return fmt.Errorf("state is nil")
 	}
@@ -134,7 +206,7 @@ func (st *State) saveToFile() error {
 	return nil
 }
 
-func (st *State) loadFromFile() error {
+func (st *State) loadFromFile(ctx context.Context) error {
 	if st == nil {
 		return fmt.Errorf("state is nil")
 	}

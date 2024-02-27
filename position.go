@@ -96,7 +96,6 @@ func (pos *Position) Height() int {
 
 func (pos *Position) MarshalJSON() ([]byte, error) {
 	if pos == nil {
-		fmt.Println("nil position")
 		return json.Marshal(NewPosition())
 	}
 
@@ -108,24 +107,33 @@ func (pos *Position) MarshalJSON() ([]byte, error) {
 	})
 }
 
-func (pos *Position) Update(ctx context.Context) {
+func (pos *Position) Update(ctx context.Context) error {
 	if pos == nil {
-		return
+		return fmt.Errorf("position is nil")
 	}
 
 	pos.mu.Lock()
 	defer pos.mu.Unlock()
 
-	x, y := pos.WindowGetPosition(ctx)
-	w, h := pos.WindowGetSize(ctx)
+	x, y, err := pos.WindowGetPosition(ctx)
+	if err != nil {
+		return err
+	}
+
+	w, h, err := pos.WindowGetSize(ctx)
+	if err != nil {
+		return err
+	}
 
 	pos.X = x
 	pos.Y = y
 	pos.W = w
 	pos.H = h
+
+	return nil
 }
 
-func (pos *Position) Layout(ctx context.Context) {
+func (pos *Position) Layout(ctx context.Context) error {
 	if pos == nil {
 		pos = NewPosition()
 	}
@@ -133,6 +141,15 @@ func (pos *Position) Layout(ctx context.Context) {
 	pos.mu.RLock()
 	defer pos.mu.RUnlock()
 
-	pos.WindowSetPosition(ctx, pos.X, pos.Y)
-	pos.WindowSetSize(ctx, pos.W, pos.H)
+	err := pos.WindowSetPosition(ctx, pos.X, pos.Y)
+	if err != nil {
+		return err
+	}
+
+	err = pos.WindowSetSize(ctx, pos.W, pos.H)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
