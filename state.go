@@ -7,16 +7,21 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
+
+	"github.com/markbates/plugins"
 )
 
 var _ Saver = &State{}
 var _ Shutdowner = &State{}
 var _ Startuper = &State{}
+var _ plugins.Plugin = &State{}
 
 type State struct {
-	*Position
+	Emitter   // emit save events
+	*Position // position of the state
 
-	Name string `json:"name,omitempty"` // application name
+	Name    string `json:"name,omitempty"` // application name
+	Plugins plugins.Plugins
 
 	// save function, if nil, save to file in ~/.config/<name>/state.json
 	SaveFn func(ctx context.Context) error `json:"-"`
@@ -30,13 +35,15 @@ type State struct {
 	mu sync.RWMutex
 }
 
-func NewState(name string) (*State, error) {
+func NewState(name string, plugins ...plugins.Plugin) (*State, error) {
 	if len(name) == 0 {
 		return nil, fmt.Errorf("name is required")
 	}
 
 	st := &State{
 		Name:     name,
+		Emitter:  NewEmitter(),
+		Plugins:  plugins,
 		Position: NewPosition(),
 	}
 
@@ -112,7 +119,23 @@ func (st *State) Startup(ctx context.Context) (err error) {
 		fn = st.loadFromFile
 	}
 
-	return fn(ctx)
+	if err := fn(ctx); err != nil {
+		return err
+	}
+
+	for _, p := range st.Plugins {
+		if p == nil {
+			continue
+		}
+
+		if s, ok := p.(Startuper); ok {
+			if err := s.Startup(ctx); err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
 }
 
 func (st *State) Shutdown(ctx context.Context) (err error) {
@@ -160,12 +183,35 @@ func (st *State) JSONMap() (map[string]any, error) {
 		return nil, fmt.Errorf("state is nil")
 	}
 
+	st.mu.RLock()
+	defer st.mu.RUnlock()
+
+	pos := st.Position
+	if pos == nil {
+		pos = NewPosition()
+	}
+
 	mm := map[string]any{
 		"name":     st.Name,
-		"position": st.Position,
+		"position": pos,
+	}
+
+	for _, p := range st.Plugins {
+		if p, ok := p.(StateDataPlugin); ok {
+			sd, err := p.StateData()
+			if err != nil {
+				return nil, err
+			}
+
+			mm[sd.Name] = sd.Data
+		}
 	}
 
 	return mm, nil
+}
+
+func (st *State) PluginName() string {
+	return fmt.Sprintf("%T", st)
 }
 
 func (st *State) saveToFile(ctx context.Context) error {

@@ -12,6 +12,19 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+type stringData string
+
+func (sd stringData) StateData() (StateData, error) {
+	return StateData{
+		Name: string(sd),
+		Data: sd,
+	}, nil
+}
+
+func (sd stringData) PluginName() string {
+	return "stringData"
+}
+
 func newState(t testing.TB, name string) *State {
 	t.Helper()
 
