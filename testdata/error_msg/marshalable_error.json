@@ -1,0 +1,11 @@
+{
+  "data": "my data",
+  "error": {
+    "err": "EOF",
+    "id": 1,
+    "name": "my name"
+  },
+  "event": "marshalable error",
+  "text": "my text",
+  "time": "1976-01-01T00:00:00Z"
+}
