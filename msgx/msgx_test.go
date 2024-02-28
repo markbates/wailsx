@@ -6,18 +6,9 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/require"
 )
-
-func nowTime() time.Time {
-	return time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
-}
-
-func oldTime() time.Time {
-	return time.Date(1976, 1, 1, 0, 0, 0, 0, time.UTC)
-}
 
 func assertJSON(t testing.TB, fp string, data any) {
 	t.Helper()

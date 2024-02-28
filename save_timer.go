@@ -4,12 +4,14 @@ import (
 	"context"
 	"fmt"
 	"time"
+
+	"github.com/markbates/wailsx/eventx"
 )
 
 type SaveTimer struct {
-	Duration      time.Duration // save duration, if zero, save once and exit
-	DisableEvents bool          // disable save events
-	Emitter       Emitter       // emit save events
+	Duration      time.Duration       // save duration, if zero, save once and exit
+	DisableEvents bool                // disable save events
+	Manager       eventx.EventManager // emit save events
 }
 
 func (st SaveTimer) Save(ctx context.Context, s Saver) error {
@@ -42,7 +44,7 @@ func (st SaveTimer) emit(ctx context.Context, ev string, data any) error {
 		return nil
 	}
 
-	return st.Emitter.Emit(ctx, ev, data)
+	return st.Manager.Emit(ctx, ev, data)
 }
 
 func (st SaveTimer) save(ctx context.Context, s Saver) (err error) {

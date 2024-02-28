@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/markbates/wailsx/wailstest"
 	"github.com/stretchr/testify/require"
 )
 
@@ -31,7 +32,7 @@ func Test_Message(t *testing.T) {
 func Test_Message_MarshalJSON(t *testing.T) {
 	t.Parallel()
 
-	ot := oldTime()
+	ot := wailstest.OldTime()
 
 	tcs := []struct {
 		name string
@@ -72,7 +73,7 @@ func Test_Message_MarshalJSON(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			r := require.New(t)
 
-			tc.msg.nowFn = nowTime
+			tc.msg.nowFn = wailstest.NowTime
 
 			if tc.err {
 				_, err := json.Marshal(tc.msg)

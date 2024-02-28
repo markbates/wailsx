@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 
 	"github.com/markbates/plugins"
+	"github.com/markbates/wailsx/eventx"
 	"github.com/markbates/wailsx/internal/safe"
 )
 
@@ -35,9 +36,9 @@ func (st *State) Startup(ctx context.Context) (err error) {
 			return err
 		}
 
-		ems := plugins.ByType[EmitNeeder](st.Plugins)
+		ems := plugins.ByType[eventx.EventManagerNeeded](st.Plugins)
 		for _, em := range ems {
-			if err := em.SetEmitter(st.Emitter); err != nil {
+			if err := em.SetEventManager(st.EventManager); err != nil {
 				return err
 			}
 		}

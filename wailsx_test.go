@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
-	"time"
 
+	"github.com/markbates/wailsx/eventx"
 	"github.com/markbates/wailsx/wailstest"
 	"github.com/stretchr/testify/require"
 )
@@ -34,12 +34,12 @@ func newState(t testing.TB, name string) *State {
 	return st
 }
 
-func newEmitter() (Emitter, *wailstest.EmitCatcher) {
+func newEmitter() (eventx.EventManager, *wailstest.EmitCatcher) {
 	ec := &wailstest.EmitCatcher{}
-	return Emitter{
-		EmitFn:          ec.Emit,
-		DisableWildcard: true,
-		nowFn:           nowTime,
+	return eventx.EventManager{
+		DisableWildcardEmits: true,
+		EmitFn:               ec.Emit,
+		NowFn:                wailstest.NowTime,
 	}, ec
 }
 
@@ -71,12 +71,4 @@ func assertJSON(t testing.TB, fp string, data any) {
 	exp = strings.TrimSpace(exp)
 
 	r.Equal(exp, act)
-}
-
-func nowTime() time.Time {
-	return time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
-}
-
-func oldTime() time.Time {
-	return time.Date(1976, 1, 1, 0, 0, 0, 0, time.UTC)
 }

@@ -8,7 +8,7 @@ type ErrorLogger struct {
 
 func (el *ErrorLogger) LogError(message string) {
 	if el == nil {
-		(*el) = ErrorLogger{}
+		return
 	}
 
 	el.Messages = append(el.Messages, message)
@@ -16,7 +16,7 @@ func (el *ErrorLogger) LogError(message string) {
 
 func (el *ErrorLogger) LogErrorf(format string, args ...any) {
 	if el == nil {
-		(*el) = ErrorLogger{}
+		return
 	}
 
 	el.Messages = append(el.Messages, fmt.Sprintf(format, args...))

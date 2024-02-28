@@ -16,11 +16,11 @@ func Test_SaveTimer_Save_Loop(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Millisecond)
 	defer cancel()
 
-	emitter, ec := newEmitter()
+	manager, ec := newEmitter()
 
 	st := SaveTimer{
 		Duration: 2 * time.Millisecond,
-		Emitter:  emitter,
+		Manager:  manager,
 	}
 
 	s, err := NewState("save timer")
@@ -48,11 +48,11 @@ func Test_SaveTimer_Save_Once(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	emitter, ec := newEmitter()
+	manager, ec := newEmitter()
 
 	st := SaveTimer{
 		Duration: 0,
-		Emitter:  emitter,
+		Manager:  manager,
 	}
 
 	s, err := NewState("save timer")
@@ -101,11 +101,11 @@ func Test_SaveTimer_Save_Error(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			r := require.New(t)
 
-			emitter, ec := newEmitter()
+			manager, ec := newEmitter()
 
 			st := SaveTimer{
 				Duration: 0,
-				Emitter:  emitter,
+				Manager:  manager,
 			}
 
 			s, err := NewState("save timer")

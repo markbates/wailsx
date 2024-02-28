@@ -9,6 +9,10 @@ import (
 
 type CallbackFn func(data ...any) error
 
+func NewEventManager() EventManager {
+	return EventManager{}
+}
+
 type EventManager struct {
 	logx.ErrorLoggable
 
@@ -21,12 +25,12 @@ type EventManager struct {
 	OnMultipleFn func(ctx context.Context, name string, callback CallbackFn, counter int) (func(), error)
 	OnceFn       func(ctx context.Context, name string, callback CallbackFn) (func(), error)
 
-	nowFn func() time.Time // for testing
+	NowFn func() time.Time
 }
 
 func (em EventManager) Now() time.Time {
-	if em.nowFn != nil {
-		return em.nowFn()
+	if em.NowFn != nil {
+		return em.NowFn()
 	}
 
 	return time.Now()
@@ -36,6 +40,7 @@ func (em EventManager) LogError(ctx context.Context, message string) {
 	if em.ErrorLoggable == nil {
 		return
 	}
+
 	em.ErrorLoggable.LogError(ctx, message)
 }
 
@@ -43,5 +48,6 @@ func (em EventManager) LogErrorf(ctx context.Context, format string, args ...any
 	if em.ErrorLoggable == nil {
 		return
 	}
+
 	em.ErrorLoggable.LogErrorf(ctx, format, args...)
 }

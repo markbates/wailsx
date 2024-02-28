@@ -7,6 +7,7 @@ import (
 	"sync"
 
 	"github.com/markbates/plugins"
+	"github.com/markbates/wailsx/eventx"
 	"github.com/markbates/wailsx/internal/safe"
 )
 
@@ -16,8 +17,8 @@ var _ Startuper = &State{}
 var _ plugins.Plugin = &State{}
 
 type State struct {
-	Emitter // emit save events
-	*Layout // layout of the app
+	eventx.EventManager // emit events
+	*Layout             // layout of the app
 
 	Name    string          // application name
 	Plugins plugins.Plugins // plugins for the state
@@ -51,10 +52,10 @@ func NewState(name string, plugins ...plugins.Plugin) (*State, error) {
 	}
 
 	st := &State{
-		Name:    name,
-		Emitter: NewEmitter(),
-		Plugins: plugins,
-		Layout:  NewLayout(),
+		Name:         name,
+		EventManager: eventx.NewEventManager(),
+		Plugins:      plugins,
+		Layout:       NewLayout(),
 	}
 
 	return st, nil

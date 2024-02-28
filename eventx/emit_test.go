@@ -70,7 +70,7 @@ func Test_EventManager_Emit(t *testing.T) {
 			r.True(errors.Is(msg.Err, wailstest.ERR))
 			r.Equal("test", msg.Event)
 			r.Equal(wailstest.ERR.Error(), msg.Text)
-			r.Equal(nowTime(), msg.Time)
+			r.Equal(wailstest.NowTime(), msg.Time)
 		})
 
 		t.Run("marshal string", func(t *testing.T) {
@@ -91,7 +91,7 @@ func Test_EventManager_Emit(t *testing.T) {
 			msg, ok := ev.Args[0].(msgx.Message)
 			r.True(ok, "ec.Events[0] is not a Message", ec.Events[0])
 			r.Equal("A", msg.Text)
-			r.Equal(nowTime(), msg.Time)
+			r.Equal(wailstest.NowTime(), msg.Time)
 		})
 
 		t.Run("marshal Messenger", func(t *testing.T) {
@@ -104,7 +104,7 @@ func Test_EventManager_Emit(t *testing.T) {
 			msg := msgx.Message{
 				Event: name,
 				Text:  "B",
-				Time:  nowTime(),
+				Time:  wailstest.NowTime(),
 				Data:  "C",
 			}
 
@@ -121,7 +121,7 @@ func Test_EventManager_Emit(t *testing.T) {
 			r.True(ok, "ec.Events[0] is not a Message", ec.Events[0])
 			r.Equal(name, am.MsgEvent())
 			r.Equal("B", am.MsgText())
-			r.Equal(nowTime(), am.MsgTime())
+			r.Equal(wailstest.NowTime(), am.MsgTime())
 			r.Equal("C", am.MsgData())
 		})
 
@@ -145,7 +145,7 @@ func Test_EventManager_Emit(t *testing.T) {
 			r.True(ok, "ec.Events[0] is not a Message", ec.Events[0])
 			r.Equal(name, msg.Event)
 			r.Equal(1, msg.Data)
-			r.Equal(nowTime(), msg.Time)
+			r.Equal(wailstest.NowTime(), msg.Time)
 		})
 	})
 
@@ -192,6 +192,7 @@ func Test_EventManager_Emit(t *testing.T) {
 
 func Test_EventManager_Emit_error(t *testing.T) {
 	t.Parallel()
+
 	r := require.New(t)
 
 	em, ec := newEventManager()
@@ -201,7 +202,28 @@ func Test_EventManager_Emit_error(t *testing.T) {
 		return wailstest.ERR
 	}
 
-	em.Emit(ctx, "test", "A")
+	err := em.Emit(ctx, "test", "A")
+	r.Error(err)
+	r.True(errors.Is(err, wailstest.ERR))
+
+	r.Len(ec.Events, 0)
+}
+
+func Test_EventManager_Emit_Panic(t *testing.T) {
+	t.Parallel()
+
+	r := require.New(t)
+
+	em, ec := newEventManager()
+
+	ctx := context.Background()
+	em.EmitFn = func(ctx context.Context, event string, args ...any) error {
+		panic(wailstest.ERR)
+	}
+
+	err := em.Emit(ctx, "test", "A")
+	r.Error(err)
+	r.True(errors.Is(err, wailstest.ERR))
 
 	r.Len(ec.Events, 0)
 }
