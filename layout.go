@@ -21,25 +21,26 @@ var _ StateDataProvider = &Layout{}
 
 func NewLayout() *Layout {
 	return &Layout{
-		X: PosX,
-		Y: PosY,
-		W: PosW,
-		H: PosH,
+		x: PosX,
+		y: PosY,
+		w: PosW,
+		h: PosH,
 	}
 }
 
 type Layout struct {
 	LayoutManager
 
-	X int `json:"x"`
-	Y int `json:"y"`
-	W int `json:"w"`
-	H int `json:"h"`
+	x int
+	y int
+	w int
+	h int
 
 	mu sync.RWMutex
 }
 
-func (ly *Layout) PosX() int {
+// X returns the x position of the window
+func (ly *Layout) X() int {
 	if ly == nil {
 		return PosX
 	}
@@ -47,14 +48,15 @@ func (ly *Layout) PosX() int {
 	ly.mu.RLock()
 	defer ly.mu.RUnlock()
 
-	if ly.X == 0 {
+	if ly.x == 0 {
 		return PosX
 	}
 
-	return ly.X
+	return ly.x
 }
 
-func (ly *Layout) PosY() int {
+// Y returns the y position of the window
+func (ly *Layout) Y() int {
 	if ly == nil {
 		return PosY
 	}
@@ -62,14 +64,15 @@ func (ly *Layout) PosY() int {
 	ly.mu.RLock()
 	defer ly.mu.RUnlock()
 
-	if ly.Y == 0 {
+	if ly.y == 0 {
 		return PosY
 	}
 
-	return ly.Y
+	return ly.y
 }
 
-func (ly *Layout) Width() int {
+// W returns the width of the window
+func (ly *Layout) W() int {
 	if ly == nil {
 		return PosW
 	}
@@ -77,14 +80,15 @@ func (ly *Layout) Width() int {
 	ly.mu.RLock()
 	defer ly.mu.RUnlock()
 
-	if ly.W == 0 {
+	if ly.w == 0 {
 		return PosW
 	}
 
-	return ly.W
+	return ly.w
 }
 
-func (ly *Layout) Height() int {
+// H returns the height of the window
+func (ly *Layout) H() int {
 	if ly == nil {
 		return PosH
 	}
@@ -92,29 +96,37 @@ func (ly *Layout) Height() int {
 	ly.mu.RLock()
 	defer ly.mu.RUnlock()
 
-	if ly.H == 0 {
+	if ly.h == 0 {
 		return PosH
 	}
 
-	return ly.H
+	return ly.h
 }
 
-func (ly *Layout) MarshalJSON() ([]byte, error) {
+// Set allows for manual setting of the position and size of the window
+// this will call the Layout method to apply the changes
+func (ly *Layout) Set(ctx context.Context, x, y, w, h int) error {
 	if ly == nil {
-		return json.Marshal(NewLayout())
+		return fmt.Errorf("layout is nil")
 	}
 
-	return json.Marshal(map[string]int{
-		"x": ly.PosX(),
-		"y": ly.PosY(),
-		"w": ly.Width(),
-		"h": ly.Height(),
-	})
+	ly.mu.Lock()
+
+	ly.x = x
+	ly.y = y
+	ly.w = w
+	ly.h = h
+
+	ly.mu.Unlock()
+
+	return ly.Layout(ctx)
 }
 
+// Update updates the position and size of the window
+// based on the current running application.
 func (ly *Layout) Update(ctx context.Context) error {
 	if ly == nil {
-		return fmt.Errorf("position is nil")
+		return fmt.Errorf("layout is nil")
 	}
 
 	ly.mu.Lock()
@@ -130,14 +142,15 @@ func (ly *Layout) Update(ctx context.Context) error {
 		return err
 	}
 
-	ly.X = x
-	ly.Y = y
-	ly.W = w
-	ly.H = h
+	ly.x = x
+	ly.y = y
+	ly.w = w
+	ly.h = h
 
 	return nil
 }
 
+// Layout sets the position and size of the window
 func (ly *Layout) Layout(ctx context.Context) error {
 	if ly == nil {
 		ly = NewLayout()
@@ -146,12 +159,12 @@ func (ly *Layout) Layout(ctx context.Context) error {
 	ly.mu.RLock()
 	defer ly.mu.RUnlock()
 
-	err := ly.WindowSetPosition(ctx, ly.X, ly.Y)
+	err := ly.WindowSetPosition(ctx, ly.x, ly.y)
 	if err != nil {
 		return err
 	}
 
-	err = ly.WindowSetSize(ctx, ly.W, ly.H)
+	err = ly.WindowSetSize(ctx, ly.w, ly.h)
 	if err != nil {
 		return err
 	}
@@ -159,10 +172,14 @@ func (ly *Layout) Layout(ctx context.Context) error {
 	return nil
 }
 
+// PluginName returns the name of the plugin
+// implements the plugins.Plugin interface
 func (ly *Layout) PluginName() string {
 	return fmt.Sprintf("%T", ly)
 }
 
+// StateData returns the state data of the plugin
+// implements the StateDataProvider interface
 func (ly *Layout) StateData() (StateData, error) {
 	if ly == nil {
 		ly = NewLayout()
@@ -172,4 +189,17 @@ func (ly *Layout) StateData() (StateData, error) {
 		Name: "position",
 		Data: ly,
 	}, nil
+}
+
+func (ly *Layout) MarshalJSON() ([]byte, error) {
+	if ly == nil {
+		return json.Marshal(NewLayout())
+	}
+
+	return json.Marshal(map[string]int{
+		"x": ly.X(),
+		"y": ly.Y(),
+		"w": ly.W(),
+		"h": ly.H(),
+	})
 }

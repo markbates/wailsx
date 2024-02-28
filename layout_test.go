@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"path/filepath"
 	"testing"
@@ -15,7 +16,7 @@ import (
 func Test_Layout(t *testing.T) {
 	t.Parallel()
 
-	dp := &Layout{X: PosX, Y: PosY, W: PosW, H: PosH}
+	dp := &Layout{x: PosX, y: PosY, w: PosW, h: PosH}
 
 	tcs := []struct {
 		name string
@@ -35,12 +36,12 @@ func Test_Layout(t *testing.T) {
 		{
 			name: "with values",
 			ly: &Layout{
-				X: 1,
-				Y: 2,
-				W: 3,
-				H: 4,
+				x: 1,
+				y: 2,
+				w: 3,
+				h: 4,
 			},
-			exp: &Layout{X: 1, Y: 2, W: 3, H: 4},
+			exp: &Layout{x: 1, y: 2, w: 3, h: 4},
 		},
 	}
 
@@ -48,10 +49,10 @@ func Test_Layout(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			r := require.New(t)
 
-			r.Equal(tc.exp.X, tc.ly.PosX())
-			r.Equal(tc.exp.Y, tc.ly.PosY())
-			r.Equal(tc.exp.W, tc.ly.Width())
-			r.Equal(tc.exp.H, tc.ly.Height())
+			r.Equal(tc.exp.x, tc.ly.X())
+			r.Equal(tc.exp.y, tc.ly.Y())
+			r.Equal(tc.exp.w, tc.ly.W())
+			r.Equal(tc.exp.h, tc.ly.H())
 		})
 	}
 
@@ -86,7 +87,7 @@ func Test_Layout_Update(t *testing.T) {
 					GetSizeFn:     wailstest.PositionGet(3, 4),
 				},
 			},
-			exp: &Layout{X: 1, Y: 2, W: 3, H: 4},
+			exp: &Layout{x: 1, y: 2, w: 3, h: 4},
 		},
 		{
 			name: "error",
@@ -128,10 +129,10 @@ func Test_Layout_Update(t *testing.T) {
 
 			r.NoError(err)
 
-			r.Equal(tc.exp.PosX(), tc.ly.PosX())
-			r.Equal(tc.exp.PosY(), tc.ly.PosY())
-			r.Equal(tc.exp.Width(), tc.ly.Width())
-			r.Equal(tc.exp.Height(), tc.ly.Height())
+			r.Equal(tc.exp.X(), tc.ly.X())
+			r.Equal(tc.exp.Y(), tc.ly.Y())
+			r.Equal(tc.exp.W(), tc.ly.W())
+			r.Equal(tc.exp.H(), tc.ly.H())
 		})
 	}
 
@@ -156,10 +157,10 @@ func Test_Layout_MarshalJSON(t *testing.T) {
 		{
 			name: "with values",
 			pos: &Layout{
-				X: 1,
-				Y: 2,
-				W: 3,
-				H: 4,
+				x: 1,
+				y: 2,
+				w: 3,
+				h: 4,
 			},
 		},
 	}
@@ -265,10 +266,10 @@ func Test_Layout_Layout(t *testing.T) {
 
 			r.NoError(err)
 
-			r.Equal(ly.PosX(), ec.X)
-			r.Equal(ly.PosY(), ec.Y)
-			r.Equal(ly.Width(), ec.W)
-			r.Equal(ly.Height(), ec.H)
+			r.Equal(ly.X(), ec.X)
+			r.Equal(ly.Y(), ec.Y)
+			r.Equal(ly.W(), ec.W)
+			r.Equal(ly.H(), ec.H)
 		})
 	}
 
@@ -286,8 +287,52 @@ func Test_Layout_Layout(t *testing.T) {
 	err := ly.Layout(ctx)
 	r.NoError(err)
 
-	r.Equal(ly.PosX(), catcher.X)
-	r.Equal(ly.PosY(), catcher.Y)
-	r.Equal(ly.Width(), catcher.W)
-	r.Equal(ly.Height(), catcher.H)
+	r.Equal(ly.X(), catcher.X)
+	r.Equal(ly.Y(), catcher.Y)
+	r.Equal(ly.W(), catcher.W)
+	r.Equal(ly.H(), catcher.H)
+}
+
+func Test_Layout_Set(t *testing.T) {
+	t.Parallel()
+	r := require.New(t)
+
+	ly := NewLayout()
+
+	ec := &wailstest.LayoutCatcher{}
+	ly.SetPositionFn = ec.WindowSetPosition
+	ly.SetSizeFn = ec.WindowSetSize
+	ly.GetPositionFn = ec.WindowGetPosition
+	ly.GetSizeFn = ec.WindowGetSize
+
+	r.Equal(PosX, ly.X())
+	r.Equal(PosY, ly.Y())
+	r.Equal(PosW, ly.W())
+	r.Equal(PosH, ly.H())
+
+	ctx := context.Background()
+
+	err := ly.Set(ctx, 1, 2, 3, 4)
+	r.NoError(err)
+
+	r.Equal(1, ly.X())
+	r.Equal(2, ly.Y())
+	r.Equal(3, ly.W())
+	r.Equal(4, ly.H())
+
+}
+
+func Test_Layout_StateData(t *testing.T) {
+	t.Parallel()
+	r := require.New(t)
+
+	ly := NewLayout()
+	r.Equal(fmt.Sprintf("%T", ly), ly.PluginName())
+
+	sd, err := ly.StateData()
+	r.NoError(err)
+
+	r.Equal("position", sd.Name)
+	r.Equal(ly, sd.Data)
+
 }
