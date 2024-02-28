@@ -123,6 +123,6 @@ func Test_State_Save_WithPlugins(t *testing.T) {
 	r.NoError(err)
 
 	r.True(stSaved)
-	r.True(p1.Saved)
-	r.True(p2.Saved)
+	r.True(p1.Called)
+	r.True(p2.Called)
 }

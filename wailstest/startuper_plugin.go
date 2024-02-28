@@ -5,19 +5,19 @@ import (
 	"fmt"
 )
 
-// SaverPlugin is a test implementation of the Saver interface
-type SaverPlugin struct {
+// StartuperPlugin is a test implementation of the Startuper interface
+type StartuperPlugin struct {
 	Called bool
 	Error  bool
 }
 
-func (s *SaverPlugin) PluginName() string {
+func (s *StartuperPlugin) PluginName() string {
 	return fmt.Sprintf("%T", s)
 }
 
 // Save marks the plugin as called
 // If Error is true, it returns the ERR error
-func (s *SaverPlugin) Save(ctx context.Context) error {
+func (s *StartuperPlugin) Startup(ctx context.Context) error {
 	if s == nil {
 		return fmt.Errorf("state is nil")
 	}

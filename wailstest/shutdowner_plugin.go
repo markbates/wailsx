@@ -5,19 +5,19 @@ import (
 	"fmt"
 )
 
-// SaverPlugin is a test implementation of the Saver interface
-type SaverPlugin struct {
+// ShutdownerPlugin is a test implementation of the Shutdowner interface
+type ShutdownerPlugin struct {
 	Called bool
 	Error  bool
 }
 
-func (s *SaverPlugin) PluginName() string {
+func (s *ShutdownerPlugin) PluginName() string {
 	return fmt.Sprintf("%T", s)
 }
 
-// Save marks the plugin as called
+// Shutdown marks the plugin as called
 // If Error is true, it returns the ERR error
-func (s *SaverPlugin) Save(ctx context.Context) error {
+func (s *ShutdownerPlugin) Shutdown(ctx context.Context) error {
 	if s == nil {
 		return fmt.Errorf("state is nil")
 	}
