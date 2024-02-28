@@ -3,9 +3,9 @@ package wailsx
 import (
 	"context"
 	"errors"
-	"io"
 	"testing"
 
+	"github.com/markbates/wailsx/wailstest"
 	"github.com/stretchr/testify/require"
 )
 
@@ -22,13 +22,13 @@ func Test_Emitter_Emit(t *testing.T) {
 			{
 				name: "returns an error",
 				fn: func(ctx context.Context, event string, args ...any) error {
-					return io.EOF
+					return wailstest.ERR
 				},
 			},
 			{
 				name: "panics",
 				fn: func(ctx context.Context, event string, args ...any) error {
-					panic(io.EOF)
+					panic(wailstest.ERR)
 				},
 			},
 		}
@@ -43,7 +43,7 @@ func Test_Emitter_Emit(t *testing.T) {
 
 				err := em.Emit(ctx, "test", "A")
 				r.Error(err)
-				r.True(errors.Is(err, io.EOF))
+				r.True(errors.Is(err, wailstest.ERR))
 			})
 		}
 	})
@@ -55,7 +55,7 @@ func Test_Emitter_Emit(t *testing.T) {
 			em, ec := newEmitter()
 
 			const name = "test"
-			err := em.Emit(ctx, name, io.EOF)
+			err := em.Emit(ctx, name, wailstest.ERR)
 			r.NoError(err)
 
 			r.Len(ec.Events, 1)
@@ -66,9 +66,9 @@ func Test_Emitter_Emit(t *testing.T) {
 
 			msg, ok := ev.Args[0].(ErrorMessage)
 			r.True(ok, "ec.Events[0] is not an ErrorMessage", ec.Events[0])
-			r.True(errors.Is(msg.Err, io.EOF))
+			r.True(errors.Is(msg.Err, wailstest.ERR))
 			r.Equal("test", msg.Event)
-			r.Equal(io.EOF.Error(), msg.Text)
+			r.Equal(wailstest.ERR.Error(), msg.Text)
 			r.Equal(nowTime(), msg.Time)
 		})
 
@@ -151,7 +151,7 @@ func Test_Emitter_Emit(t *testing.T) {
 	em, ec := newEmitter()
 
 	em.EmitFn = func(ctx context.Context, event string, args ...any) error {
-		return io.EOF
+		return wailstest.ERR
 	}
 
 	err := em.Emit(ctx, "test", "A")
@@ -197,7 +197,7 @@ func Test_Emitter_Emit_error(t *testing.T) {
 
 	ctx := context.Background()
 	em.EmitFn = func(ctx context.Context, event string, args ...any) error {
-		return io.EOF
+		return wailstest.ERR
 	}
 
 	em.Emit(ctx, "test", "A")

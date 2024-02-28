@@ -3,7 +3,6 @@ package wailsx
 import (
 	"context"
 	"errors"
-	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -91,13 +90,13 @@ func Test_State_SavePanic(t *testing.T) {
 	r.Contains(err.Error(), "save panic")
 
 	st.SaveFn = func(ctx context.Context) error {
-		panic(io.EOF)
+		panic(wailstest.ERR)
 	}
 
 	err = st.Save(context.Background())
 	r.Error(err)
 
-	r.True(errors.Is(err, io.EOF))
+	r.True(errors.Is(err, wailstest.ERR))
 }
 
 func Test_State_Save_WithPlugins(t *testing.T) {

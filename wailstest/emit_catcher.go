@@ -8,6 +8,7 @@ import (
 // EmitCatcher is a test helper to catch emitted events
 type EmitCatcher struct {
 	Events []CaughtEvent
+	Error  bool
 }
 
 type CaughtEvent struct {
@@ -18,6 +19,10 @@ type CaughtEvent struct {
 func (ec *EmitCatcher) Emit(ctx context.Context, event string, args ...any) error {
 	if ec == nil {
 		return fmt.Errorf("catcher is nil")
+	}
+
+	if ec.Error {
+		return ERR
 	}
 
 	ec.Events = append(ec.Events, CaughtEvent{

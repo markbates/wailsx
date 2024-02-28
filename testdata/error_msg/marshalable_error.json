@@ -1,7 +1,7 @@
 {
   "data": "my data",
   "error": {
-    "err": "EOF",
+    "err": "test error",
     "id": 1,
     "name": "my name"
   },

@@ -2,10 +2,10 @@ package wailsx
 
 import (
 	"context"
-	"io"
 	"testing"
 	"time"
 
+	"github.com/markbates/wailsx/wailstest"
 	"github.com/stretchr/testify/require"
 )
 
@@ -86,13 +86,13 @@ func Test_SaveTimer_Save_Error(t *testing.T) {
 			name: "error",
 			fn: func(ctx context.Context) error {
 				cancel()
-				return io.EOF
+				return wailstest.ERR
 			},
 		},
 		{
 			name: "panic error",
 			fn: func(ctx context.Context) error {
-				panic(io.EOF)
+				panic(wailstest.ERR)
 			},
 		},
 	}
@@ -112,7 +112,7 @@ func Test_SaveTimer_Save_Error(t *testing.T) {
 			r.NoError(err)
 			s.SaveFn = func(ctx context.Context) error {
 				cancel()
-				return io.EOF
+				return wailstest.ERR
 			}
 
 			err = st.Save(ctx, s)

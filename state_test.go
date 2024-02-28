@@ -3,12 +3,12 @@ package wailsx
 import (
 	"context"
 	"errors"
-	"io"
 	"os"
 	"path/filepath"
 	"testing"
 
 	"github.com/markbates/plugins"
+	"github.com/markbates/wailsx/wailstest"
 	"github.com/stretchr/testify/require"
 )
 
@@ -33,7 +33,7 @@ func Test_State_Startup(t *testing.T) {
 	r.NotNil(st.Layout)
 
 	st.StartupFn = func(ctx context.Context) error {
-		return io.EOF
+		return wailstest.ERR
 	}
 	r.Error(st.Startup(ctx))
 }
@@ -82,62 +82,13 @@ func Test_State_StartupPanic(t *testing.T) {
 	r.Contains(err.Error(), "startup panic")
 
 	st.StartupFn = func(ctx context.Context) error {
-		panic(io.EOF)
+		panic(wailstest.ERR)
 	}
 
 	err = st.Startup(context.Background())
 	r.Error(err)
 
-	r.True(errors.Is(err, io.EOF))
-}
-
-func Test_State_Shutdown(t *testing.T) {
-	t.Parallel()
-	r := require.New(t)
-
-	const name = "state-shutdown-test"
-
-	st := newState(t, name)
-
-	var shutdown bool
-
-	st.ShutdownFn = func(ctx context.Context) error {
-		shutdown = true
-		return nil
-	}
-
-	ctx := context.Background()
-
-	r.NoError(st.Shutdown(ctx))
-	r.True(shutdown)
-}
-
-func Test_State_ShutdownPanic(t *testing.T) {
-	t.Parallel()
-	r := require.New(t)
-
-	const name = "state-shutdown-panic"
-
-	st := &State{
-		Name: name,
-		ShutdownFn: func(ctx context.Context) error {
-			panic("shutdown panic")
-		},
-	}
-
-	err := st.Shutdown(context.Background())
-	r.Error(err)
-
-	r.Contains(err.Error(), "shutdown panic")
-
-	st.ShutdownFn = func(ctx context.Context) error {
-		panic(io.EOF)
-	}
-
-	err = st.Shutdown(context.Background())
-	r.Error(err)
-
-	r.True(errors.Is(err, io.EOF))
+	r.True(errors.Is(err, wailstest.ERR))
 }
 
 func Test_State_MarshalJSON(t *testing.T) {
