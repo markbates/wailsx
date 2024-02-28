@@ -23,13 +23,24 @@ type State struct {
 	Plugins plugins.Plugins // plugins for the state
 
 	// save function, if nil, save to file in ~/.config/<name>/state.json
+	// will call Saver plugins
 	SaveFn func(ctx context.Context) error
 
 	// startup function, if nil, load from file in ~/.config/<name>/state.json
+	// will call Startuper plugins
 	StartupFn func(ctx context.Context) error
 
 	// shutdown function, if nil, call Save
+	// will call Shutdowner plugins
 	ShutdownFn func(ctx context.Context) error
+
+	// dom ready function, if nil, do nothing
+	// will call DomReadyer plugins
+	DomReadyFn func(ctx context.Context) error
+
+	// before close function, if nil, do nothing
+	// will call BeforeCloser plugins
+	BeforeCloseFn func(ctx context.Context) error
 
 	mu sync.RWMutex
 }
