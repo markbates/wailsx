@@ -3,16 +3,7 @@ package wailsx
 import (
 	"encoding/json"
 	"fmt"
-	"time"
 )
-
-type ErrorMessenger interface {
-	MsgError() error
-	MsgEvent() string
-	MsgText() string
-	MsgTime() time.Time
-	MsgData() any
-}
 
 var _ ErrorMessenger = ErrorMessage{}
 

@@ -6,13 +6,6 @@ import (
 	"time"
 )
 
-type Messenger interface {
-	MsgEvent() string
-	MsgText() string
-	MsgTime() time.Time
-	MsgData() any
-}
-
 var _ Messenger = Message{}
 
 type Message struct {

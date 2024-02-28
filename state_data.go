@@ -2,20 +2,13 @@ package wailsx
 
 import (
 	"fmt"
-
-	"github.com/markbates/plugins"
 )
 
-type StateDataPlugin interface {
-	plugins.Plugin
-	StateData() (StateData, error)
-}
-
-var _ StateDataPlugin = StateData{}
+var _ StateDataProvider = StateData{}
 
 type StateData struct {
-	Name string // name of the data
-	Data any    // data for the state
+	Name string `json:"name,omitempty"` // name of the data
+	Data any    `json:"data,omitempty"` // data for the state
 }
 
 func (sd StateData) PluginName() string {

@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"sync"
+
+	"github.com/markbates/plugins"
 )
 
 const (
@@ -13,6 +15,9 @@ const (
 	PosW = 1200
 	PosH = 800
 )
+
+var _ plugins.Plugin = &Position{}
+var _ StateDataProvider = &Position{}
 
 func NewPosition() *Position {
 	return &Position{
@@ -152,4 +157,19 @@ func (pos *Position) Layout(ctx context.Context) error {
 	}
 
 	return nil
+}
+
+func (pos *Position) PluginName() string {
+	return fmt.Sprintf("%T", pos)
+}
+
+func (pos *Position) StateData() (StateData, error) {
+	if pos == nil {
+		pos = NewPosition()
+	}
+
+	return StateData{
+		Name: "position",
+		Data: pos,
+	}, nil
 }

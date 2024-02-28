@@ -9,6 +9,7 @@ import (
 	"sync"
 
 	"github.com/markbates/plugins"
+	"golang.org/x/sync/errgroup"
 )
 
 var _ Saver = &State{}
@@ -20,17 +21,17 @@ type State struct {
 	Emitter   // emit save events
 	*Position // position of the state
 
-	Name    string `json:"name,omitempty"` // application name
-	Plugins plugins.Plugins
+	Name    string          // application name
+	Plugins plugins.Plugins // plugins for the state
 
 	// save function, if nil, save to file in ~/.config/<name>/state.json
-	SaveFn func(ctx context.Context) error `json:"-"`
+	SaveFn func(ctx context.Context) error
 
 	// startup function, if nil, load from file in ~/.config/<name>/state.json
-	StartupFn func(ctx context.Context) error `json:"-"`
+	StartupFn func(ctx context.Context) error
 
 	// shutdown function, if nil, call Save
-	ShutdownFn func(ctx context.Context) error `json:"-"`
+	ShutdownFn func(ctx context.Context) error
 
 	mu sync.RWMutex
 }
@@ -83,7 +84,11 @@ func (st *State) Save(ctx context.Context) (err error) {
 		fn = st.saveToFile
 	}
 
-	return fn(ctx)
+	if err := fn(ctx); err != nil {
+		return err
+	}
+
+	return st.saverPlugins(ctx)
 }
 
 func (st *State) Startup(ctx context.Context) (err error) {
@@ -124,8 +129,16 @@ func (st *State) Startup(ctx context.Context) (err error) {
 	}
 
 	for _, p := range st.Plugins {
-		if p == nil {
-			continue
+		if ne, ok := p.(EmitNeeder); ok {
+			if err := ne.SetEmitter(st.Emitter); err != nil {
+				return err
+			}
+		}
+
+		if pn, ok := p.(PositionNeeder); ok {
+			if err := pn.SetPosition(st.Position); err != nil {
+				return err
+			}
 		}
 
 		if s, ok := p.(Startuper); ok {
@@ -166,7 +179,19 @@ func (st *State) Shutdown(ctx context.Context) (err error) {
 		fn = st.Save
 	}
 
-	return fn(ctx)
+	if err := fn(ctx); err != nil {
+		return err
+	}
+
+	for _, p := range st.Plugins {
+		if sp, ok := p.(Shutdowner); ok {
+			if err := sp.Shutdown(ctx); err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
 }
 
 func (st *State) MarshalJSON() ([]byte, error) {
@@ -196,22 +221,20 @@ func (st *State) JSONMap() (map[string]any, error) {
 		"position": pos,
 	}
 
-	for _, p := range st.Plugins {
-		if p, ok := p.(StateDataPlugin); ok {
-			sd, err := p.StateData()
-			if err != nil {
-				return nil, err
-			}
+	list, err := st.stateDataPlugins()
+	if err != nil {
+		return nil, err
+	}
 
-			mm[sd.Name] = sd.Data
-		}
+	for _, sd := range list {
+		mm[sd.Name] = sd.Data
 	}
 
 	return mm, nil
 }
 
 func (st *State) PluginName() string {
-	return fmt.Sprintf("%T", st)
+	return fmt.Sprintf("%T: %s", st, st.Name)
 }
 
 func (st *State) saveToFile(ctx context.Context) error {
@@ -279,4 +302,61 @@ func (st *State) loadFromFile(ctx context.Context) error {
 	}
 
 	return nil
+}
+
+func (st *State) saverPlugins(ctx context.Context) error {
+	if st == nil {
+		return fmt.Errorf("state is nil")
+	}
+
+	var wg errgroup.Group
+	for _, p := range st.Plugins {
+		if s, ok := p.(Saver); ok {
+			wg.Go(func() error {
+				return s.Save(ctx)
+			})
+		}
+	}
+
+	if err := wg.Wait(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (st *State) stateDataPlugins() ([]StateData, error) {
+	if st == nil {
+		return nil, fmt.Errorf("state is nil")
+	}
+
+	var list []StateData
+
+	var mu sync.Mutex
+
+	var wg errgroup.Group
+
+	for _, p := range st.Plugins {
+		s, ok := p.(StateDataProvider)
+		if !ok {
+			continue
+		}
+		wg.Go(func() error {
+			sd, err := s.StateData()
+			if err != nil {
+				return err
+			}
+
+			mu.Lock()
+			list = append(list, sd)
+			mu.Unlock()
+			return nil
+		})
+	}
+
+	if err := wg.Wait(); err != nil {
+		return nil, err
+	}
+
+	return list, nil
 }

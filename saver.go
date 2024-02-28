@@ -1,6 +1,8 @@
 package wailsx
 
-import "context"
+import (
+	"context"
+)
 
 type Saver interface {
 	Save(ctx context.Context) error
