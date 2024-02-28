@@ -22,10 +22,11 @@ func (s *SaverPlugin) Save(ctx context.Context) error {
 		return fmt.Errorf("state is nil")
 	}
 
+	s.Called = true
+
 	if s.Error {
 		return ERR
 	}
 
-	s.Called = true
 	return nil
 }
