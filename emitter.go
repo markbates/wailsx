@@ -19,7 +19,7 @@ func NewEmitter() Emitter {
 }
 
 type Emitter struct {
-	DisableWildcard bool
+	DisableWildcard bool `json:"disable_wildcard,omitempty"`
 
 	EmitFn func(ctx context.Context, event string, args ...any) error `json:"-"`
 
@@ -27,7 +27,6 @@ type Emitter struct {
 }
 
 func (em Emitter) Emit(ctx context.Context, event string, args ...any) (err error) {
-
 	nowFn := em.nowFn
 	if nowFn == nil {
 		nowFn = time.Now
@@ -87,11 +86,6 @@ func (em Emitter) Emit(ctx context.Context, event string, args ...any) (err erro
 	if fn == nil {
 		fn = em.wailsEmit
 	}
-
-	// go func() {
-	// 	b, _ := json.MarshalIndent(args, "", "  ")
-	// 	fmt.Printf("emitting event: %q: %s\n", event, string(b))
-	// }()
 
 	if !em.DisableWildcard {
 		if err := fn(ctx, "*", args...); err != nil {
