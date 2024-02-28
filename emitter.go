@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/markbates/wailsx/msgx"
 	wailsrun "github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -39,9 +40,9 @@ func (em Emitter) Emit(ctx context.Context, event string, args ...any) (err erro
 	for i, a := range args {
 		switch t := a.(type) {
 		case error:
-			args[i] = ErrorMessage{
+			args[i] = msgx.ErrorMessage{
 				Err: t,
-				Message: Message{
+				Message: msgx.Message{
 					Event: event,
 					Text:  t.Error(),
 					Time:  nowFn(),
@@ -49,17 +50,17 @@ func (em Emitter) Emit(ctx context.Context, event string, args ...any) (err erro
 				},
 			}
 		case string:
-			args[i] = Message{
+			args[i] = msgx.Message{
 				Event: event,
 				Text:  t,
 				Time:  nowFn(),
 				Data:  t,
 			}
-		case Messenger:
+		case msgx.Messenger:
 			//  do nothing
 			// it's already a message
 		default:
-			args[i] = Message{
+			args[i] = msgx.Message{
 				Event: event,
 				Data:  t,
 				Time:  nowFn(),

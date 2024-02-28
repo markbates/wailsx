@@ -1,4 +1,4 @@
-package wailsx
+package msgx
 
 import (
 	"encoding/json"

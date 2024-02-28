@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 
 	"github.com/markbates/plugins"
+	"github.com/markbates/wailsx/internal/safe"
 )
 
 func (st *State) Startup(ctx context.Context) (err error) {
@@ -24,48 +25,42 @@ func (st *State) Startup(ctx context.Context) (err error) {
 		return fmt.Errorf("name is required: %+v", st)
 	}
 
-	// recover from external function call
-	defer func() {
-		r := recover()
-		if r == nil {
-			return
-		}
-
-		switch t := r.(type) {
-		case error:
-			err = t
-		default:
-			err = fmt.Errorf("%v", t)
-		}
-	}()
-
 	if fn == nil {
 		fn = st.loadFromFile
 	}
 
-	if err := fn(ctx); err != nil {
+	err = safe.Run(func() error {
+
+		if err := fn(ctx); err != nil {
+			return err
+		}
+
+		ems := plugins.ByType[EmitNeeder](st.Plugins)
+		for _, em := range ems {
+			if err := em.SetEmitter(st.Emitter); err != nil {
+				return err
+			}
+		}
+
+		lms := plugins.ByType[LayoutNeeder](st.Plugins)
+		for _, lm := range lms {
+			if err := lm.SetLayout(st.Layout); err != nil {
+				return err
+			}
+		}
+
+		sts := plugins.ByType[Startuper](st.Plugins)
+		for _, s := range sts {
+			if err := s.Startup(ctx); err != nil {
+				return err
+			}
+		}
+
+		return nil
+	})
+
+	if err != nil {
 		return err
-	}
-
-	ems := plugins.ByType[EmitNeeder](st.Plugins)
-	for _, em := range ems {
-		if err := em.SetEmitter(st.Emitter); err != nil {
-			return err
-		}
-	}
-
-	lms := plugins.ByType[LayoutNeeder](st.Plugins)
-	for _, lm := range lms {
-		if err := lm.SetLayout(st.Layout); err != nil {
-			return err
-		}
-	}
-
-	sts := plugins.ByType[Startuper](st.Plugins)
-	for _, s := range sts {
-		if err := s.Startup(ctx); err != nil {
-			return err
-		}
 	}
 
 	return nil

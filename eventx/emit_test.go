@@ -1,4 +1,4 @@
-package wailsx
+package eventx
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func Test_Emitter_Emit(t *testing.T) {
+func Test_EventManager_Emit(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 	ctx := context.Background()
@@ -38,7 +38,7 @@ func Test_Emitter_Emit(t *testing.T) {
 			t.Run(etc.name, func(t *testing.T) {
 				r := require.New(t)
 
-				em := Emitter{
+				em := EventManager{
 					EmitFn: etc.fn,
 				}
 
@@ -53,7 +53,7 @@ func Test_Emitter_Emit(t *testing.T) {
 		t.Run("marshal error", func(t *testing.T) {
 			r := require.New(t)
 
-			em, ec := newEmitter()
+			em, ec := newEventManager()
 
 			const name = "test"
 			err := em.Emit(ctx, name, wailstest.ERR)
@@ -76,7 +76,7 @@ func Test_Emitter_Emit(t *testing.T) {
 		t.Run("marshal string", func(t *testing.T) {
 			r := require.New(t)
 
-			em, ec := newEmitter()
+			em, ec := newEventManager()
 
 			const name = "test"
 			err := em.Emit(ctx, name, "A")
@@ -97,7 +97,7 @@ func Test_Emitter_Emit(t *testing.T) {
 		t.Run("marshal Messenger", func(t *testing.T) {
 			r := require.New(t)
 
-			em, ec := newEmitter()
+			em, ec := newEventManager()
 
 			const name = "test"
 
@@ -128,7 +128,7 @@ func Test_Emitter_Emit(t *testing.T) {
 		t.Run("marshal any", func(t *testing.T) {
 			r := require.New(t)
 
-			em, ec := newEmitter()
+			em, ec := newEventManager()
 
 			const name = "test"
 
@@ -149,7 +149,7 @@ func Test_Emitter_Emit(t *testing.T) {
 		})
 	})
 
-	em, ec := newEmitter()
+	em, ec := newEventManager()
 
 	em.EmitFn = func(ctx context.Context, event string, args ...any) error {
 		return wailstest.ERR
@@ -190,11 +190,11 @@ func Test_Emitter_Emit(t *testing.T) {
 	r.Equal("B", am.MsgText())
 }
 
-func Test_Emitter_Emit_error(t *testing.T) {
+func Test_EventManager_Emit_error(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 
-	em, ec := newEmitter()
+	em, ec := newEventManager()
 
 	ctx := context.Background()
 	em.EmitFn = func(ctx context.Context, event string, args ...any) error {

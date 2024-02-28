@@ -7,7 +7,7 @@ import (
 	"sync"
 
 	"github.com/markbates/plugins"
-	"golang.org/x/sync/errgroup"
+	"github.com/markbates/wailsx/internal/safe"
 )
 
 var _ Saver = &State{}
@@ -112,7 +112,7 @@ func (st *State) stateDataPlugins() ([]StateData, error) {
 
 	var mu sync.Mutex
 
-	var wg errgroup.Group
+	var wg safe.Group
 
 	sdps := plugins.ByType[StateDataProvider](st.Plugins)
 

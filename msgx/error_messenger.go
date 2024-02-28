@@ -1,8 +1,9 @@
-package wailsx
+package msgx
 
 import "time"
 
-type Messenger interface {
+type ErrorMessenger interface {
+	MsgError() error
 	MsgEvent() string
 	MsgText() string
 	MsgTime() time.Time

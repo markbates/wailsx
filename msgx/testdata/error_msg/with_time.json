@@ -1,0 +1,7 @@
+{
+  "data": null,
+  "error": "\"test error\"",
+  "event": "with time",
+  "text": "test error",
+  "time": "1976-01-01T00:00:00Z"
+}

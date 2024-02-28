@@ -2,10 +2,9 @@ package wailsx
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/markbates/plugins"
-	"golang.org/x/sync/errgroup"
+	"github.com/markbates/wailsx/internal/safe"
 )
 
 func (st *State) Shutdown(ctx context.Context) (err error) {
@@ -17,32 +16,22 @@ func (st *State) Shutdown(ctx context.Context) (err error) {
 	fn := st.ShutdownFn
 	st.mu.RUnlock()
 
-	// recover from external function call
-	defer func() {
-		r := recover()
-		if r == nil {
-			return
-		}
-
-		switch t := r.(type) {
-		case error:
-			err = t
-		default:
-			err = fmt.Errorf("%v", t)
-		}
-	}()
-
 	if fn == nil {
 		fn = st.Save
 	}
 
-	if err := fn(ctx); err != nil {
+	err = safe.Run(func() error {
+		return fn(ctx)
+	})
+
+	if err != nil {
 		return err
 	}
 
 	sps := plugins.ByType[Shutdowner](st.Plugins)
 
-	var wg errgroup.Group
+	var wg safe.Group
+
 	for _, sp := range sps {
 		sp := sp
 		wg.Go(func() error {

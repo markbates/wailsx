@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 
 	"github.com/markbates/plugins"
-	"golang.org/x/sync/errgroup"
+	"github.com/markbates/wailsx/internal/safe"
 )
 
 func (st *State) Save(ctx context.Context) (err error) {
@@ -25,26 +25,15 @@ func (st *State) Save(ctx context.Context) (err error) {
 		return fmt.Errorf("name is required: %+v", st)
 	}
 
-	// recover from external function call
-	defer func() {
-		r := recover()
-		if r == nil {
-			return
-		}
-
-		switch t := r.(type) {
-		case error:
-			err = t
-		default:
-			err = fmt.Errorf("%v", t)
-		}
-	}()
-
 	if fn == nil {
 		fn = st.saveToFile
 	}
 
-	if err := fn(ctx); err != nil {
+	err = safe.Run(func() error {
+		return fn(ctx)
+	})
+
+	if err != nil {
 		return err
 	}
 
@@ -94,7 +83,7 @@ func (st *State) saverPlugins(ctx context.Context) error {
 		return fmt.Errorf("state is nil")
 	}
 
-	var wg errgroup.Group
+	var wg safe.Group
 
 	sps := plugins.ByType[Saver](st.Plugins)
 
