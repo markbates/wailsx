@@ -175,7 +175,7 @@ func Test_Layout_MarshalJSON(t *testing.T) {
 				return
 			}
 
-			assertJSON(t, filepath.Join("positions", tc.name), tc.pos)
+			assertJSON(t, filepath.Join("layouts", tc.name), tc.pos)
 		})
 	}
 
@@ -246,7 +246,7 @@ func Test_Layout_Layout(t *testing.T) {
 
 			ly := tc.ly
 
-			ec := &wailstest.PositionCatcher{}
+			ec := &wailstest.LayoutCatcher{}
 
 			if ly.SetPositionFn == nil {
 				ly.SetPositionFn = ec.WindowSetPosition
@@ -274,7 +274,7 @@ func Test_Layout_Layout(t *testing.T) {
 
 	r := require.New(t)
 
-	catcher := &wailstest.PositionCatcher{}
+	catcher := &wailstest.LayoutCatcher{}
 	ly := NewLayout()
 	ly.LayoutManager = LayoutManager{
 		SetPositionFn: catcher.WindowSetPosition,
