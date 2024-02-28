@@ -18,8 +18,8 @@ var _ Startuper = &State{}
 var _ plugins.Plugin = &State{}
 
 type State struct {
-	Emitter   // emit save events
-	*Position // position of the state
+	Emitter // emit save events
+	*Layout // layout of the app
 
 	Name    string          // application name
 	Plugins plugins.Plugins // plugins for the state
@@ -42,10 +42,10 @@ func NewState(name string, plugins ...plugins.Plugin) (*State, error) {
 	}
 
 	st := &State{
-		Name:     name,
-		Emitter:  NewEmitter(),
-		Plugins:  plugins,
-		Position: NewPosition(),
+		Name:    name,
+		Emitter: NewEmitter(),
+		Plugins: plugins,
+		Layout:  NewLayout(),
 	}
 
 	return st, nil
@@ -135,8 +135,8 @@ func (st *State) Startup(ctx context.Context) (err error) {
 			}
 		}
 
-		if pn, ok := p.(PositionNeeder); ok {
-			if err := pn.SetPosition(st.Position); err != nil {
+		if pn, ok := p.(LayoutNeeder); ok {
+			if err := pn.SetLayout(st.Layout); err != nil {
 				return err
 			}
 		}
@@ -211,9 +211,9 @@ func (st *State) JSONMap() (map[string]any, error) {
 	st.mu.RLock()
 	defer st.mu.RUnlock()
 
-	pos := st.Position
+	pos := st.Layout
 	if pos == nil {
-		pos = NewPosition()
+		pos = NewLayout()
 	}
 
 	mm := map[string]any{

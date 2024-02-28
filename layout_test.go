@@ -12,35 +12,35 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func Test_Position(t *testing.T) {
+func Test_Layout(t *testing.T) {
 	t.Parallel()
 
-	dp := &Position{X: PosX, Y: PosY, W: PosW, H: PosH}
+	dp := &Layout{X: PosX, Y: PosY, W: PosW, H: PosH}
 
 	tcs := []struct {
 		name string
-		pos  *Position
-		exp  *Position
+		ly   *Layout
+		exp  *Layout
 	}{
 		{
 			name: "default",
-			pos:  &Position{},
+			ly:   &Layout{},
 			exp:  dp,
 		},
 		{
 			name: "nil",
-			pos:  nil,
+			ly:   nil,
 			exp:  dp,
 		},
 		{
 			name: "with values",
-			pos: &Position{
+			ly: &Layout{
 				X: 1,
 				Y: 2,
 				W: 3,
 				H: 4,
 			},
-			exp: &Position{X: 1, Y: 2, W: 3, H: 4},
+			exp: &Layout{X: 1, Y: 2, W: 3, H: 4},
 		},
 	}
 
@@ -48,30 +48,30 @@ func Test_Position(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			r := require.New(t)
 
-			r.Equal(tc.exp.X, tc.pos.PosX())
-			r.Equal(tc.exp.Y, tc.pos.PosY())
-			r.Equal(tc.exp.W, tc.pos.Width())
-			r.Equal(tc.exp.H, tc.pos.Height())
+			r.Equal(tc.exp.X, tc.ly.PosX())
+			r.Equal(tc.exp.Y, tc.ly.PosY())
+			r.Equal(tc.exp.W, tc.ly.Width())
+			r.Equal(tc.exp.H, tc.ly.Height())
 		})
 	}
 
 }
 
-func Test_Position_Update(t *testing.T) {
+func Test_Layout_Update(t *testing.T) {
 	t.Parallel()
 
-	dp := NewPosition()
+	dp := NewLayout()
 
 	tcs := []struct {
 		name string
-		pos  *Position
-		exp  *Position
+		ly   *Layout
+		exp  *Layout
 		err  bool
 	}{
 		{
 			name: "default",
-			pos: &Position{
-				Positioner: Positioner{
+			ly: &Layout{
+				LayoutManager: LayoutManager{
 					GetPositionFn: wailstest.PositionGet(0, 0),
 					GetSizeFn:     wailstest.PositionGet(0, 0),
 				},
@@ -80,19 +80,19 @@ func Test_Position_Update(t *testing.T) {
 		},
 		{
 			name: "with values",
-			pos: &Position{
-				Positioner: Positioner{
+			ly: &Layout{
+				LayoutManager: LayoutManager{
 					GetPositionFn: wailstest.PositionGet(1, 2),
 					GetSizeFn:     wailstest.PositionGet(3, 4),
 				},
 			},
-			exp: &Position{X: 1, Y: 2, W: 3, H: 4},
+			exp: &Layout{X: 1, Y: 2, W: 3, H: 4},
 		},
 		{
 			name: "error",
 			err:  true,
-			pos: &Position{
-				Positioner: Positioner{
+			ly: &Layout{
+				LayoutManager: LayoutManager{
 					GetPositionFn: func(ctx context.Context) (x int, y int, err error) {
 						return 0, 0, io.EOF
 					},
@@ -103,8 +103,8 @@ func Test_Position_Update(t *testing.T) {
 		{
 			name: "panic error",
 			err:  true,
-			pos: &Position{
-				Positioner: Positioner{
+			ly: &Layout{
+				LayoutManager: LayoutManager{
 					GetPositionFn: func(ctx context.Context) (x int, y int, err error) {
 						panic(io.EOF)
 					},
@@ -119,7 +119,7 @@ func Test_Position_Update(t *testing.T) {
 
 			ctx := context.Background()
 
-			err := tc.pos.Update(ctx)
+			err := tc.ly.Update(ctx)
 			if tc.err {
 				r.Error(err)
 				r.True(errors.Is(err, io.EOF))
@@ -128,34 +128,34 @@ func Test_Position_Update(t *testing.T) {
 
 			r.NoError(err)
 
-			r.Equal(tc.exp.PosX(), tc.pos.PosX())
-			r.Equal(tc.exp.PosY(), tc.pos.PosY())
-			r.Equal(tc.exp.Width(), tc.pos.Width())
-			r.Equal(tc.exp.Height(), tc.pos.Height())
+			r.Equal(tc.exp.PosX(), tc.ly.PosX())
+			r.Equal(tc.exp.PosY(), tc.ly.PosY())
+			r.Equal(tc.exp.Width(), tc.ly.Width())
+			r.Equal(tc.exp.Height(), tc.ly.Height())
 		})
 	}
 
 }
 
-func Test_Position_MarshalJSON(t *testing.T) {
+func Test_Layout_MarshalJSON(t *testing.T) {
 	t.Parallel()
 
 	tcs := []struct {
 		name string
-		pos  *Position
+		pos  *Layout
 		err  bool
 	}{
 		{
 			name: "empty",
-			pos:  &Position{},
+			pos:  &Layout{},
 		},
 		{
 			name: "default",
-			pos:  NewPosition(),
+			pos:  NewLayout(),
 		},
 		{
 			name: "with values",
-			pos: &Position{
+			pos: &Layout{
 				X: 1,
 				Y: 2,
 				W: 3,
@@ -181,22 +181,22 @@ func Test_Position_MarshalJSON(t *testing.T) {
 
 }
 
-func Test_Position_Layout(t *testing.T) {
+func Test_Layout_Layout(t *testing.T) {
 	t.Parallel()
 
 	tcs := []struct {
 		name string
-		pos  *Position
+		ly   *Layout
 		err  bool
 	}{
 		{
 			name: "default",
-			pos:  NewPosition(),
+			ly:   NewLayout(),
 		},
 		{
 			name: "set position error",
-			pos: &Position{
-				Positioner: Positioner{
+			ly: &Layout{
+				LayoutManager: LayoutManager{
 					SetPositionFn: func(ctx context.Context, x int, y int) error {
 						return io.EOF
 					},
@@ -206,8 +206,8 @@ func Test_Position_Layout(t *testing.T) {
 		},
 		{
 			name: "set position panic",
-			pos: &Position{
-				Positioner: Positioner{
+			ly: &Layout{
+				LayoutManager: LayoutManager{
 					SetPositionFn: func(ctx context.Context, x int, y int) error {
 						panic(io.EOF)
 					},
@@ -217,8 +217,8 @@ func Test_Position_Layout(t *testing.T) {
 		},
 		{
 			name: "set size error",
-			pos: &Position{
-				Positioner: Positioner{
+			ly: &Layout{
+				LayoutManager: LayoutManager{
 					SetSizeFn: func(ctx context.Context, w int, h int) error {
 						return io.EOF
 					},
@@ -228,8 +228,8 @@ func Test_Position_Layout(t *testing.T) {
 		},
 		{
 			name: "set size panic",
-			pos: &Position{
-				Positioner: Positioner{
+			ly: &Layout{
+				LayoutManager: LayoutManager{
 					SetSizeFn: func(ctx context.Context, w int, h int) error {
 						panic(io.EOF)
 					},
@@ -244,19 +244,19 @@ func Test_Position_Layout(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			r := require.New(t)
 
-			pos := tc.pos
+			ly := tc.ly
 
 			ec := &wailstest.PositionCatcher{}
 
-			if pos.SetPositionFn == nil {
-				pos.SetPositionFn = ec.WindowSetPosition
+			if ly.SetPositionFn == nil {
+				ly.SetPositionFn = ec.WindowSetPosition
 			}
 
-			if pos.SetSizeFn == nil {
-				pos.SetSizeFn = ec.WindowSetSize
+			if ly.SetSizeFn == nil {
+				ly.SetSizeFn = ec.WindowSetSize
 			}
 
-			err := pos.Layout(context.Background())
+			err := ly.Layout(context.Background())
 			if tc.err {
 				r.Error(err)
 				r.True(errors.Is(err, io.EOF))
@@ -265,29 +265,29 @@ func Test_Position_Layout(t *testing.T) {
 
 			r.NoError(err)
 
-			r.Equal(pos.PosX(), ec.X)
-			r.Equal(pos.PosY(), ec.Y)
-			r.Equal(pos.Width(), ec.W)
-			r.Equal(pos.Height(), ec.H)
+			r.Equal(ly.PosX(), ec.X)
+			r.Equal(ly.PosY(), ec.Y)
+			r.Equal(ly.Width(), ec.W)
+			r.Equal(ly.Height(), ec.H)
 		})
 	}
 
 	r := require.New(t)
 
 	catcher := &wailstest.PositionCatcher{}
-	pos := NewPosition()
-	pos.Positioner = Positioner{
+	ly := NewLayout()
+	ly.LayoutManager = LayoutManager{
 		SetPositionFn: catcher.WindowSetPosition,
 		SetSizeFn:     catcher.WindowSetSize,
 	}
 
 	ctx := context.Background()
 
-	err := pos.Layout(ctx)
+	err := ly.Layout(ctx)
 	r.NoError(err)
 
-	r.Equal(pos.PosX(), catcher.X)
-	r.Equal(pos.PosY(), catcher.Y)
-	r.Equal(pos.Width(), catcher.W)
-	r.Equal(pos.Height(), catcher.H)
+	r.Equal(ly.PosX(), catcher.X)
+	r.Equal(ly.PosY(), catcher.Y)
+	r.Equal(ly.Width(), catcher.W)
+	r.Equal(ly.Height(), catcher.H)
 }

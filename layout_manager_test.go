@@ -9,17 +9,17 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func Test_Positioner_WindowGetPosition(t *testing.T) {
+func Test_LayoutManager_WindowGetPosition(t *testing.T) {
 	t.Parallel()
 
 	tcs := []struct {
 		name string
-		pos  Positioner
+		ly   LayoutManager
 		err  bool
 	}{
 		{
 			name: "good",
-			pos: Positioner{
+			ly: LayoutManager{
 				GetPositionFn: func(ctx context.Context) (int, int, error) {
 					return 1, 2, nil
 				},
@@ -28,7 +28,7 @@ func Test_Positioner_WindowGetPosition(t *testing.T) {
 		{
 			name: "error",
 			err:  true,
-			pos: Positioner{
+			ly: LayoutManager{
 				GetPositionFn: func(ctx context.Context) (int, int, error) {
 					return 0, 0, io.EOF
 				},
@@ -37,7 +37,7 @@ func Test_Positioner_WindowGetPosition(t *testing.T) {
 		{
 			name: "panic",
 			err:  true,
-			pos: Positioner{
+			ly: LayoutManager{
 				GetPositionFn: func(ctx context.Context) (int, int, error) {
 					panic(io.EOF)
 				},
@@ -51,7 +51,7 @@ func Test_Positioner_WindowGetPosition(t *testing.T) {
 
 			ctx := context.Background()
 
-			x, y, err := tc.pos.WindowGetPosition(ctx)
+			x, y, err := tc.ly.WindowGetPosition(ctx)
 			if tc.err {
 				r.Error(err)
 				r.True(errors.Is(err, io.EOF))
@@ -65,17 +65,17 @@ func Test_Positioner_WindowGetPosition(t *testing.T) {
 	}
 }
 
-func Test_Positioner_WindowGetSize(t *testing.T) {
+func Test_LayoutManager_WindowGetSize(t *testing.T) {
 	t.Parallel()
 
 	tcs := []struct {
 		name string
-		pos  Positioner
+		ly   LayoutManager
 		err  bool
 	}{
 		{
 			name: "good",
-			pos: Positioner{
+			ly: LayoutManager{
 				GetSizeFn: func(ctx context.Context) (int, int, error) {
 					return 3, 4, nil
 				},
@@ -84,7 +84,7 @@ func Test_Positioner_WindowGetSize(t *testing.T) {
 		{
 			name: "error",
 			err:  true,
-			pos: Positioner{
+			ly: LayoutManager{
 				GetSizeFn: func(ctx context.Context) (int, int, error) {
 					return 0, 0, io.EOF
 				},
@@ -93,7 +93,7 @@ func Test_Positioner_WindowGetSize(t *testing.T) {
 		{
 			name: "panic",
 			err:  true,
-			pos: Positioner{
+			ly: LayoutManager{
 				GetSizeFn: func(ctx context.Context) (int, int, error) {
 					panic(io.EOF)
 				},
@@ -107,7 +107,7 @@ func Test_Positioner_WindowGetSize(t *testing.T) {
 
 			ctx := context.Background()
 
-			w, h, err := tc.pos.WindowGetSize(ctx)
+			w, h, err := tc.ly.WindowGetSize(ctx)
 			if tc.err {
 				r.Error(err)
 				r.True(errors.Is(err, io.EOF))
@@ -121,17 +121,17 @@ func Test_Positioner_WindowGetSize(t *testing.T) {
 	}
 }
 
-func Test_Positioner_WindowSetPosition(t *testing.T) {
+func Test_LayoutManager_WindowSetPosition(t *testing.T) {
 	t.Parallel()
 
 	tcs := []struct {
 		name string
-		pos  Positioner
+		ly   LayoutManager
 		err  bool
 	}{
 		{
 			name: "good",
-			pos: Positioner{
+			ly: LayoutManager{
 				SetPositionFn: func(ctx context.Context, x, y int) error {
 					return nil
 				},
@@ -140,7 +140,7 @@ func Test_Positioner_WindowSetPosition(t *testing.T) {
 		{
 			name: "error",
 			err:  true,
-			pos: Positioner{
+			ly: LayoutManager{
 				SetPositionFn: func(ctx context.Context, x, y int) error {
 					return io.EOF
 				},
@@ -149,7 +149,7 @@ func Test_Positioner_WindowSetPosition(t *testing.T) {
 		{
 			name: "panic",
 			err:  true,
-			pos: Positioner{
+			ly: LayoutManager{
 				SetPositionFn: func(ctx context.Context, x, y int) error {
 					panic(io.EOF)
 				},
@@ -163,7 +163,7 @@ func Test_Positioner_WindowSetPosition(t *testing.T) {
 
 			ctx := context.Background()
 
-			err := tc.pos.WindowSetPosition(ctx, 5, 6)
+			err := tc.ly.WindowSetPosition(ctx, 5, 6)
 			if tc.err {
 				r.Error(err)
 				r.True(errors.Is(err, io.EOF))
@@ -175,17 +175,17 @@ func Test_Positioner_WindowSetPosition(t *testing.T) {
 	}
 }
 
-func Test_Positioner_WindowSetSize(t *testing.T) {
+func Test_LayoutManager_WindowSetSize(t *testing.T) {
 	t.Parallel()
 
 	tcs := []struct {
 		name string
-		pos  Positioner
+		ly   LayoutManager
 		err  bool
 	}{
 		{
 			name: "good",
-			pos: Positioner{
+			ly: LayoutManager{
 				SetSizeFn: func(ctx context.Context, w, h int) error {
 					return nil
 				},
@@ -194,7 +194,7 @@ func Test_Positioner_WindowSetSize(t *testing.T) {
 		{
 			name: "error",
 			err:  true,
-			pos: Positioner{
+			ly: LayoutManager{
 				SetSizeFn: func(ctx context.Context, w, h int) error {
 					return io.EOF
 				},
@@ -203,7 +203,7 @@ func Test_Positioner_WindowSetSize(t *testing.T) {
 		{
 			name: "panic",
 			err:  true,
-			pos: Positioner{
+			ly: LayoutManager{
 				SetSizeFn: func(ctx context.Context, w, h int) error {
 					panic(io.EOF)
 				},
@@ -217,7 +217,7 @@ func Test_Positioner_WindowSetSize(t *testing.T) {
 
 			ctx := context.Background()
 
-			err := tc.pos.WindowSetSize(ctx, 7, 8)
+			err := tc.ly.WindowSetSize(ctx, 7, 8)
 			if tc.err {
 				r.Error(err)
 				r.True(errors.Is(err, io.EOF))

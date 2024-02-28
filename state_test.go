@@ -21,8 +21,8 @@ func Test_State_Save(t *testing.T) {
 	var saved bool
 
 	st := &State{
-		Name:     "test",
-		Position: NewPosition(),
+		Name:   "test",
+		Layout: NewLayout(),
 		SaveFn: func(ctx context.Context) error {
 			saved = true
 			return nil
@@ -112,13 +112,13 @@ func Test_State_Startup(t *testing.T) {
 	st := newState(t, name)
 
 	st.StartupFn = func(ctx context.Context) error {
-		st.Position = NewPosition()
+		st.Layout = NewLayout()
 		return nil
 	}
 
 	r.NoError(st.Startup(ctx))
 	r.Equal(name, st.Name)
-	r.NotNil(st.Position)
+	r.NotNil(st.Layout)
 
 	st.StartupFn = func(ctx context.Context) error {
 		return io.EOF
@@ -148,7 +148,7 @@ func Test_State_Startp_From_File(t *testing.T) {
 	r.NoError(st.Startup(context.Background()))
 
 	r.Equal(name, st.Name)
-	r.NotNil(st.Position)
+	r.NotNil(st.Layout)
 }
 
 func Test_State_StartupPanic(t *testing.T) {
