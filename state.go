@@ -128,23 +128,24 @@ func (st *State) Startup(ctx context.Context) (err error) {
 		return err
 	}
 
-	for _, p := range st.Plugins {
-		if ne, ok := p.(EmitNeeder); ok {
-			if err := ne.SetEmitter(st.Emitter); err != nil {
-				return err
-			}
+	ems := plugins.ByType[EmitNeeder](st.Plugins)
+	for _, em := range ems {
+		if err := em.SetEmitter(st.Emitter); err != nil {
+			return err
 		}
+	}
 
-		if pn, ok := p.(LayoutNeeder); ok {
-			if err := pn.SetLayout(st.Layout); err != nil {
-				return err
-			}
+	lms := plugins.ByType[LayoutNeeder](st.Plugins)
+	for _, lm := range lms {
+		if err := lm.SetLayout(st.Layout); err != nil {
+			return err
 		}
+	}
 
-		if s, ok := p.(Startuper); ok {
-			if err := s.Startup(ctx); err != nil {
-				return err
-			}
+	sts := plugins.ByType[Startuper](st.Plugins)
+	for _, s := range sts {
+		if err := s.Startup(ctx); err != nil {
+			return err
 		}
 	}
 
@@ -183,11 +184,11 @@ func (st *State) Shutdown(ctx context.Context) (err error) {
 		return err
 	}
 
-	for _, p := range st.Plugins {
-		if sp, ok := p.(Shutdowner); ok {
-			if err := sp.Shutdown(ctx); err != nil {
-				return err
-			}
+	sps := plugins.ByType[Shutdowner](st.Plugins)
+
+	for _, sp := range sps {
+		if err := sp.Shutdown(ctx); err != nil {
+			return err
 		}
 	}
 
@@ -310,12 +311,14 @@ func (st *State) saverPlugins(ctx context.Context) error {
 	}
 
 	var wg errgroup.Group
-	for _, p := range st.Plugins {
-		if s, ok := p.(Saver); ok {
-			wg.Go(func() error {
-				return s.Save(ctx)
-			})
-		}
+
+	sps := plugins.ByType[Saver](st.Plugins)
+
+	for _, s := range sps {
+		s := s
+		wg.Go(func() error {
+			return s.Save(ctx)
+		})
 	}
 
 	if err := wg.Wait(); err != nil {
@@ -336,11 +339,10 @@ func (st *State) stateDataPlugins() ([]StateData, error) {
 
 	var wg errgroup.Group
 
-	for _, p := range st.Plugins {
-		s, ok := p.(StateDataProvider)
-		if !ok {
-			continue
-		}
+	sdps := plugins.ByType[StateDataProvider](st.Plugins)
+
+	for _, s := range sdps {
+		s := s
 		wg.Go(func() error {
 			sd, err := s.StateData()
 			if err != nil {
