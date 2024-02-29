@@ -8,7 +8,6 @@ import (
 	"testing"
 
 	"github.com/markbates/wailsx/eventx"
-	"github.com/markbates/wailsx/eventx/eventxtest"
 	"github.com/markbates/wailsx/wailstest"
 	"github.com/stretchr/testify/require"
 )
@@ -35,8 +34,8 @@ func newState(t testing.TB, name string) *State {
 	return st
 }
 
-func newEmitter() (eventx.Manager, *eventxtest.EmitCatcher) {
-	ec := &eventxtest.EmitCatcher{}
+func newEmitter() (eventx.Manager, *EmitCatcher) {
+	ec := &EmitCatcher{}
 	return eventx.Manager{
 		DisableWildcardEmits: true,
 		EmitFn:               ec.Emit,

@@ -1,4 +1,4 @@
-package eventxtest
+package eventx_test
 
 import (
 	"context"
@@ -7,7 +7,6 @@ import (
 	"github.com/markbates/wailsx/wailstest"
 )
 
-// EmitCatcher is a test helper to catch emitted events
 type EmitCatcher struct {
 	Events []CaughtEvent
 	Error  bool
