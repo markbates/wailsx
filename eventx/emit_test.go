@@ -1,10 +1,11 @@
-package eventx
+package eventx_test
 
 import (
 	"context"
 	"errors"
 	"testing"
 
+	. "github.com/markbates/wailsx/eventx"
 	"github.com/markbates/wailsx/msgx"
 	"github.com/markbates/wailsx/wailstest"
 	"github.com/stretchr/testify/require"

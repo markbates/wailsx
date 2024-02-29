@@ -1,8 +1,10 @@
-package wailstest
+package eventxtest
 
 import (
 	"context"
 	"fmt"
+
+	"github.com/markbates/wailsx/wailstest"
 )
 
 // EmitCatcher is a test helper to catch emitted events
@@ -22,7 +24,7 @@ func (ec *EmitCatcher) Emit(ctx context.Context, event string, args ...any) erro
 	}
 
 	if ec.Error {
-		return ErrTest
+		return wailstest.ErrTest
 	}
 
 	ec.Events = append(ec.Events, CaughtEvent{

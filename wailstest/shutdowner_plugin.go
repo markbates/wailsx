@@ -30,3 +30,11 @@ func (s *ShutdownerPlugin) Shutdown(ctx context.Context) error {
 
 	return nil
 }
+
+// WasCalled returns true if the plugin was called
+func (s *ShutdownerPlugin) WasCalled() bool {
+	if s == nil {
+		return false
+	}
+	return s.Called
+}
