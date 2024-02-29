@@ -6,7 +6,7 @@ import (
 	wailsrun "github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
-func (em EventManager) Once(ctx context.Context, name string, callback CallbackFn) (func(), error) {
+func (em Manager) Once(ctx context.Context, name string, callback CallbackFn) (CancelFn, error) {
 	if em.OnceFn != nil {
 		return em.OnceFn(ctx, name, callback)
 	}
@@ -19,5 +19,8 @@ func (em EventManager) Once(ctx context.Context, name string, callback CallbackF
 	}
 
 	fn := wailsrun.EventsOnce(ctx, name, cb)
-	return fn, nil
+	return func() error {
+		fn()
+		return nil
+	}, nil
 }

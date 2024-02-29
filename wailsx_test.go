@@ -35,9 +35,9 @@ func newState(t testing.TB, name string) *State {
 	return st
 }
 
-func newEmitter() (eventx.EventManager, *eventxtest.EmitCatcher) {
+func newEmitter() (eventx.Manager, *eventxtest.EmitCatcher) {
 	ec := &eventxtest.EmitCatcher{}
-	return eventx.EventManager{
+	return eventx.Manager{
 		DisableWildcardEmits: true,
 		EmitFn:               ec.Emit,
 		NowFn:                wailstest.NowTime,

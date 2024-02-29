@@ -9,9 +9,9 @@ import (
 )
 
 type SaveTimer struct {
-	Duration      time.Duration       // save duration, if zero, save once and exit
-	DisableEvents bool                // disable save events
-	Manager       eventx.EventManager // emit save events
+	Duration      time.Duration  // save duration, if zero, save once and exit
+	DisableEvents bool           // disable save events
+	Manager       eventx.Manager // emit save events
 }
 
 func (st SaveTimer) Save(ctx context.Context, s Saver) error {

@@ -38,7 +38,7 @@ func (st *State) Startup(ctx context.Context) (err error) {
 
 		ems := plugins.ByType[eventx.EventManagerNeeded](st.Plugins)
 		for _, em := range ems {
-			if err := em.SetEventManager(st.EventManager); err != nil {
+			if err := em.SetEventManager(st.Manager); err != nil {
 				return err
 			}
 		}

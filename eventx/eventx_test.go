@@ -6,9 +6,9 @@ import (
 	"github.com/markbates/wailsx/wailstest"
 )
 
-func newEventManager() (EventManager, *eventxtest.EmitCatcher) {
+func newEventManager() (Manager, *eventxtest.EmitCatcher) {
 	ec := &eventxtest.EmitCatcher{}
-	return EventManager{
+	return Manager{
 		EmitFn:               ec.Emit,
 		DisableWildcardEmits: true,
 		NowFn:                wailstest.NowTime,

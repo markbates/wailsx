@@ -1,5 +1,5 @@
 package eventx
 
 type EventManagerNeeded interface {
-	SetEventManager(em EventManager) error
+	SetEventManager(em Manager) error
 }

@@ -8,7 +8,7 @@ import (
 	wailsrun "github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
-func (em EventManager) Emit(ctx context.Context, event string, args ...any) (err error) {
+func (em Manager) Emit(ctx context.Context, event string, args ...any) (err error) {
 	if len(args) == 0 {
 		args = []any{event}
 	}
@@ -66,7 +66,7 @@ func (em EventManager) Emit(ctx context.Context, event string, args ...any) (err
 	return nil
 }
 
-func (em EventManager) wailsEmit(ctx context.Context, event string, args ...any) error {
+func (em Manager) wailsEmit(ctx context.Context, event string, args ...any) error {
 	wailsrun.EventsEmit(ctx, event, args...)
 	return nil
 }

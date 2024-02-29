@@ -6,7 +6,7 @@ import (
 	wailsrun "github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
-func (em EventManager) On(ctx context.Context, name string, callback CallbackFn) (func(), error) {
+func (em Manager) On(ctx context.Context, name string, callback CallbackFn) (CancelFn, error) {
 	if em.OnFn != nil {
 		return em.OnFn(ctx, name, callback)
 	}
@@ -18,5 +18,8 @@ func (em EventManager) On(ctx context.Context, name string, callback CallbackFn)
 		}
 	})
 
-	return fn, nil
+	return func() error {
+		fn()
+		return nil
+	}, nil
 }

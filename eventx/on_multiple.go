@@ -6,7 +6,7 @@ import (
 	wailsrun "github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
-func (em EventManager) OnMultiple(ctx context.Context, name string, callback CallbackFn, counter int) (func(), error) {
+func (em Manager) OnMultiple(ctx context.Context, name string, callback CallbackFn, counter int) (CancelFn, error) {
 	if em.OnMultipleFn != nil {
 		return em.OnMultipleFn(ctx, name, callback, counter)
 	}
@@ -19,6 +19,9 @@ func (em EventManager) OnMultiple(ctx context.Context, name string, callback Cal
 	}
 
 	fn := wailsrun.EventsOnMultiple(ctx, name, cb, counter)
-	return fn, nil
+	return func() error {
+		fn()
+		return nil
+	}, nil
 
 }

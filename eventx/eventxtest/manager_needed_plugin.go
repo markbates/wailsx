@@ -6,7 +6,7 @@ type ManagerNeededPlugin struct {
 	Called bool
 }
 
-func (mnp *ManagerNeededPlugin) SetEventManager(em eventx.EventManager) error {
+func (mnp *ManagerNeededPlugin) SetEventManager(em eventx.Manager) error {
 	mnp.Called = true
 	return nil
 }

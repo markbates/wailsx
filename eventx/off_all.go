@@ -6,7 +6,7 @@ import (
 	wailsrun "github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
-func (em EventManager) OffAll(ctx context.Context) error {
+func (em Manager) OffAll(ctx context.Context) error {
 	if em.OffAllFn != nil {
 		return em.OffAllFn(ctx)
 	}

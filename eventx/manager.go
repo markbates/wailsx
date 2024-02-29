@@ -7,13 +7,13 @@ import (
 	"github.com/markbates/wailsx/logx"
 )
 
-type CallbackFn func(data ...any) error
-
-func NewEventManager() EventManager {
-	return EventManager{}
+func NewManager() Manager {
+	return Manager{}
 }
 
-type EventManager struct {
+var _ EventManager = Manager{}
+
+type Manager struct {
 	logx.ErrorLoggable
 
 	DisableWildcardEmits bool
@@ -21,14 +21,14 @@ type EventManager struct {
 	EmitFn       func(ctx context.Context, name string, data ...any) error
 	OffAllFn     func(ctx context.Context) error
 	OffFn        func(ctx context.Context, name string, additional ...string) error
-	OnFn         func(ctx context.Context, name string, callback CallbackFn) (func(), error)
-	OnMultipleFn func(ctx context.Context, name string, callback CallbackFn, counter int) (func(), error)
-	OnceFn       func(ctx context.Context, name string, callback CallbackFn) (func(), error)
+	OnFn         func(ctx context.Context, name string, callback CallbackFn) (CancelFn, error)
+	OnMultipleFn func(ctx context.Context, name string, callback CallbackFn, counter int) (CancelFn, error)
+	OnceFn       func(ctx context.Context, name string, callback CallbackFn) (CancelFn, error)
 
 	NowFn func() time.Time
 }
 
-func (em EventManager) Now() time.Time {
+func (em Manager) Now() time.Time {
 	if em.NowFn != nil {
 		return em.NowFn()
 	}
@@ -36,7 +36,7 @@ func (em EventManager) Now() time.Time {
 	return time.Now()
 }
 
-func (em EventManager) LogError(ctx context.Context, message string) {
+func (em Manager) LogError(ctx context.Context, message string) {
 	if em.ErrorLoggable == nil {
 		return
 	}
@@ -44,7 +44,7 @@ func (em EventManager) LogError(ctx context.Context, message string) {
 	em.ErrorLoggable.LogError(ctx, message)
 }
 
-func (em EventManager) LogErrorf(ctx context.Context, format string, args ...any) {
+func (em Manager) LogErrorf(ctx context.Context, format string, args ...any) {
 	if em.ErrorLoggable == nil {
 		return
 	}

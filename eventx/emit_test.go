@@ -39,7 +39,7 @@ func Test_EventManager_Emit(t *testing.T) {
 			t.Run(etc.name, func(t *testing.T) {
 				r := require.New(t)
 
-				em := EventManager{
+				em := Manager{
 					EmitFn: etc.fn,
 				}
 
