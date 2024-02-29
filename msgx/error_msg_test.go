@@ -55,7 +55,7 @@ func Test_ErrorMessage(t *testing.T) {
 
 	now := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
 	msg := ErrorMessage{
-		Err: wailstest.ERR,
+		Err: wailstest.ErrTest,
 		Message: Message{
 			Event: "my event",
 			Text:  "my text",
@@ -68,7 +68,7 @@ func Test_ErrorMessage(t *testing.T) {
 	r.Equal("my text", msg.MsgText())
 	r.Equal(now, msg.MsgTime())
 	r.Equal("my data", msg.MsgData())
-	r.Equal(wailstest.ERR, msg.MsgError())
+	r.Equal(wailstest.ErrTest, msg.MsgError())
 }
 
 func Test_ErrorMessage_MarshalJSON(t *testing.T) {
@@ -99,7 +99,7 @@ func Test_ErrorMessage_MarshalJSON(t *testing.T) {
 		{
 			name: "no_time",
 			msg: ErrorMessage{
-				Err: wailstest.ERR,
+				Err: wailstest.ErrTest,
 				Message: Message{
 					Event: "no time",
 				},
@@ -108,7 +108,7 @@ func Test_ErrorMessage_MarshalJSON(t *testing.T) {
 		{
 			name: "with_time",
 			msg: ErrorMessage{
-				Err: wailstest.ERR,
+				Err: wailstest.ErrTest,
 				Message: Message{
 					Event: "with time",
 					Time:  ot,
@@ -118,7 +118,7 @@ func Test_ErrorMessage_MarshalJSON(t *testing.T) {
 		{
 			name: "full",
 			msg: ErrorMessage{
-				Err: wailstest.ERR,
+				Err: wailstest.ErrTest,
 				Message: Message{
 					Event: "full",
 					Text:  "my text",
@@ -139,7 +139,7 @@ func Test_ErrorMessage_MarshalJSON(t *testing.T) {
 				Err: complexError{
 					ID:   1,
 					Name: "my name",
-					Err:  wailstest.ERR,
+					Err:  wailstest.ErrTest,
 				},
 			},
 		},
@@ -155,7 +155,7 @@ func Test_ErrorMessage_MarshalJSON(t *testing.T) {
 				Err: marshalableError{
 					ID:   1,
 					Name: "my name",
-					Err:  wailstest.ERR,
+					Err:  wailstest.ErrTest,
 				},
 			},
 		},

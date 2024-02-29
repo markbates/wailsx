@@ -49,13 +49,13 @@ func Test_State_ShutdownPanic(t *testing.T) {
 	r.Contains(err.Error(), "shutdown panic")
 
 	st.ShutdownFn = func(ctx context.Context) error {
-		panic(wailstest.ERR)
+		panic(wailstest.ErrTest)
 	}
 
 	err = st.Shutdown(context.Background())
 	r.Error(err)
 
-	r.True(errors.Is(err, wailstest.ERR))
+	r.True(errors.Is(err, wailstest.ErrTest))
 }
 
 func Test_State_Shutdown_WithPlugins(t *testing.T) {
@@ -112,7 +112,7 @@ func Test_State_Shutdown_PluginError(t *testing.T) {
 	err := st.Shutdown(ctx)
 	r.Error(err)
 
-	r.True(errors.Is(err, wailstest.ERR))
+	r.True(errors.Is(err, wailstest.ErrTest))
 
 	r.True(shutdown)
 	r.True(p1.Called)
@@ -130,7 +130,7 @@ func Test_State_Shutdown_Error_Stops_Plugins(t *testing.T) {
 
 	st.ShutdownFn = func(ctx context.Context) error {
 		shutdown = true
-		return wailstest.ERR
+		return wailstest.ErrTest
 	}
 
 	p1 := &wailstest.ShutdownerPlugin{}
@@ -142,7 +142,7 @@ func Test_State_Shutdown_Error_Stops_Plugins(t *testing.T) {
 
 	err := st.Shutdown(ctx)
 	r.Error(err)
-	r.True(errors.Is(err, wailstest.ERR))
+	r.True(errors.Is(err, wailstest.ErrTest))
 
 	r.True(shutdown)
 	r.False(p1.Called)

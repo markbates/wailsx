@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/markbates/plugins"
-	"github.com/markbates/wailsx/internal/safe"
+	"github.com/markbates/safe"
 )
 
 func (st *State) Shutdown(ctx context.Context) (err error) {

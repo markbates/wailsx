@@ -7,8 +7,8 @@ import (
 	"sync"
 
 	"github.com/markbates/plugins"
+	"github.com/markbates/safe"
 	"github.com/markbates/wailsx/eventx"
-	"github.com/markbates/wailsx/internal/safe"
 )
 
 var _ Saver = &State{}

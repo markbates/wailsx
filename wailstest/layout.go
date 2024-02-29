@@ -7,7 +7,7 @@ import "context"
 func WindowGetPosition(a int, b int) func(ctx context.Context) (int, int, error) {
 	return func(ctx context.Context) (int, int, error) {
 		if a == -1 && b == -1 {
-			return 0, 0, ERR
+			return 0, 0, ErrTest
 		}
 
 		return a, b, nil
@@ -19,7 +19,7 @@ func WindowGetPosition(a int, b int) func(ctx context.Context) (int, int, error)
 func WindowGetSize(a int, b int) func(ctx context.Context) (int, int, error) {
 	return func(ctx context.Context) (int, int, error) {
 		if a == -1 && b == -1 {
-			return 0, 0, ERR
+			return 0, 0, ErrTest
 		}
 
 		return a, b, nil

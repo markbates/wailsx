@@ -90,13 +90,13 @@ func Test_State_SavePanic(t *testing.T) {
 	r.Contains(err.Error(), "save panic")
 
 	st.SaveFn = func(ctx context.Context) error {
-		panic(wailstest.ERR)
+		panic(wailstest.ErrTest)
 	}
 
 	err = st.Save(context.Background())
 	r.Error(err)
 
-	r.True(errors.Is(err, wailstest.ERR))
+	r.True(errors.Is(err, wailstest.ErrTest))
 }
 
 func Test_State_Save_WithPlugins(t *testing.T) {

@@ -3,7 +3,7 @@ package eventx
 import (
 	"context"
 
-	"github.com/markbates/wailsx/internal/safe"
+	"github.com/markbates/safe"
 	"github.com/markbates/wailsx/msgx"
 	wailsrun "github.com/wailsapp/wails/v2/pkg/runtime"
 )

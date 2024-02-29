@@ -6,6 +6,6 @@ func (e es) Error() string {
 	return string(e)
 }
 
-// ERR is a test error returned
+// ErrTest is a test error returned
 // by the test error functions
-const ERR = es("test error")
+const ErrTest = es("test error")

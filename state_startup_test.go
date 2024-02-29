@@ -32,7 +32,7 @@ func Test_State_Startup(t *testing.T) {
 	r.NotNil(st.Layout)
 
 	st.StartupFn = func(ctx context.Context) error {
-		return wailstest.ERR
+		return wailstest.ErrTest
 	}
 	r.Error(st.Startup(ctx))
 }
@@ -81,13 +81,13 @@ func Test_State_StartupPanic(t *testing.T) {
 	r.Contains(err.Error(), "startup panic")
 
 	st.StartupFn = func(ctx context.Context) error {
-		panic(wailstest.ERR)
+		panic(wailstest.ErrTest)
 	}
 
 	err = st.Startup(context.Background())
 	r.Error(err)
 
-	r.True(errors.Is(err, wailstest.ERR))
+	r.True(errors.Is(err, wailstest.ErrTest))
 }
 
 func Test_State_Startup_WithPlugins(t *testing.T) {
@@ -143,7 +143,7 @@ func Test_State_Startup_PluginError(t *testing.T) {
 
 	err := st.Startup(ctx)
 	r.Error(err)
-	r.True(errors.Is(err, wailstest.ERR))
+	r.True(errors.Is(err, wailstest.ErrTest))
 
 	r.True(startup)
 	r.True(p1.Called)
@@ -163,7 +163,7 @@ func Test_State_Startup_Error_Stops_Plugins(t *testing.T) {
 
 	st.StartupFn = func(ctx context.Context) error {
 		startup = true
-		return wailstest.ERR
+		return wailstest.ErrTest
 	}
 
 	p1 := &wailstest.StartuperPlugin{}
@@ -175,7 +175,7 @@ func Test_State_Startup_Error_Stops_Plugins(t *testing.T) {
 
 	err := st.Startup(ctx)
 	r.Error(err)
-	r.True(errors.Is(err, wailstest.ERR))
+	r.True(errors.Is(err, wailstest.ErrTest))
 
 	r.True(startup)
 	r.False(p1.Called)

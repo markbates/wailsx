@@ -22,7 +22,7 @@ func (ec *EmitCatcher) Emit(ctx context.Context, event string, args ...any) erro
 	}
 
 	if ec.Error {
-		return ERR
+		return ErrTest
 	}
 
 	ec.Events = append(ec.Events, CaughtEvent{

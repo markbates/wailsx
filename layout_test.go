@@ -104,7 +104,7 @@ func Test_Layout_Update(t *testing.T) {
 			ly: &Layout{
 				LayoutManager: LayoutManager{
 					GetPositionFn: func(ctx context.Context) (x int, y int, err error) {
-						panic(wailstest.ERR)
+						panic(wailstest.ErrTest)
 					},
 				},
 			},
@@ -120,7 +120,7 @@ func Test_Layout_Update(t *testing.T) {
 			err := tc.ly.Update(ctx)
 			if tc.err {
 				r.Error(err)
-				r.True(errors.Is(err, wailstest.ERR))
+				r.True(errors.Is(err, wailstest.ErrTest))
 				return
 			}
 
@@ -196,7 +196,7 @@ func Test_Layout_Layout(t *testing.T) {
 			ly: &Layout{
 				LayoutManager: LayoutManager{
 					SetPositionFn: func(ctx context.Context, x int, y int) error {
-						return wailstest.ERR
+						return wailstest.ErrTest
 					},
 				},
 			},
@@ -207,7 +207,7 @@ func Test_Layout_Layout(t *testing.T) {
 			ly: &Layout{
 				LayoutManager: LayoutManager{
 					SetPositionFn: func(ctx context.Context, x int, y int) error {
-						panic(wailstest.ERR)
+						panic(wailstest.ErrTest)
 					},
 				},
 			},
@@ -218,7 +218,7 @@ func Test_Layout_Layout(t *testing.T) {
 			ly: &Layout{
 				LayoutManager: LayoutManager{
 					SetSizeFn: func(ctx context.Context, w int, h int) error {
-						return wailstest.ERR
+						return wailstest.ErrTest
 					},
 				},
 			},
@@ -229,7 +229,7 @@ func Test_Layout_Layout(t *testing.T) {
 			ly: &Layout{
 				LayoutManager: LayoutManager{
 					SetSizeFn: func(ctx context.Context, w int, h int) error {
-						panic(wailstest.ERR)
+						panic(wailstest.ErrTest)
 					},
 				},
 			},
@@ -257,7 +257,7 @@ func Test_Layout_Layout(t *testing.T) {
 			err := ly.Layout(context.Background())
 			if tc.err {
 				r.Error(err)
-				r.True(errors.Is(err, wailstest.ERR))
+				r.True(errors.Is(err, wailstest.ErrTest))
 				return
 			}
 

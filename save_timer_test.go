@@ -86,13 +86,13 @@ func Test_SaveTimer_Save_Error(t *testing.T) {
 			name: "error",
 			fn: func(ctx context.Context) error {
 				cancel()
-				return wailstest.ERR
+				return wailstest.ErrTest
 			},
 		},
 		{
 			name: "panic error",
 			fn: func(ctx context.Context) error {
-				panic(wailstest.ERR)
+				panic(wailstest.ErrTest)
 			},
 		},
 	}
@@ -112,7 +112,7 @@ func Test_SaveTimer_Save_Error(t *testing.T) {
 			r.NoError(err)
 			s.SaveFn = func(ctx context.Context) error {
 				cancel()
-				return wailstest.ERR
+				return wailstest.ErrTest
 			}
 
 			err = st.Save(ctx, s)

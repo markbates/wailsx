@@ -20,7 +20,7 @@ func (pc *LayoutCatcher) WindowGetPosition(ctx context.Context) (int, int, error
 	}
 
 	if pc.Error {
-		return 0, 0, ERR
+		return 0, 0, ErrTest
 	}
 
 	return pc.X, pc.Y, nil
@@ -32,7 +32,7 @@ func (pc *LayoutCatcher) WindowGetSize(ctx context.Context) (int, int, error) {
 	}
 
 	if pc.Error {
-		return 0, 0, ERR
+		return 0, 0, ErrTest
 	}
 
 	return pc.W, pc.H, nil
@@ -44,7 +44,7 @@ func (pc *LayoutCatcher) WindowSetPosition(ctx context.Context, x int, y int) er
 	}
 
 	if pc.Error {
-		return ERR
+		return ErrTest
 	}
 
 	pc.X = x
@@ -59,7 +59,7 @@ func (pc *LayoutCatcher) WindowSetSize(ctx context.Context, w int, h int) error 
 	}
 
 	if pc.Error {
-		return ERR
+		return ErrTest
 	}
 
 	pc.W = w

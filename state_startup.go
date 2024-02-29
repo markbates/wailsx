@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 
 	"github.com/markbates/plugins"
+	"github.com/markbates/safe"
 	"github.com/markbates/wailsx/eventx"
-	"github.com/markbates/wailsx/internal/safe"
 )
 
 func (st *State) Startup(ctx context.Context) (err error) {

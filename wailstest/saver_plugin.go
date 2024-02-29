@@ -25,7 +25,7 @@ func (s *SaverPlugin) Save(ctx context.Context) error {
 	s.Called = true
 
 	if s.Error {
-		return ERR
+		return ErrTest
 	}
 
 	return nil

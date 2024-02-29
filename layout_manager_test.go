@@ -30,7 +30,7 @@ func Test_LayoutManager_WindowGetPosition(t *testing.T) {
 			err:  true,
 			ly: LayoutManager{
 				GetPositionFn: func(ctx context.Context) (int, int, error) {
-					return 0, 0, wailstest.ERR
+					return 0, 0, wailstest.ErrTest
 				},
 			},
 		},
@@ -39,7 +39,7 @@ func Test_LayoutManager_WindowGetPosition(t *testing.T) {
 			err:  true,
 			ly: LayoutManager{
 				GetPositionFn: func(ctx context.Context) (int, int, error) {
-					panic(wailstest.ERR)
+					panic(wailstest.ErrTest)
 				},
 			},
 		},
@@ -54,7 +54,7 @@ func Test_LayoutManager_WindowGetPosition(t *testing.T) {
 			x, y, err := tc.ly.WindowGetPosition(ctx)
 			if tc.err {
 				r.Error(err)
-				r.True(errors.Is(err, wailstest.ERR))
+				r.True(errors.Is(err, wailstest.ErrTest))
 				return
 			}
 
@@ -86,7 +86,7 @@ func Test_LayoutManager_WindowGetSize(t *testing.T) {
 			err:  true,
 			ly: LayoutManager{
 				GetSizeFn: func(ctx context.Context) (int, int, error) {
-					return 0, 0, wailstest.ERR
+					return 0, 0, wailstest.ErrTest
 				},
 			},
 		},
@@ -95,7 +95,7 @@ func Test_LayoutManager_WindowGetSize(t *testing.T) {
 			err:  true,
 			ly: LayoutManager{
 				GetSizeFn: func(ctx context.Context) (int, int, error) {
-					panic(wailstest.ERR)
+					panic(wailstest.ErrTest)
 				},
 			},
 		},
@@ -110,7 +110,7 @@ func Test_LayoutManager_WindowGetSize(t *testing.T) {
 			w, h, err := tc.ly.WindowGetSize(ctx)
 			if tc.err {
 				r.Error(err)
-				r.True(errors.Is(err, wailstest.ERR))
+				r.True(errors.Is(err, wailstest.ErrTest))
 				return
 			}
 
@@ -142,7 +142,7 @@ func Test_LayoutManager_WindowSetPosition(t *testing.T) {
 			err:  true,
 			ly: LayoutManager{
 				SetPositionFn: func(ctx context.Context, x, y int) error {
-					return wailstest.ERR
+					return wailstest.ErrTest
 				},
 			},
 		},
@@ -151,7 +151,7 @@ func Test_LayoutManager_WindowSetPosition(t *testing.T) {
 			err:  true,
 			ly: LayoutManager{
 				SetPositionFn: func(ctx context.Context, x, y int) error {
-					panic(wailstest.ERR)
+					panic(wailstest.ErrTest)
 				},
 			},
 		},
@@ -166,7 +166,7 @@ func Test_LayoutManager_WindowSetPosition(t *testing.T) {
 			err := tc.ly.WindowSetPosition(ctx, 5, 6)
 			if tc.err {
 				r.Error(err)
-				r.True(errors.Is(err, wailstest.ERR))
+				r.True(errors.Is(err, wailstest.ErrTest))
 				return
 			}
 
@@ -196,7 +196,7 @@ func Test_LayoutManager_WindowSetSize(t *testing.T) {
 			err:  true,
 			ly: LayoutManager{
 				SetSizeFn: func(ctx context.Context, w, h int) error {
-					return wailstest.ERR
+					return wailstest.ErrTest
 				},
 			},
 		},
@@ -205,7 +205,7 @@ func Test_LayoutManager_WindowSetSize(t *testing.T) {
 			err:  true,
 			ly: LayoutManager{
 				SetSizeFn: func(ctx context.Context, w, h int) error {
-					panic(wailstest.ERR)
+					panic(wailstest.ErrTest)
 				},
 			},
 		},
@@ -220,7 +220,7 @@ func Test_LayoutManager_WindowSetSize(t *testing.T) {
 			err := tc.ly.WindowSetSize(ctx, 7, 8)
 			if tc.err {
 				r.Error(err)
-				r.True(errors.Is(err, wailstest.ERR))
+				r.True(errors.Is(err, wailstest.ErrTest))
 				return
 			}
 
