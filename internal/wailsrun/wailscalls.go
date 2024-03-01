@@ -1,3 +1,4 @@
+// when not built with wails, the stubs are used
 package wailsrun
 
 import (
@@ -9,7 +10,7 @@ import (
 )
 
 const (
-	ErrNotAvailable = es("wails run not available in this environment")
+	ErrNotAvailable = es("wails api calls are not available in this environment")
 )
 
 type es string

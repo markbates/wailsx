@@ -1,5 +1,7 @@
 //go:build dev || desktop || production
 
+// when built with wails the real api
+// is used and the stubs are not
 package wailsrun
 
 import (
