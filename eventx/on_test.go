@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	. "github.com/markbates/wailsx/eventx"
+	"github.com/markbates/wailsx/wailsrun"
 	"github.com/markbates/wailsx/wailstest"
 	"github.com/stretchr/testify/require"
 )
@@ -19,7 +19,7 @@ func Test_EventManager_On(t *testing.T) {
 
 	const evt = "event:test"
 
-	em.OnFn = func(ctx context.Context, name string, callback CallbackFn) (CancelFn, error) {
+	em.OnFn = func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
 		if name != evt {
 			return nil, wailstest.ErrTest
 		}
@@ -35,7 +35,7 @@ func Test_EventManager_On(t *testing.T) {
 
 	tcs := []struct {
 		name string
-		cb   CallbackFn
+		cb   wailsrun.CallbackFn
 		err  bool
 	}{
 		{

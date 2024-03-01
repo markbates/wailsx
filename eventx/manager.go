@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/markbates/wailsx/logx"
+	"github.com/markbates/wailsx/wailsrun"
 )
 
 func NewManager() Manager {
@@ -21,9 +22,9 @@ type Manager struct {
 	EmitFn       func(ctx context.Context, name string, data ...any) error
 	OffAllFn     func(ctx context.Context) error
 	OffFn        func(ctx context.Context, name string, additional ...string) error
-	OnFn         func(ctx context.Context, name string, callback CallbackFn) (CancelFn, error)
-	OnMultipleFn func(ctx context.Context, name string, callback CallbackFn, counter int) (CancelFn, error)
-	OnceFn       func(ctx context.Context, name string, callback CallbackFn) (CancelFn, error)
+	OnFn         func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error)
+	OnMultipleFn func(ctx context.Context, name string, callback wailsrun.CallbackFn, counter int) (wailsrun.CancelFn, error)
+	OnceFn       func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error)
 
 	NowFn func() time.Time
 }

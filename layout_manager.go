@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	wailsrun "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/markbates/wailsx/wailsrun"
 )
 
 type LayoutManager struct {
@@ -31,8 +31,7 @@ func (ly LayoutManager) WindowGetPosition(ctx context.Context) (x int, y int, er
 	}()
 
 	if ly.GetPositionFn == nil {
-		x, y = wailsrun.WindowGetPosition(ctx)
-		return x, y, nil
+		return wailsrun.WindowGetPosition(ctx)
 	}
 
 	return ly.GetPositionFn(ctx)
@@ -55,8 +54,7 @@ func (ly LayoutManager) WindowGetSize(ctx context.Context) (w int, h int, err er
 	}()
 
 	if ly.GetSizeFn == nil {
-		w, h = wailsrun.WindowGetSize(ctx)
-		return w, h, nil
+		return wailsrun.WindowGetSize(ctx)
 	}
 
 	return ly.GetSizeFn(ctx)
@@ -79,7 +77,7 @@ func (ly LayoutManager) WindowSetPosition(ctx context.Context, x int, y int) (er
 	}()
 
 	if ly.SetPositionFn == nil {
-		wailsrun.WindowSetPosition(ctx, x, y)
+		return wailsrun.WindowSetPosition(ctx, x, y)
 	}
 
 	return ly.SetPositionFn(ctx, x, y)
@@ -102,8 +100,7 @@ func (ly LayoutManager) WindowSetSize(ctx context.Context, w int, h int) (err er
 	}()
 
 	if ly.SetSizeFn == nil {
-		wailsrun.WindowSetSize(ctx, w, h)
-		return nil
+		return wailsrun.WindowSetSize(ctx, w, h)
 	}
 
 	return ly.SetSizeFn(ctx, w, h)

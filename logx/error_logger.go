@@ -3,33 +3,31 @@ package logx
 import (
 	"context"
 
-	wailsrun "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/markbates/wailsx/wailsrun"
 )
 
 type ErrorLoggable interface {
-	LogErrorf(ctx context.Context, format string, args ...any)
-	LogError(ctx context.Context, message string)
+	LogErrorf(ctx context.Context, format string, args ...any) error
+	LogError(ctx context.Context, message string) error
 }
 
 type ErrorLogger struct {
-	LogErrorFn  func(ctx context.Context, message string)
-	LogErrorfFn func(ctx context.Context, format string, args ...any)
+	LogErrorFn  func(ctx context.Context, message string) error
+	LogErrorfFn func(ctx context.Context, format string, args ...any) error
 }
 
-func (el ErrorLogger) LogError(ctx context.Context, message string) {
+func (el ErrorLogger) LogError(ctx context.Context, message string) error {
 	if el.LogErrorFn != nil {
-		el.LogErrorFn(ctx, message)
-		return
+		return el.LogErrorFn(ctx, message)
 	}
 
-	wailsrun.LogError(ctx, message)
+	return wailsrun.LogError(ctx, message)
 }
 
-func (el ErrorLogger) LogErrorf(ctx context.Context, format string, args ...any) {
+func (el ErrorLogger) LogErrorf(ctx context.Context, format string, args ...any) error {
 	if el.LogErrorfFn != nil {
-		el.LogErrorfFn(ctx, format, args...)
-		return
+		return el.LogErrorfFn(ctx, format, args...)
 	}
 
-	wailsrun.LogErrorf(ctx, format, args...)
+	return wailsrun.LogErrorf(ctx, format, args...)
 }

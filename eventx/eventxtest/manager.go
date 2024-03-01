@@ -6,6 +6,7 @@ import (
 	"sync"
 
 	"github.com/markbates/wailsx/eventx"
+	"github.com/markbates/wailsx/wailsrun"
 )
 
 var _ eventx.EventManager = &Manager{}
@@ -87,7 +88,7 @@ func (ev *Manager) OffAll(ctx context.Context) error {
 	return nil
 }
 
-func (ev *Manager) On(ctx context.Context, event string, callback eventx.CallbackFn) (eventx.CancelFn, error) {
+func (ev *Manager) On(ctx context.Context, event string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
 	if ev == nil {
 		return nil, fmt.Errorf("event manager is nil")
 	}
@@ -106,7 +107,7 @@ func (ev *Manager) On(ctx context.Context, event string, callback eventx.Callbac
 	return fn, nil
 }
 
-func (ev *Manager) OnMultiple(ctx context.Context, event string, callback eventx.CallbackFn, counter int) (eventx.CancelFn, error) {
+func (ev *Manager) OnMultiple(ctx context.Context, event string, callback wailsrun.CallbackFn, counter int) (wailsrun.CancelFn, error) {
 	if ev == nil {
 		return nil, fmt.Errorf("event manager is nil")
 	}
@@ -126,7 +127,7 @@ func (ev *Manager) OnMultiple(ctx context.Context, event string, callback eventx
 	return fn, nil
 }
 
-func (ev *Manager) Once(ctx context.Context, event string, callback eventx.CallbackFn) (eventx.CancelFn, error) {
+func (ev *Manager) Once(ctx context.Context, event string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
 	return ev.OnMultiple(ctx, event, callback, 1)
 }
 

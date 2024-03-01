@@ -5,7 +5,7 @@ import (
 
 	"github.com/markbates/safe"
 	"github.com/markbates/wailsx/msgx"
-	wailsrun "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/markbates/wailsx/wailsrun"
 )
 
 func (em Manager) Emit(ctx context.Context, event string, args ...any) (err error) {
@@ -67,6 +67,5 @@ func (em Manager) Emit(ctx context.Context, event string, args ...any) (err erro
 }
 
 func (em Manager) wailsEmit(ctx context.Context, event string, args ...any) error {
-	wailsrun.EventsEmit(ctx, event, args...)
-	return nil
+	return wailsrun.EventsEmit(ctx, event, args...)
 }

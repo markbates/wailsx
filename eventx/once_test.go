@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/markbates/wailsx/wailsrun"
 	"github.com/stretchr/testify/require"
 )
 
@@ -21,7 +22,7 @@ func Test_Manager_Once(t *testing.T) {
 	var counter int
 	var canceled bool
 
-	fn := func(ctx context.Context, name string, callback CallbackFn) (CancelFn, error) {
+	fn := func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
 		counter = 1
 
 		return func() error {

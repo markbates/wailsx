@@ -3,24 +3,13 @@ package eventx
 import (
 	"context"
 
-	wailsrun "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/markbates/wailsx/wailsrun"
 )
 
-func (em Manager) Once(ctx context.Context, name string, callback CallbackFn) (CancelFn, error) {
+func (em Manager) Once(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
 	if em.OnceFn != nil {
 		return em.OnceFn(ctx, name, callback)
 	}
 
-	cb := func(data ...any) {
-		err := callback(data...)
-		if err != nil {
-			em.LogError(ctx, err.Error())
-		}
-	}
-
-	fn := wailsrun.EventsOnce(ctx, name, cb)
-	return func() error {
-		fn()
-		return nil
-	}, nil
+	return wailsrun.EventsOnce(ctx, name, callback)
 }

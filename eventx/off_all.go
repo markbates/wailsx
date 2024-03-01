@@ -3,7 +3,7 @@ package eventx
 import (
 	"context"
 
-	wailsrun "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/markbates/wailsx/wailsrun"
 )
 
 func (em Manager) OffAll(ctx context.Context) error {
@@ -11,6 +11,5 @@ func (em Manager) OffAll(ctx context.Context) error {
 		return em.OffAllFn(ctx)
 	}
 
-	wailsrun.EventsOffAll(ctx)
-	return nil
+	return wailsrun.EventsOffAll(ctx)
 }

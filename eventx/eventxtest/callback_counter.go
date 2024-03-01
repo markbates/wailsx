@@ -3,11 +3,11 @@ package eventxtest
 import (
 	"fmt"
 
-	"github.com/markbates/wailsx/eventx"
+	"github.com/markbates/wailsx/wailsrun"
 )
 
 type CallbackCounter struct {
-	Callback eventx.CallbackFn
+	Callback wailsrun.CallbackFn
 	Called   int
 	MaxCalls int
 	Off      bool
