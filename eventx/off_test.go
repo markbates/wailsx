@@ -21,7 +21,7 @@ func Test_Manager_Off(t *testing.T) {
 		return nil
 	}
 
-	em.OffFn = fn
+	em.EventsOffFn = fn
 
 	ctx := context.Background()
 	r.NoError(em.EventsOff(ctx, event))

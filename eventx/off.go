@@ -9,10 +9,10 @@ import (
 
 func (em Manager) EventsOff(ctx context.Context, name string, additional ...string) error {
 	return safe.Run(func() error {
-		if em.OffFn == nil {
-			em.OffFn = wailsrun.EventsOff
+		if em.EventsOffFn == nil {
+			em.EventsOffFn = wailsrun.EventsOff
 		}
 
-		return em.OffFn(ctx, name, additional...)
+		return em.EventsOffFn(ctx, name, additional...)
 	})
 }

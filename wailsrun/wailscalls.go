@@ -183,16 +183,16 @@ func WindowIsFullscreen(ctx context.Context) (bool, error) {
 	return false, ErrNotAvailable
 }
 
-func WindowIsMaximised(ctx context.Context) bool {
-	return wailsrun.WindowIsMaximised(ctx)
+func WindowIsMaximised(ctx context.Context) (bool, error) {
+	return false, ErrNotAvailable
 }
 
-func WindowIsMinimised(ctx context.Context) bool {
-	return wailsrun.WindowIsMinimised(ctx)
+func WindowIsMinimised(ctx context.Context) (bool, error) {
+	return false, ErrNotAvailable
 }
 
-func WindowIsNormal(ctx context.Context) bool {
-	return wailsrun.WindowIsNormal(ctx)
+func WindowIsNormal(ctx context.Context) (bool, error) {
+	return false, ErrNotAvailable
 }
 
 func WindowMaximise(ctx context.Context) error {

@@ -40,7 +40,7 @@ func Test_EventManager_Emit(t *testing.T) {
 				r := require.New(t)
 
 				em := Manager{
-					EmitFn: etc.fn,
+					EventsEmitFn: etc.fn,
 				}
 
 				err := em.EventsEmit(ctx, "test", "A")
@@ -152,7 +152,7 @@ func Test_EventManager_Emit(t *testing.T) {
 
 	em, ec := newEventManager()
 
-	em.EmitFn = func(ctx context.Context, event string, args ...any) error {
+	em.EventsEmitFn = func(ctx context.Context, event string, args ...any) error {
 		return wailstest.ErrTest
 	}
 
@@ -161,7 +161,7 @@ func Test_EventManager_Emit(t *testing.T) {
 
 	r.Len(ec.Events, 0)
 
-	em.EmitFn = ec.Emit
+	em.EventsEmitFn = ec.Emit
 
 	err = em.EventsEmit(ctx, "test", "A")
 	r.NoError(err)
@@ -199,7 +199,7 @@ func Test_EventManager_Emit_error(t *testing.T) {
 	em, ec := newEventManager()
 
 	ctx := context.Background()
-	em.EmitFn = func(ctx context.Context, event string, args ...any) error {
+	em.EventsEmitFn = func(ctx context.Context, event string, args ...any) error {
 		return wailstest.ErrTest
 	}
 
@@ -218,7 +218,7 @@ func Test_EventManager_Emit_Panic(t *testing.T) {
 	em, ec := newEventManager()
 
 	ctx := context.Background()
-	em.EmitFn = func(ctx context.Context, event string, args ...any) error {
+	em.EventsEmitFn = func(ctx context.Context, event string, args ...any) error {
 		panic(wailstest.ErrTest)
 	}
 

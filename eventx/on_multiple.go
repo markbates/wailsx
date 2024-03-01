@@ -12,12 +12,12 @@ func (em Manager) EventsOnMultiple(ctx context.Context, name string, callback wa
 	var fn wailsrun.CancelFn
 
 	err := safe.Run(func() error {
-		if em.OnMultipleFn == nil {
-			em.OnMultipleFn = wailsrun.EventsOnMultiple
+		if em.EventsOnMultipleFn == nil {
+			em.EventsOnMultipleFn = wailsrun.EventsOnMultiple
 		}
 
 		var err error
-		fn, err = em.OnMultipleFn(ctx, name, callback, counter)
+		fn, err = em.EventsOnMultipleFn(ctx, name, callback, counter)
 		return err
 	})
 

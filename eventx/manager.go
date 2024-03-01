@@ -19,12 +19,12 @@ type Manager struct {
 
 	DisableWildcardEmits bool
 
-	EmitFn       func(ctx context.Context, name string, data ...any) error
-	OffAllFn     func(ctx context.Context) error
-	OffFn        func(ctx context.Context, name string, additional ...string) error
-	OnFn         func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error)
-	OnMultipleFn func(ctx context.Context, name string, callback wailsrun.CallbackFn, counter int) (wailsrun.CancelFn, error)
-	OnceFn       func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error)
+	EventsEmitFn       func(ctx context.Context, name string, data ...any) error
+	EventsOffAllFn     func(ctx context.Context) error
+	EventsOffFn        func(ctx context.Context, name string, additional ...string) error
+	EventsOnFn         func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error)
+	EventsOnMultipleFn func(ctx context.Context, name string, callback wailsrun.CallbackFn, counter int) (wailsrun.CancelFn, error)
+	EventsOnceFn       func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error)
 
 	NowFn func() time.Time
 }

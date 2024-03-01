@@ -19,7 +19,7 @@ func Test_EventManager_On(t *testing.T) {
 
 	const evt = "event:test"
 
-	em.OnFn = func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
+	em.EventsOnFn = func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
 		if name != evt {
 			return nil, wailstest.ErrTest
 		}

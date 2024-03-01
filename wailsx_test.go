@@ -38,7 +38,7 @@ func newEmitter() (eventx.Manager, *EmitCatcher) {
 	ec := &EmitCatcher{}
 	return eventx.Manager{
 		DisableWildcardEmits: true,
-		EmitFn:               ec.Emit,
+		EventsEmitFn:         ec.Emit,
 		NowFn:                wailstest.NowTime,
 	}, ec
 }

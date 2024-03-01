@@ -15,7 +15,7 @@ func (em Manager) EventsEmit(ctx context.Context, event string, args ...any) (er
 
 	args = em.handleArgs(event, args...)
 
-	fn := em.EmitFn
+	fn := em.EventsEmitFn
 	if fn == nil {
 		fn = wailsrun.EventsEmit
 	}

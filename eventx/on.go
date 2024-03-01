@@ -11,12 +11,12 @@ func (em Manager) EventsOn(ctx context.Context, name string, callback wailsrun.C
 
 	var fn wailsrun.CancelFn
 	err := safe.Run(func() error {
-		if em.OnFn == nil {
-			em.OnFn = wailsrun.EventsOn
+		if em.EventsOnFn == nil {
+			em.EventsOnFn = wailsrun.EventsOn
 		}
 
 		var err error
-		fn, err = em.OnFn(ctx, name, callback)
+		fn, err = em.EventsOnFn(ctx, name, callback)
 		return err
 	})
 

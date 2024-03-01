@@ -30,7 +30,7 @@ func Test_Manager_Once(t *testing.T) {
 			return nil
 		}, nil
 	}
-	em.OnceFn = fn
+	em.EventsOnceFn = fn
 
 	cancelFn, err := em.EventsOnce(ctx, event, func(data ...any) error {
 		return nil

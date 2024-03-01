@@ -8,7 +8,7 @@ import (
 func newEventManager() (Manager, *EmitCatcher) {
 	ec := &EmitCatcher{}
 	return Manager{
-		EmitFn:               ec.Emit,
+		EventsEmitFn:         ec.Emit,
 		DisableWildcardEmits: true,
 		NowFn:                wailstest.NowTime,
 	}, ec
