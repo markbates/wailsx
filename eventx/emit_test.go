@@ -43,7 +43,7 @@ func Test_EventManager_Emit(t *testing.T) {
 					EmitFn: etc.fn,
 				}
 
-				err := em.Emit(ctx, "test", "A")
+				err := em.EventsEmit(ctx, "test", "A")
 				r.Error(err)
 				r.True(errors.Is(err, wailstest.ErrTest))
 			})
@@ -57,7 +57,7 @@ func Test_EventManager_Emit(t *testing.T) {
 			em, ec := newEventManager()
 
 			const name = "test"
-			err := em.Emit(ctx, name, wailstest.ErrTest)
+			err := em.EventsEmit(ctx, name, wailstest.ErrTest)
 			r.NoError(err)
 
 			r.Len(ec.Events, 1)
@@ -80,7 +80,7 @@ func Test_EventManager_Emit(t *testing.T) {
 			em, ec := newEventManager()
 
 			const name = "test"
-			err := em.Emit(ctx, name, "A")
+			err := em.EventsEmit(ctx, name, "A")
 			r.NoError(err)
 
 			r.Len(ec.Events, 1)
@@ -109,7 +109,7 @@ func Test_EventManager_Emit(t *testing.T) {
 				Data:  "C",
 			}
 
-			err := em.Emit(ctx, name, msg)
+			err := em.EventsEmit(ctx, name, msg)
 			r.NoError(err)
 
 			r.Len(ec.Events, 1)
@@ -133,7 +133,7 @@ func Test_EventManager_Emit(t *testing.T) {
 
 			const name = "test"
 
-			err := em.Emit(ctx, name, 1)
+			err := em.EventsEmit(ctx, name, 1)
 			r.NoError(err)
 
 			r.Len(ec.Events, 1)
@@ -156,20 +156,20 @@ func Test_EventManager_Emit(t *testing.T) {
 		return wailstest.ErrTest
 	}
 
-	err := em.Emit(ctx, "test", "A")
+	err := em.EventsEmit(ctx, "test", "A")
 	r.Error(err)
 
 	r.Len(ec.Events, 0)
 
 	em.EmitFn = ec.Emit
 
-	err = em.Emit(ctx, "test", "A")
+	err = em.EventsEmit(ctx, "test", "A")
 	r.NoError(err)
 
-	err = em.Emit(ctx, "test", "B")
+	err = em.EventsEmit(ctx, "test", "B")
 	r.NoError(err)
 
-	err = em.Emit(ctx, "test", map[string]string{"1": "2"})
+	err = em.EventsEmit(ctx, "test", map[string]string{"1": "2"})
 	r.NoError(err)
 
 	r.Len(ec.Events, 3)
@@ -203,7 +203,7 @@ func Test_EventManager_Emit_error(t *testing.T) {
 		return wailstest.ErrTest
 	}
 
-	err := em.Emit(ctx, "test", "A")
+	err := em.EventsEmit(ctx, "test", "A")
 	r.Error(err)
 	r.True(errors.Is(err, wailstest.ErrTest))
 
@@ -222,7 +222,7 @@ func Test_EventManager_Emit_Panic(t *testing.T) {
 		panic(wailstest.ErrTest)
 	}
 
-	err := em.Emit(ctx, "test", "A")
+	err := em.EventsEmit(ctx, "test", "A")
 	r.Error(err)
 	r.True(errors.Is(err, wailstest.ErrTest))
 

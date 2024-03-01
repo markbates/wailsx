@@ -294,3 +294,7 @@ func WindowUnminimise(ctx context.Context) error {
 	wailsrun.WindowUnminimise(ctx)
 	return nil
 }
+
+func ScreenGetAll(ctx context.Context) ([]Screen, error) {
+	return nil, ErrNotAvailable
+}

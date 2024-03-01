@@ -7,10 +7,10 @@ import (
 )
 
 type EventManager interface {
-	Emit(ctx context.Context, event string, args ...any) (err error)
-	Off(ctx context.Context, name string, additional ...string) error
-	OffAll(ctx context.Context) error
-	On(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error)
-	OnMultiple(ctx context.Context, name string, callback wailsrun.CallbackFn, counter int) (wailsrun.CancelFn, error)
-	Once(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error)
+	EventsEmit(ctx context.Context, event string, args ...any) (err error)
+	EventsOff(ctx context.Context, name string, additional ...string) error
+	EventsOffAll(ctx context.Context) error
+	EventsOn(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error)
+	EventsOnMultiple(ctx context.Context, name string, callback wailsrun.CallbackFn, counter int) (wailsrun.CancelFn, error)
+	EventsOnce(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error)
 }

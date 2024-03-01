@@ -32,7 +32,7 @@ func Test_Manager_OnMultiple(t *testing.T) {
 	}
 	em.OnMultipleFn = fn
 
-	cancelFn, err := em.OnMultiple(ctx, event, func(data ...any) error {
+	cancelFn, err := em.EventsOnMultiple(ctx, event, func(data ...any) error {
 		return nil
 	}, 42)
 

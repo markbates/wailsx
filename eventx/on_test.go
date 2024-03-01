@@ -49,7 +49,7 @@ func Test_EventManager_On(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			_, err := em.On(context.Background(), evt, tc.cb)
+			_, err := em.EventsOn(context.Background(), evt, tc.cb)
 
 			if !tc.err {
 				r.NoError(err)

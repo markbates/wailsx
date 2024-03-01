@@ -22,7 +22,7 @@ func Test_Manager_OffAll(t *testing.T) {
 	em.OffAllFn = fn
 
 	ctx := context.Background()
-	r.NoError(em.OffAll(ctx))
+	r.NoError(em.EventsOffAll(ctx))
 
 	r.True(called)
 

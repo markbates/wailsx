@@ -22,7 +22,7 @@ func Test_Manager_On(t *testing.T) {
 	const event = "event:test"
 
 	var many int
-	ec, err := em.On(ctx, event, func(data ...any) error {
+	ec, err := em.EventsOn(ctx, event, func(data ...any) error {
 		if len(data) != 1 {
 			return fmt.Errorf("expected 1 arg, got %d", len(data))
 		}
@@ -38,17 +38,17 @@ func Test_Manager_On(t *testing.T) {
 	})
 	r.NoError(err)
 
-	err = em.Emit(ctx, event, 5)
+	err = em.EventsEmit(ctx, event, 5)
 	r.NoError(err)
 	r.Equal(5, many)
 
-	err = em.Emit(ctx, event, 7)
+	err = em.EventsEmit(ctx, event, 7)
 	r.NoError(err)
 	r.Equal(12, many)
 
 	r.NoError(ec())
 
-	err = em.Emit(ctx, event, 42)
+	err = em.EventsEmit(ctx, event, 42)
 	r.NoError(err)
 	r.Equal(12, many)
 
@@ -68,14 +68,14 @@ func Test_Manager_OnMultiple(t *testing.T) {
 
 	const event = "event:test"
 
-	ec, err := em.OnMultiple(ctx, event, func(data ...any) error {
+	ec, err := em.EventsOnMultiple(ctx, event, func(data ...any) error {
 		return nil
 	}, 5)
 	r.NoError(err)
 	r.NotNil(ec)
 
 	for i := 0; i < 10; i++ {
-		err = em.Emit(ctx, event)
+		err = em.EventsEmit(ctx, event)
 		r.NoError(err)
 	}
 
@@ -105,13 +105,13 @@ func Test_Manager_Off(t *testing.T) {
 
 	const event = "event:test"
 
-	ec, err := em.On(ctx, event, func(data ...any) error {
+	ec, err := em.EventsOn(ctx, event, func(data ...any) error {
 		return nil
 	})
 	r.NoError(err)
 	r.NotNil(ec)
 
-	err = em.Emit(ctx, event)
+	err = em.EventsEmit(ctx, event)
 	r.NoError(err)
 
 	data, ok := em.Callbacks[event]
@@ -119,7 +119,7 @@ func Test_Manager_Off(t *testing.T) {
 	r.Equal(1, data.Called)
 	r.False(data.Off)
 
-	err = em.Off(ctx, event)
+	err = em.EventsOff(ctx, event)
 	r.NoError(err)
 
 	data, ok = em.Callbacks[event]
@@ -141,7 +141,7 @@ func Test_Manager_OffAll(t *testing.T) {
 	events := []string{"event:test1", "event:test2", "event:test3"}
 
 	for _, event := range events {
-		_, err := em.On(ctx, event, func(data ...any) error {
+		_, err := em.EventsOn(ctx, event, func(data ...any) error {
 			return nil
 		})
 		r.NoError(err)
@@ -149,7 +149,7 @@ func Test_Manager_OffAll(t *testing.T) {
 
 	r.Len(em.Callbacks, len(events))
 
-	err = em.OffAll(ctx)
+	err = em.EventsOffAll(ctx)
 	r.NoError(err)
 
 	r.Len(em.Callbacks, 3)
@@ -175,7 +175,7 @@ func Test_Manager_Once(t *testing.T) {
 
 	const event = "event:test"
 
-	ec, err := em.Once(ctx, event, func(data ...any) error {
+	ec, err := em.EventsOnce(ctx, event, func(data ...any) error {
 		return nil
 	})
 	r.NoError(err)
@@ -187,7 +187,7 @@ func Test_Manager_Once(t *testing.T) {
 	r.Equal(0, data.Called)
 
 	for i := 0; i < 10; i++ {
-		err = em.Emit(ctx, event)
+		err = em.EventsEmit(ctx, event)
 		r.NoError(err)
 	}
 

@@ -8,7 +8,7 @@ import (
 	"github.com/markbates/wailsx/wailsrun"
 )
 
-func (em Manager) Emit(ctx context.Context, event string, args ...any) (err error) {
+func (em Manager) EventsEmit(ctx context.Context, event string, args ...any) (err error) {
 	if len(args) == 0 {
 		args = []any{event}
 	}

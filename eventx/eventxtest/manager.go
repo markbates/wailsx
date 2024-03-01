@@ -27,7 +27,7 @@ func NewManager() (*Manager, error) {
 	return m, nil
 }
 
-func (ev *Manager) Emit(ctx context.Context, event string, data ...any) error {
+func (ev *Manager) EventsEmit(ctx context.Context, event string, data ...any) error {
 	if err := ev.init(); err != nil {
 		return err
 	}
@@ -53,7 +53,7 @@ func (ev *Manager) Emit(ctx context.Context, event string, data ...any) error {
 	return nil
 }
 
-func (ev *Manager) Off(ctx context.Context, event string, additional ...string) error {
+func (ev *Manager) EventsOff(ctx context.Context, event string, additional ...string) error {
 	if err := ev.init(); err != nil {
 		return err
 	}
@@ -72,7 +72,7 @@ func (ev *Manager) Off(ctx context.Context, event string, additional ...string) 
 	return nil
 }
 
-func (ev *Manager) OffAll(ctx context.Context) error {
+func (ev *Manager) EventsOffAll(ctx context.Context) error {
 	if err := ev.init(); err != nil {
 		return err
 	}
@@ -88,7 +88,7 @@ func (ev *Manager) OffAll(ctx context.Context) error {
 	return nil
 }
 
-func (ev *Manager) On(ctx context.Context, event string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
+func (ev *Manager) EventsOn(ctx context.Context, event string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
 	if ev == nil {
 		return nil, fmt.Errorf("event manager is nil")
 	}
@@ -101,13 +101,13 @@ func (ev *Manager) On(ctx context.Context, event string, callback wailsrun.Callb
 	}
 
 	fn := func() error {
-		return ev.Off(ctx, event)
+		return ev.EventsOff(ctx, event)
 	}
 
 	return fn, nil
 }
 
-func (ev *Manager) OnMultiple(ctx context.Context, event string, callback wailsrun.CallbackFn, counter int) (wailsrun.CancelFn, error) {
+func (ev *Manager) EventsOnMultiple(ctx context.Context, event string, callback wailsrun.CallbackFn, counter int) (wailsrun.CancelFn, error) {
 	if ev == nil {
 		return nil, fmt.Errorf("event manager is nil")
 	}
@@ -121,14 +121,14 @@ func (ev *Manager) OnMultiple(ctx context.Context, event string, callback wailsr
 	}
 
 	fn := func() error {
-		return ev.Off(ctx, event)
+		return ev.EventsOff(ctx, event)
 	}
 
 	return fn, nil
 }
 
-func (ev *Manager) Once(ctx context.Context, event string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
-	return ev.OnMultiple(ctx, event, callback, 1)
+func (ev *Manager) EventsOnce(ctx context.Context, event string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
+	return ev.EventsOnMultiple(ctx, event, callback, 1)
 }
 
 func (ev *Manager) init() error {

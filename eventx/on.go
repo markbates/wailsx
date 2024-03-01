@@ -6,7 +6,7 @@ import (
 	"github.com/markbates/wailsx/wailsrun"
 )
 
-func (em Manager) On(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
+func (em Manager) EventsOn(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
 	if em.OnFn != nil {
 		return em.OnFn(ctx, name, callback)
 	}

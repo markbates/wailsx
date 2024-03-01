@@ -44,7 +44,7 @@ func (st SaveTimer) emit(ctx context.Context, ev string, data any) error {
 		return nil
 	}
 
-	return st.Manager.Emit(ctx, ev, data)
+	return st.Manager.EventsEmit(ctx, ev, data)
 }
 
 func (st SaveTimer) save(ctx context.Context, s Saver) (err error) {
