@@ -7,9 +7,9 @@ package wailsrun
 import (
 	"context"
 
+	"github.com/wailsapp/wails/v2/pkg/logger"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 	wailsrun "github.com/wailsapp/wails/v2/pkg/runtime"
-	"gorm.io/gorm/logger"
 )
 
 func BrowserOpenURL(ctx context.Context, url string) error {

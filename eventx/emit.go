@@ -13,6 +13,35 @@ func (em Manager) EventsEmit(ctx context.Context, event string, args ...any) (er
 		args = []any{event}
 	}
 
+	args = em.handleArgs(event, args...)
+
+	fn := em.EmitFn
+	if fn == nil {
+		fn = wailsrun.EventsEmit
+	}
+
+	err = safe.Run(func() error {
+		if !em.DisableWildcardEmits {
+			if err := fn(ctx, "*", args...); err != nil {
+				return err
+			}
+		}
+
+		return fn(ctx, event, args...)
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (em Manager) handleArgs(event string, args ...any) []any {
+	if len(args) == 0 {
+		return args
+	}
+
 	for i, a := range args {
 		switch t := a.(type) {
 		case error:
@@ -43,29 +72,5 @@ func (em Manager) EventsEmit(ctx context.Context, event string, args ...any) (er
 			}
 		}
 	}
-
-	fn := em.EmitFn
-	if fn == nil {
-		fn = em.wailsEmit
-	}
-
-	err = safe.Run(func() error {
-		if !em.DisableWildcardEmits {
-			if err := fn(ctx, "*", args...); err != nil {
-				return err
-			}
-		}
-
-		return fn(ctx, event, args...)
-	})
-
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (em Manager) wailsEmit(ctx context.Context, event string, args ...any) error {
-	return wailsrun.EventsEmit(ctx, event, args...)
+	return args
 }

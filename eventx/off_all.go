@@ -3,13 +3,16 @@ package eventx
 import (
 	"context"
 
+	"github.com/markbates/safe"
 	"github.com/markbates/wailsx/wailsrun"
 )
 
 func (em Manager) EventsOffAll(ctx context.Context) error {
-	if em.OffAllFn != nil {
-		return em.OffAllFn(ctx)
-	}
+	return safe.Run(func() error {
+		if em.OffAllFn == nil {
+			em.OffAllFn = wailsrun.EventsOffAll
+		}
 
-	return wailsrun.EventsOffAll(ctx)
+		return em.OffAllFn(ctx)
+	})
 }

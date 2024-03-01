@@ -8,6 +8,8 @@ github.com/markbates/iox v0.0.0-20230829013604-e0813da73cc6 h1:z/d6wuXj40wjOVq9d
 github.com/markbates/iox v0.0.0-20230829013604-e0813da73cc6/go.mod h1:q+P6BLqC21cbcmL82OdIO3A9VFCjq9fRQ+ije7T85ow=
 github.com/markbates/plugins v0.0.0-20240228174810-34b6b949cf9e h1:PXixirD5fy4dEyPw1P97LWBwxueR+OTDM1BtcrFgOIU=
 github.com/markbates/plugins v0.0.0-20240228174810-34b6b949cf9e/go.mod h1:iBZ9agLtjGRUflFuIntKen8W0EUuU9sDG9j05uX3GuU=
+github.com/markbates/safe v1.1.0 h1:vpQw5KXK+NqHTcBrMOYjJZh9cYG9JSNNmm0X2k4Abns=
+github.com/markbates/safe v1.1.0/go.mod h1:PdFjIGCp61nrCK8JuytmuIW/Q4Btt0uoi4O/y1TQr78=
 github.com/matryer/is v1.4.0 h1:sosSmIWwkYITGrxZ25ULNDeKiMNzFSr4V/eqBQP0PeE=
 github.com/matryer/is v1.4.0/go.mod h1:8I/i5uYgLzgsgEloJE1U6xx5HkBQpAZvepWuujKwMRU=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=

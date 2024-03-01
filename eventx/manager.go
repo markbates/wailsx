@@ -37,18 +37,18 @@ func (em Manager) Now() time.Time {
 	return time.Now()
 }
 
-func (em Manager) LogError(ctx context.Context, message string) {
+func (em Manager) LogError(ctx context.Context, message string) error {
 	if em.ErrorLoggable == nil {
-		return
+		return wailsrun.LogError(ctx, message)
 	}
 
-	em.ErrorLoggable.LogError(ctx, message)
+	return em.ErrorLoggable.LogError(ctx, message)
 }
 
-func (em Manager) LogErrorf(ctx context.Context, format string, args ...any) {
+func (em Manager) LogErrorf(ctx context.Context, format string, args ...any) error {
 	if em.ErrorLoggable == nil {
-		return
+		return wailsrun.LogErrorf(ctx, format, args...)
 	}
 
-	em.ErrorLoggable.LogErrorf(ctx, format, args...)
+	return em.ErrorLoggable.LogErrorf(ctx, format, args...)
 }
