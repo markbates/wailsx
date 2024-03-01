@@ -194,7 +194,7 @@ func (l *Logger) init() error {
 	defer l.mu.Unlock()
 
 	if l.Logger == nil {
-		(l) = NewLogger(os.Stderr, wailsrun.INFO)
+		l.Logger = NewLogger(os.Stdout, wailsrun.INFO).Logger
 	}
 
 	return nil

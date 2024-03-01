@@ -4,7 +4,6 @@ import (
 	"context"
 	"time"
 
-	"github.com/markbates/wailsx/logx"
 	"github.com/markbates/wailsx/wailsrun"
 )
 
@@ -15,8 +14,6 @@ func NewManager() Manager {
 var _ EventManager = Manager{}
 
 type Manager struct {
-	logx.ErrorLoggable
-
 	DisableWildcardEmits bool
 
 	EventsEmitFn       func(ctx context.Context, name string, data ...any) error
@@ -35,20 +32,4 @@ func (em Manager) Now() time.Time {
 	}
 
 	return time.Now()
-}
-
-func (em Manager) LogError(ctx context.Context, message string) error {
-	if em.ErrorLoggable == nil {
-		return wailsrun.LogError(ctx, message)
-	}
-
-	return em.ErrorLoggable.LogError(ctx, message)
-}
-
-func (em Manager) LogErrorf(ctx context.Context, format string, args ...any) error {
-	if em.ErrorLoggable == nil {
-		return wailsrun.LogErrorf(ctx, format, args...)
-	}
-
-	return em.ErrorLoggable.LogErrorf(ctx, format, args...)
 }
