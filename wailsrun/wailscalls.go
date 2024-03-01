@@ -1,3 +1,5 @@
+//go:build !dev && !desktop && !production && !wails
+
 // when not built with wails, the stubs are used
 package wailsrun
 
@@ -7,16 +9,6 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/logger"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 )
-
-const (
-	ErrNotAvailable = es("wails api calls are not available in this environment")
-)
-
-type es string
-
-func (e es) Error() string {
-	return string(e)
-}
 
 func BrowserOpenURL(ctx context.Context, url string) error {
 	return ErrNotAvailable

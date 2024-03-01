@@ -5,6 +5,16 @@ import (
 )
 
 const (
+	ErrNotAvailable = es("wails api calls are not available in this environment")
+)
+
+type es string
+
+func (e es) Error() string {
+	return string(e)
+}
+
+const (
 	InfoDialog     = wailsrun.InfoDialog
 	WarningDialog  = wailsrun.WarningDialog
 	ErrorDialog    = wailsrun.ErrorDialog

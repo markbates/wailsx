@@ -1,4 +1,4 @@
-//go:build !dev || !desktop || !production
+//go:build !dev || !desktop || !production || !wails
 
 package wailsrun
 

@@ -1,4 +1,4 @@
-//go:build dev || desktop || production
+//go:build wails || dev || desktop || production
 
 // when built with wails the real api
 // is used and the stubs are not
@@ -40,28 +40,42 @@ func EventsOffAll(ctx context.Context) error {
 	return nil
 }
 
-func EventsOn(ctx context.Context, eventName string, callback CallbackFn) (CancelFn, error) {
-	fn := wailsrun.EventsOn(ctx, event, callback)
+func EventsOn(ctx context.Context, event string, callback CallbackFn) (CancelFn, error) {
+	cb := func(data ...any) {
+		_ = callback(data...)
+	}
+
+	fn := wailsrun.EventsOn(ctx, event, cb)
+
 	return func() error {
 		fn()
 		return nil
-	}
+	}, nil
 }
 
-func EventsOnMultiple(ctx context.Context, eventName string, callback CallbackFn, counter int) (CancelFn, error) {
-	fn := wailsrun.EventsOnMultiple(ctx, event, data...)
+func EventsOnMultiple(ctx context.Context, event string, callback CallbackFn, counter int) (CancelFn, error) {
+	cb := func(data ...any) {
+		_ = callback(data...)
+	}
+
+	fn := wailsrun.EventsOnMultiple(ctx, event, cb, counter)
+
 	return func() error {
 		fn()
 		return nil
-	}
+	}, nil
 }
 
-func EventsOnce(ctx context.Context, eventName string, callback CallbackFn) (CancelFn, error) {
-	fn := wailsrun.EventsOnce(ctx, event, data)
+func EventsOnce(ctx context.Context, event string, callback CallbackFn) (CancelFn, error) {
+	cb := func(data ...any) {
+		_ = callback(data...)
+	}
+
+	fn := wailsrun.EventsOnce(ctx, event, cb)
 	return func() error {
 		fn()
 		return nil
-	}
+	}, nil
 }
 
 func Hide(ctx context.Context) error {
@@ -218,15 +232,15 @@ func WindowIsFullscreen(ctx context.Context) (bool, error) {
 	return wailsrun.WindowIsFullscreen(ctx), nil
 }
 
-func WindowIsFullscreen(ctx context.Context) (bool, error) {
+func WindowIsMaximised(ctx context.Context) (bool, error) {
 	return wailsrun.WindowIsMaximised(ctx), nil
 }
 
-func WindowIsFullscreen(ctx context.Context) (bool, error) {
+func WindowIsMinimised(ctx context.Context) (bool, error) {
 	return wailsrun.WindowIsMinimised(ctx), nil
 }
 
-func WindowIsFullscreen(ctx context.Context) (bool, error) {
+func WindowIsNormal(ctx context.Context) (bool, error) {
 	return wailsrun.WindowIsNormal(ctx), nil
 }
 
@@ -331,6 +345,5 @@ func WindowUnminimise(ctx context.Context) error {
 }
 
 func ScreenGetAll(ctx context.Context) ([]Screen, error) {
-	screens := wailsrun.ScreenGetAll(ctx)
-	return screens, nil
+	return wailsrun.ScreenGetAll(ctx)
 }
