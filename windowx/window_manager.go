@@ -9,7 +9,7 @@ import (
 type WindowManager interface {
 	Themer
 	Toggler
-	Maximizer
+	Maximiser
 	Positioner
 	ScreenGetAll(ctx context.Context) ([]wailsrun.Screen, error)
 	WindowExecJS(ctx context.Context, js string) error

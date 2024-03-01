@@ -10,7 +10,7 @@ import (
 var _ WindowManager = Manager{}
 
 type Manager struct {
-	MaximizerManager
+	MaximiserManager
 	PositionManger
 	Reload
 	ThemeManager

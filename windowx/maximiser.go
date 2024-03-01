@@ -2,7 +2,7 @@ package windowx
 
 import "context"
 
-type Maximizer interface {
+type Maximiser interface {
 	WindowFullscreen(ctx context.Context) error
 	WindowIsFullscreen(ctx context.Context) (bool, error)
 	WindowIsMaximised(ctx context.Context) (bool, error)
