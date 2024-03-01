@@ -6,7 +6,6 @@ import (
 
 	"github.com/wailsapp/wails/v2/pkg/logger"
 	"github.com/wailsapp/wails/v2/pkg/menu"
-	wailsrun "github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 const (
@@ -196,103 +195,83 @@ func WindowIsNormal(ctx context.Context) (bool, error) {
 }
 
 func WindowMaximise(ctx context.Context) error {
-	wailsrun.WindowMaximise(ctx)
-	return nil
+	return ErrNotAvailable
 }
 
 func WindowMinimise(ctx context.Context) error {
-	wailsrun.WindowMinimise(ctx)
-	return nil
+	return ErrNotAvailable
 }
 
 func WindowPrint(ctx context.Context) error {
-	wailsrun.WindowPrint(ctx)
-	return nil
+	return ErrNotAvailable
 }
 
 func WindowReload(ctx context.Context) error {
-	wailsrun.WindowReload(ctx)
-	return nil
+	return ErrNotAvailable
 }
 
 func WindowReloadApp(ctx context.Context) error {
-	wailsrun.WindowReloadApp(ctx)
-	return nil
+	return ErrNotAvailable
 }
 
 func WindowSetAlwaysOnTop(ctx context.Context, b bool) error {
-	wailsrun.WindowSetAlwaysOnTop(ctx, b)
-	return nil
+	return ErrNotAvailable
 }
 
 func WindowSetBackgroundColour(ctx context.Context, R, G, B, A uint8) error {
-	wailsrun.WindowSetBackgroundColour(ctx, R, G, B, A)
-	return nil
+	return ErrNotAvailable
 }
 
 func WindowSetDarkTheme(ctx context.Context) error {
-	wailsrun.WindowSetDarkTheme(ctx)
-	return nil
+	return ErrNotAvailable
 }
 
 func WindowSetLightTheme(ctx context.Context) error {
-	wailsrun.WindowSetLightTheme(ctx)
-	return nil
+	return ErrNotAvailable
 }
 
 func WindowSetMaxSize(ctx context.Context, width int, height int) error {
-	wailsrun.WindowSetMaxSize(ctx, width, height)
-	return nil
+	return ErrNotAvailable
 }
 
 func WindowSetMinSize(ctx context.Context, width int, height int) error {
-	wailsrun.WindowSetMinSize(ctx, width, height)
-	return nil
+	return ErrNotAvailable
 }
 
 func WindowSetPosition(ctx context.Context, x int, y int) error {
-	wailsrun.WindowSetPosition(ctx, x, y)
-	return nil
+	return ErrNotAvailable
 }
 
 func WindowSetSize(ctx context.Context, width int, height int) error {
-	wailsrun.WindowSetSize(ctx, width, height)
-	return nil
+	return ErrNotAvailable
 }
 
 func WindowSetSystemDefaultTheme(ctx context.Context) error {
-	wailsrun.WindowSetSystemDefaultTheme(ctx)
-	return nil
+	return ErrNotAvailable
 }
 
 func WindowSetTitle(ctx context.Context, title string) error {
-	wailsrun.WindowSetTitle(ctx, title)
-	return nil
+	return ErrNotAvailable
 }
 
 func WindowShow(ctx context.Context) error {
-	wailsrun.WindowShow(ctx)
-	return nil
+	return ErrNotAvailable
 }
 
 func WindowToggleMaximise(ctx context.Context) error {
-	wailsrun.WindowToggleMaximise(ctx)
-	return nil
+	return ErrNotAvailable
 }
 
 func WindowUnfullscreen(ctx context.Context) error {
-	wailsrun.WindowUnfullscreen(ctx)
-	return nil
+	return ErrNotAvailable
 }
 
 func WindowUnmaximise(ctx context.Context) error {
-	wailsrun.WindowUnmaximise(ctx)
-	return nil
+	return ErrNotAvailable
 }
 
 func WindowUnminimise(ctx context.Context) error {
-	wailsrun.WindowUnminimise(ctx)
-	return nil
+	return ErrNotAvailable
 }
 
 func ScreenGetAll(ctx context.Context) ([]Screen, error) {

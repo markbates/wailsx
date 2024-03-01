@@ -82,5 +82,10 @@ func (pm PositionManger) WindowSetPosition(ctx context.Context, x int, y int) er
 }
 
 func (pm PositionManger) WindowSetSize(ctx context.Context, width int, height int) error {
-	panic("not implemented") // TODO: Implement
+	return safe.Run(func() error {
+		if pm.WindowSetSizeFn == nil {
+			return wailsrun.WindowSetSize(ctx, width, height)
+		}
+		return pm.WindowSetSizeFn(ctx, width, height)
+	})
 }
