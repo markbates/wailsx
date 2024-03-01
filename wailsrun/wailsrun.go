@@ -1,6 +1,7 @@
 package wailsrun
 
 import (
+	"github.com/wailsapp/wails/v2/pkg/logger"
 	wailsrun "github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -19,6 +20,16 @@ const (
 	WarningDialog  = wailsrun.WarningDialog
 	ErrorDialog    = wailsrun.ErrorDialog
 	QuestionDialog = wailsrun.QuestionDialog
+
+	DEBUG   LogLevel = logger.DEBUG
+	ERROR   LogLevel = logger.ERROR
+	INFO    LogLevel = logger.INFO
+	TRACE   LogLevel = logger.TRACE
+	WARNING LogLevel = logger.WARNING
+
+	// extra log levels
+	FATAL LogLevel = LogLevel(42)
+	PRINT LogLevel = LogLevel(43)
 )
 
 type DialogType = wailsrun.DialogType
@@ -28,3 +39,4 @@ type MessageDialogOptions = wailsrun.MessageDialogOptions
 type OpenDialogOptions = wailsrun.OpenDialogOptions
 type SaveDialogOptions = wailsrun.SaveDialogOptions
 type Screen = wailsrun.Screen
+type LogLevel = logger.LogLevel
