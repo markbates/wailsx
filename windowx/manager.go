@@ -10,11 +10,11 @@ import (
 var _ WindowManager = Manager{}
 
 type Manager struct {
-	MaximiserManager
-	PositionManger
-	Reload
-	ThemeManager
-	Toggle
+	Maximiser
+	Positioner
+	Reloader
+	Themer
+	Toggler
 
 	ScreenGetAllFn         func(ctx context.Context) ([]Screen, error)
 	WindowExecJSFn         func(ctx context.Context, js string) error
