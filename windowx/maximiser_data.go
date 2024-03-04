@@ -3,30 +3,36 @@ package windowx
 import (
 	"context"
 	"fmt"
+	"sync"
 
 	"github.com/markbates/wailsx/statedata"
 )
 
-var _ statedata.StateDataProvider[MaximiserData] = MaximiserData{}
+var _ statedata.StateDataProvider[*MaximiserData] = &MaximiserData{}
 
 type MaximiserData struct {
 	IsFullscreen bool `json:"is_fullscreen,omitempty"`
 	IsMaximised  bool `json:"is_maximised,omitempty"`
 	IsMinimised  bool `json:"is_minimised,omitempty"`
 	IsNormal     bool `json:"is_normal,omitempty"`
+
+	mu sync.RWMutex
 }
 
-func (md MaximiserData) StateData(ctx context.Context) (statedata.StateData[MaximiserData], error) {
-
-	const name = "maximiser"
-
-	return statedata.StateData[MaximiserData]{
-		Name: name,
+func (md *MaximiserData) StateData(ctx context.Context) (statedata.StateData[*MaximiserData], error) {
+	sd := statedata.StateData[*MaximiserData]{
+		Name: MaximiserStateDataName,
 		Data: md,
-	}, nil
+	}
+
+	if md == nil {
+		return sd, fmt.Errorf("maximiser data is nil")
+	}
+
+	return sd, nil
 }
 
-func (md MaximiserData) PluginName() string {
+func (md *MaximiserData) PluginName() string {
 	return fmt.Sprintf("%T", md)
 }
 
@@ -34,6 +40,9 @@ func (md *MaximiserData) SetFullscreen() error {
 	if md == nil {
 		return fmt.Errorf("maximiser data is nil")
 	}
+
+	md.mu.Lock()
+	defer md.mu.Unlock()
 
 	md.IsFullscreen = true
 	md.IsMaximised = false
@@ -48,6 +57,9 @@ func (md *MaximiserData) SetMaximised() error {
 		return fmt.Errorf("maximiser data is nil")
 	}
 
+	md.mu.Lock()
+	defer md.mu.Unlock()
+
 	md.IsFullscreen = false
 	md.IsMaximised = true
 	md.IsMinimised = false
@@ -60,6 +72,9 @@ func (md *MaximiserData) SetMinimised() error {
 	if md == nil {
 		return fmt.Errorf("maximiser data is nil")
 	}
+
+	md.mu.Lock()
+	defer md.mu.Unlock()
 
 	md.IsFullscreen = false
 	md.IsMaximised = false
@@ -74,6 +89,9 @@ func (md *MaximiserData) SetNormal() error {
 		return fmt.Errorf("maximiser data is nil")
 	}
 
+	md.mu.Lock()
+	defer md.mu.Unlock()
+
 	md.IsFullscreen = false
 	md.IsMaximised = false
 	md.IsMinimised = false
@@ -86,6 +104,9 @@ func (md *MaximiserData) SetUnfullscreen() error {
 	if md == nil {
 		return fmt.Errorf("maximiser data is nil")
 	}
+
+	md.mu.Lock()
+	defer md.mu.Unlock()
 
 	md.IsFullscreen = false
 	md.IsMaximised = false
@@ -100,6 +121,9 @@ func (md *MaximiserData) SetUnmaximised() error {
 		return fmt.Errorf("maximiser data is nil")
 	}
 
+	md.mu.Lock()
+	defer md.mu.Unlock()
+
 	md.IsFullscreen = false
 	md.IsMaximised = false
 	md.IsMinimised = false
@@ -112,6 +136,9 @@ func (md *MaximiserData) SetUnminimised() error {
 	if md == nil {
 		return fmt.Errorf("maximiser data is nil")
 	}
+
+	md.mu.Lock()
+	defer md.mu.Unlock()
 
 	md.IsFullscreen = false
 	md.IsMaximised = false

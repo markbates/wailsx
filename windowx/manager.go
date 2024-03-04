@@ -23,6 +23,16 @@ type Manager struct {
 	WindowSetTitleFn       func(ctx context.Context, title string) error
 }
 
+func NewManager() *Manager {
+	return &Manager{
+		Maximiser:  &MaximiseManager{},
+		Positioner: &PositionManger{},
+		Reloader:   &Reload{},
+		Themer:     &ThemeManager{},
+		Toggler:    &Toggle{},
+	}
+}
+
 func (wm Manager) ScreenGetAll(ctx context.Context) ([]Screen, error) {
 	var screens []Screen
 

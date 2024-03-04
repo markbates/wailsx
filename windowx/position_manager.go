@@ -4,8 +4,12 @@ import (
 	"context"
 
 	"github.com/markbates/safe"
+	"github.com/markbates/wailsx/statedata"
 	"github.com/markbates/wailsx/wailsrun"
 )
+
+var _ Positioner = &PositionManger{}
+var _ statedata.StateDataProvider[*PositionerData] = &PositionerData{}
 
 type PositionManger struct {
 	WindowCenterFn      func(ctx context.Context) error
@@ -15,9 +19,11 @@ type PositionManger struct {
 	WindowSetMinSizeFn  func(ctx context.Context, width int, height int) error
 	WindowSetPositionFn func(ctx context.Context, x int, y int) error
 	WindowSetSizeFn     func(ctx context.Context, width int, height int) error
+
+	data PositionerData
 }
 
-func (pm PositionManger) WindowCenter(ctx context.Context) error {
+func (pm *PositionManger) WindowCenter(ctx context.Context) error {
 	return safe.Run(func() error {
 		if pm.WindowCenterFn == nil {
 			return wailsrun.WindowCenter(ctx)
@@ -26,7 +32,7 @@ func (pm PositionManger) WindowCenter(ctx context.Context) error {
 	})
 }
 
-func (pm PositionManger) WindowGetPosition(ctx context.Context) (int, int, error) {
+func (pm *PositionManger) WindowGetPosition(ctx context.Context) (int, int, error) {
 	var x, y int
 	err := safe.Run(func() error {
 		var err error
@@ -40,7 +46,7 @@ func (pm PositionManger) WindowGetPosition(ctx context.Context) (int, int, error
 	return x, y, err
 }
 
-func (pm PositionManger) WindowGetSize(ctx context.Context) (int, int, error) {
+func (pm *PositionManger) WindowGetSize(ctx context.Context) (int, int, error) {
 	var w, h int
 	err := safe.Run(func() error {
 		var err error
@@ -54,7 +60,7 @@ func (pm PositionManger) WindowGetSize(ctx context.Context) (int, int, error) {
 	return w, h, err
 }
 
-func (pm PositionManger) WindowSetMaxSize(ctx context.Context, width int, height int) error {
+func (pm *PositionManger) WindowSetMaxSize(ctx context.Context, width int, height int) error {
 	return safe.Run(func() error {
 		if pm.WindowSetMaxSizeFn == nil {
 			return wailsrun.WindowSetMaxSize(ctx, width, height)
@@ -63,7 +69,7 @@ func (pm PositionManger) WindowSetMaxSize(ctx context.Context, width int, height
 	})
 }
 
-func (pm PositionManger) WindowSetMinSize(ctx context.Context, width int, height int) error {
+func (pm *PositionManger) WindowSetMinSize(ctx context.Context, width int, height int) error {
 	return safe.Run(func() error {
 		if pm.WindowSetMinSizeFn == nil {
 			return wailsrun.WindowSetMinSize(ctx, width, height)
@@ -72,7 +78,7 @@ func (pm PositionManger) WindowSetMinSize(ctx context.Context, width int, height
 	})
 }
 
-func (pm PositionManger) WindowSetPosition(ctx context.Context, x int, y int) error {
+func (pm *PositionManger) WindowSetPosition(ctx context.Context, x int, y int) error {
 	return safe.Run(func() error {
 		if pm.WindowSetPositionFn == nil {
 			return wailsrun.WindowSetPosition(ctx, x, y)
@@ -81,7 +87,7 @@ func (pm PositionManger) WindowSetPosition(ctx context.Context, x int, y int) er
 	})
 }
 
-func (pm PositionManger) WindowSetSize(ctx context.Context, width int, height int) error {
+func (pm *PositionManger) WindowSetSize(ctx context.Context, width int, height int) error {
 	return safe.Run(func() error {
 		if pm.WindowSetSizeFn == nil {
 			return wailsrun.WindowSetSize(ctx, width, height)

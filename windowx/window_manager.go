@@ -5,11 +5,11 @@ import (
 )
 
 type WindowManager interface {
-	Themer
-	Toggler
 	Maximiser
 	Positioner
 	Reloader
+	Themer
+	Toggler
 	ScreenGetAll(ctx context.Context) ([]Screen, error)
 	WindowExecJS(ctx context.Context, js string) error
 	WindowPrint(ctx context.Context) error

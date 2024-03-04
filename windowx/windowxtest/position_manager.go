@@ -1,6 +1,9 @@
 package windowxtest
 
-import "fmt"
+import (
+	"context"
+	"fmt"
+)
 
 type PositionManger struct {
 	IsCentered bool
@@ -14,7 +17,7 @@ type PositionManger struct {
 	MinH       int
 }
 
-func (pm *PositionManger) WindowCenter() error {
+func (pm *PositionManger) WindowCenter(ctx context.Context) error {
 	if pm == nil {
 		return fmt.Errorf("position manager is nil")
 	}
@@ -23,7 +26,7 @@ func (pm *PositionManger) WindowCenter() error {
 	return nil
 }
 
-func (pm *PositionManger) WindowGetPosition() (int, int, error) {
+func (pm *PositionManger) WindowGetPosition(ctx context.Context) (int, int, error) {
 	if pm == nil {
 		return 0, 0, fmt.Errorf("position manager is nil")
 	}
@@ -31,7 +34,7 @@ func (pm *PositionManger) WindowGetPosition() (int, int, error) {
 	return pm.X, pm.Y, nil
 }
 
-func (pm *PositionManger) WindowGetSize() (int, int, error) {
+func (pm *PositionManger) WindowGetSize(ctx context.Context) (int, int, error) {
 	if pm == nil {
 		return 0, 0, fmt.Errorf("position manager is nil")
 	}
@@ -39,7 +42,7 @@ func (pm *PositionManger) WindowGetSize() (int, int, error) {
 	return pm.W, pm.H, nil
 }
 
-func (pm *PositionManger) WindowSetMaxSize(width int, height int) error {
+func (pm *PositionManger) WindowSetMaxSize(ctx context.Context, width int, height int) error {
 	if pm == nil {
 		return fmt.Errorf("position manager is nil")
 	}
@@ -53,7 +56,7 @@ func (pm *PositionManger) WindowSetMaxSize(width int, height int) error {
 	return nil
 }
 
-func (pm *PositionManger) WindowSetMinSize(width int, height int) error {
+func (pm *PositionManger) WindowSetMinSize(ctx context.Context, width int, height int) error {
 	if pm == nil {
 		return fmt.Errorf("position manager is nil")
 	}
@@ -67,7 +70,7 @@ func (pm *PositionManger) WindowSetMinSize(width int, height int) error {
 	return nil
 }
 
-func (pm *PositionManger) WindowSetPosition(x int, y int) error {
+func (pm *PositionManger) WindowSetPosition(ctx context.Context, x int, y int) error {
 	if pm == nil {
 		return fmt.Errorf("position manager is nil")
 	}
@@ -81,7 +84,7 @@ func (pm *PositionManger) WindowSetPosition(x int, y int) error {
 	return nil
 }
 
-func (pm *PositionManger) WindowSetSize(width int, height int) error {
+func (pm *PositionManger) WindowSetSize(ctx context.Context, width int, height int) error {
 	if pm == nil {
 		return fmt.Errorf("position manager is nil")
 	}

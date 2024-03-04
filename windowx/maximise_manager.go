@@ -8,9 +8,9 @@ import (
 	"github.com/markbates/wailsx/wailsrun"
 )
 
-var _ Maximiser = &MaximiserManager{}
+var _ Maximiser = &MaximiseManager{}
 
-type MaximiserManager struct {
+type MaximiseManager struct {
 	WindowFullscreenFn   func(ctx context.Context) error
 	WindowIsFullscreenFn func(ctx context.Context) (bool, error)
 	WindowIsMaximisedFn  func(ctx context.Context) (bool, error)
@@ -25,7 +25,7 @@ type MaximiserManager struct {
 	data MaximiserData
 }
 
-func (mm *MaximiserManager) WindowFullscreen(ctx context.Context) error {
+func (mm *MaximiseManager) WindowFullscreen(ctx context.Context) error {
 	if mm == nil {
 		return fmt.Errorf("maximiser manager is nil")
 	}
@@ -44,7 +44,7 @@ func (mm *MaximiserManager) WindowFullscreen(ctx context.Context) error {
 	})
 }
 
-func (mm MaximiserManager) WindowIsFullscreen(ctx context.Context) (bool, error) {
+func (mm MaximiseManager) WindowIsFullscreen(ctx context.Context) (bool, error) {
 	var b bool
 
 	err := safe.Run(func() error {
@@ -60,7 +60,7 @@ func (mm MaximiserManager) WindowIsFullscreen(ctx context.Context) (bool, error)
 	return b, err
 }
 
-func (mm MaximiserManager) WindowIsMaximised(ctx context.Context) (bool, error) {
+func (mm MaximiseManager) WindowIsMaximised(ctx context.Context) (bool, error) {
 	var b bool
 
 	err := safe.Run(func() error {
@@ -76,7 +76,7 @@ func (mm MaximiserManager) WindowIsMaximised(ctx context.Context) (bool, error) 
 	return b, err
 }
 
-func (mm MaximiserManager) WindowIsMinimised(ctx context.Context) (bool, error) {
+func (mm MaximiseManager) WindowIsMinimised(ctx context.Context) (bool, error) {
 	var b bool
 
 	err := safe.Run(func() error {
@@ -92,7 +92,7 @@ func (mm MaximiserManager) WindowIsMinimised(ctx context.Context) (bool, error) 
 	return b, err
 }
 
-func (mm *MaximiserManager) WindowMaximise(ctx context.Context) error {
+func (mm *MaximiseManager) WindowMaximise(ctx context.Context) error {
 	if mm == nil {
 		return fmt.Errorf("maximiser manager is nil")
 	}
@@ -111,7 +111,7 @@ func (mm *MaximiserManager) WindowMaximise(ctx context.Context) error {
 	})
 }
 
-func (mm *MaximiserManager) WindowMinimise(ctx context.Context) error {
+func (mm *MaximiseManager) WindowMinimise(ctx context.Context) error {
 	if mm == nil {
 		return fmt.Errorf("maximiser manager is nil")
 	}
@@ -130,7 +130,7 @@ func (mm *MaximiserManager) WindowMinimise(ctx context.Context) error {
 	})
 }
 
-func (mm *MaximiserManager) WindowUnfullscreen(ctx context.Context) error {
+func (mm *MaximiseManager) WindowUnfullscreen(ctx context.Context) error {
 	if mm == nil {
 		return fmt.Errorf("maximiser manager is nil")
 	}
@@ -149,7 +149,7 @@ func (mm *MaximiserManager) WindowUnfullscreen(ctx context.Context) error {
 	})
 }
 
-func (mm *MaximiserManager) WindowUnmaximise(ctx context.Context) error {
+func (mm *MaximiseManager) WindowUnmaximise(ctx context.Context) error {
 	if mm == nil {
 		return fmt.Errorf("maximiser manager is nil")
 	}
@@ -168,7 +168,7 @@ func (mm *MaximiserManager) WindowUnmaximise(ctx context.Context) error {
 	})
 }
 
-func (mm *MaximiserManager) WindowUnminimise(ctx context.Context) error {
+func (mm *MaximiseManager) WindowUnminimise(ctx context.Context) error {
 	if mm == nil {
 		return fmt.Errorf("maximiser manager is nil")
 	}
@@ -187,7 +187,7 @@ func (mm *MaximiserManager) WindowUnminimise(ctx context.Context) error {
 	})
 }
 
-func (mm MaximiserManager) WindowIsNormal(ctx context.Context) (bool, error) {
+func (mm *MaximiseManager) WindowIsNormal(ctx context.Context) (bool, error) {
 	var b bool
 
 	err := safe.Run(func() error {

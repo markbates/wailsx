@@ -14,6 +14,8 @@ type ThemeManager struct {
 	WindowSetDarkThemeFn          func(ctx context.Context) error
 	WindowSetLightThemeFn         func(ctx context.Context) error
 	WindowSetSystemDefaultThemeFn func(ctx context.Context) error
+
+	data ThemerData
 }
 
 func (th ThemeManager) WindowSetDarkTheme(ctx context.Context) error {

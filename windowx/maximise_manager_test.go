@@ -14,7 +14,7 @@ func Test_MaximiserManager_WindowFullscreen(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 
-	mm := MaximiserManager{}
+	mm := MaximiseManager{}
 
 	ctx := context.Background()
 
@@ -53,7 +53,7 @@ func Test_MaximiserManager_WindowIsFullscreen(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 
-	mm := MaximiserManager{}
+	mm := MaximiseManager{}
 
 	ctx := context.Background()
 
@@ -87,7 +87,7 @@ func Test_MaximiserManager_WindowIsMaximised(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 
-	mm := MaximiserManager{}
+	mm := MaximiseManager{}
 
 	ctx := context.Background()
 
@@ -120,7 +120,7 @@ func Test_MaximiserManager_WindowIsMinimised(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 
-	mm := MaximiserManager{}
+	mm := MaximiseManager{}
 
 	ctx := context.Background()
 
@@ -153,7 +153,7 @@ func Test_MaximiserManager_WindowMaximise(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 
-	mm := MaximiserManager{}
+	mm := MaximiseManager{}
 
 	ctx := context.Background()
 
@@ -191,7 +191,7 @@ func Test_MaximiserManager_WindowMinimise(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 
-	mm := MaximiserManager{}
+	mm := MaximiseManager{}
 
 	ctx := context.Background()
 
@@ -229,7 +229,7 @@ func Test_MaximiserManager_WindowUnfullscreen(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 
-	mm := MaximiserManager{}
+	mm := MaximiseManager{}
 
 	ctx := context.Background()
 
@@ -267,7 +267,7 @@ func Test_MaximiserManager_WindowUnmaximise(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 
-	mm := MaximiserManager{}
+	mm := MaximiseManager{}
 
 	ctx := context.Background()
 
@@ -305,7 +305,7 @@ func Test_MaximiserManager_WindowUnminimise(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 
-	mm := MaximiserManager{}
+	mm := MaximiseManager{}
 
 	ctx := context.Background()
 
@@ -343,7 +343,7 @@ func Test_MaximiserManager_WindowIsNormal(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 
-	mm := MaximiserManager{}
+	mm := MaximiseManager{}
 
 	ctx := context.Background()
 
@@ -376,7 +376,7 @@ func Test_MaximiseManager_StateData(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 
-	mm := &MaximiserManager{}
+	mm := &MaximiseManager{}
 
 	sd, err := mm.StateData(context.Background())
 	r.NoError(err)
