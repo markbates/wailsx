@@ -16,19 +16,35 @@ type Manager struct {
 	ThemeManager
 	Toggle
 
-	ScreenGetAllFn         func(ctx context.Context) ([]wailsrun.Screen, error)
+	ScreenGetAllFn         func(ctx context.Context) ([]Screen, error)
 	WindowExecJSFn         func(ctx context.Context, js string) error
 	WindowPrintFn          func(ctx context.Context) error
 	WindowSetAlwaysOnTopFn func(ctx context.Context, b bool) error
 	WindowSetTitleFn       func(ctx context.Context, title string) error
 }
 
-func (wm Manager) ScreenGetAll(ctx context.Context) ([]wailsrun.Screen, error) {
-	var screens []wailsrun.Screen
+func (wm Manager) ScreenGetAll(ctx context.Context) ([]Screen, error) {
+	var screens []Screen
 
 	err := safe.Run(func() error {
 		if wm.ScreenGetAllFn == nil {
-			wm.ScreenGetAllFn = wailsrun.ScreenGetAll
+			wm.ScreenGetAllFn = func(ctx context.Context) ([]Screen, error) {
+				wsc, err := wailsrun.ScreenGetAll(ctx)
+				if err != nil {
+					return nil, err
+				}
+
+				screens = make([]Screen, 0, len(wsc))
+				for _, sc := range wsc {
+					screens = append(screens, Screen{
+						Size: ScreenSize{
+							Width:  sc.Size.Width,
+							Height: sc.Size.Height,
+						},
+					})
+				}
+				return screens, nil
+			}
 		}
 
 		var err error

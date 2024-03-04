@@ -16,22 +16,31 @@ func Test_Manager_ScreenGetAll(t *testing.T) {
 
 	wm := Manager{}
 
-	wm.ScreenGetAllFn = func(ctx context.Context) ([]wailsrun.Screen, error) {
-		return []wailsrun.Screen{
+	ctx := context.Background()
+
+	_, err := wm.ScreenGetAll(ctx)
+	r.Error(err)
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+
+	wm.ScreenGetAllFn = func(ctx context.Context) ([]Screen, error) {
+		return []Screen{
 			{
-				Width: 100,
+				Size: ScreenSize{
+					Width: 100,
+				},
 			},
 		}, nil
 	}
 
-	ctx := context.Background()
-
 	screens, err := wm.ScreenGetAll(ctx)
 	r.NoError(err)
 	r.Len(screens, 1)
-	r.Equal(100, screens[0].Width)
 
-	wm.ScreenGetAllFn = func(ctx context.Context) ([]wailsrun.Screen, error) {
+	screen := screens[0]
+	w := screen.Size.Width
+	r.Equal(100, w)
+
+	wm.ScreenGetAllFn = func(ctx context.Context) ([]Screen, error) {
 		return nil, wailstest.ErrTest
 	}
 
@@ -46,6 +55,12 @@ func Test_Manager_WindowExecJS(t *testing.T) {
 
 	wm := Manager{}
 
+	ctx := context.Background()
+
+	err := wm.WindowExecJS(ctx, "")
+	r.Error(err)
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+
 	var act string
 	wm.WindowExecJSFn = func(ctx context.Context, js string) error {
 		if len(js) == 0 {
@@ -55,10 +70,8 @@ func Test_Manager_WindowExecJS(t *testing.T) {
 		return nil
 	}
 
-	ctx := context.Background()
-
 	exp := "alert('hello')"
-	err := wm.WindowExecJS(ctx, exp)
+	err = wm.WindowExecJS(ctx, exp)
 	r.NoError(err)
 	r.Equal(exp, act)
 
@@ -73,15 +86,18 @@ func Test_Manager_WindowPrint(t *testing.T) {
 
 	wm := Manager{}
 
+	ctx := context.Background()
+	err := wm.WindowPrint(ctx)
+	r.Error(err)
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+
 	var called bool
 	wm.WindowPrintFn = func(ctx context.Context) error {
 		called = true
 		return nil
 	}
 
-	ctx := context.Background()
-
-	err := wm.WindowPrint(ctx)
+	err = wm.WindowPrint(ctx)
 	r.NoError(err)
 	r.True(called)
 
@@ -99,6 +115,11 @@ func Test_Manager_WindowSetAlwaysOnTop(t *testing.T) {
 	r := require.New(t)
 
 	wm := Manager{}
+	ctx := context.Background()
+
+	err := wm.WindowSetAlwaysOnTop(ctx, true)
+	r.Error(err)
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
 
 	var act bool
 	wm.WindowSetAlwaysOnTopFn = func(ctx context.Context, b bool) error {
@@ -106,9 +127,7 @@ func Test_Manager_WindowSetAlwaysOnTop(t *testing.T) {
 		return nil
 	}
 
-	ctx := context.Background()
-
-	err := wm.WindowSetAlwaysOnTop(ctx, true)
+	err = wm.WindowSetAlwaysOnTop(ctx, true)
 	r.NoError(err)
 	r.True(act)
 
@@ -127,17 +146,21 @@ func Test_Manager_WindowSetTitle(t *testing.T) {
 
 	wm := Manager{}
 
+	ctx := context.Background()
+
+	err := wm.WindowSetTitle(ctx, "")
+	r.Error(err)
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+
 	var act string
 	wm.WindowSetTitleFn = func(ctx context.Context, title string) error {
 		act = title
 		return nil
 	}
 
-	ctx := context.Background()
-
 	exp := "hello"
 
-	err := wm.WindowSetTitle(ctx, exp)
+	err = wm.WindowSetTitle(ctx, exp)
 	r.NoError(err)
 	r.Equal(exp, act)
 

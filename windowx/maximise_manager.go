@@ -37,7 +37,7 @@ func (mm MaximiserManager) WindowIsFullscreen(ctx context.Context) (bool, error)
 
 	err := safe.Run(func() error {
 		if mm.WindowIsFullscreenFn == nil {
-			mm.WindowFullscreenFn = wailsrun.WindowFullscreen
+			mm.WindowIsFullscreenFn = wailsrun.WindowIsFullscreen
 		}
 
 		var err error

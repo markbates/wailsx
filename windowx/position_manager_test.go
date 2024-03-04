@@ -5,6 +5,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/markbates/wailsx/wailsrun"
 	"github.com/markbates/wailsx/wailstest"
 	"github.com/stretchr/testify/require"
 )
@@ -15,15 +16,19 @@ func Test_PositionManager_WindowCenter(t *testing.T) {
 
 	pm := PositionManger{}
 
+	ctx := context.Background()
+
+	err := pm.WindowCenter(ctx)
+	r.Error(err)
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+
 	var called bool
 	pm.WindowCenterFn = func(ctx context.Context) error {
 		called = true
 		return nil
 	}
 
-	ctx := context.Background()
-
-	err := pm.WindowCenter(ctx)
+	err = pm.WindowCenter(ctx)
 	r.NoError(err)
 	r.True(called)
 
@@ -42,13 +47,17 @@ func Test_PositionManager_WindowGetPosition(t *testing.T) {
 
 	pm := PositionManger{}
 
+	ctx := context.Background()
+
+	_, _, err := pm.WindowGetPosition(ctx)
+	r.Error(err)
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+
 	ex := 1
 	ey := 2
 	pm.WindowGetPositionFn = func(ctx context.Context) (int, int, error) {
 		return ex, ey, nil
 	}
-
-	ctx := context.Background()
 
 	x, y, err := pm.WindowGetPosition(ctx)
 	r.NoError(err)
@@ -70,13 +79,17 @@ func Test_PositionManager_WindowGetSize(t *testing.T) {
 
 	pm := PositionManger{}
 
+	ctx := context.Background()
+
+	_, _, err := pm.WindowGetSize(ctx)
+	r.Error(err)
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+
 	ew := 1
 	eh := 2
 	pm.WindowGetSizeFn = func(ctx context.Context) (int, int, error) {
 		return ew, eh, nil
 	}
-
-	ctx := context.Background()
 
 	w, h, err := pm.WindowGetSize(ctx)
 	r.NoError(err)
@@ -98,6 +111,12 @@ func Test_PositionManager_WindowSetMaxSize(t *testing.T) {
 
 	pm := PositionManger{}
 
+	ctx := context.Background()
+
+	err := pm.WindowSetMaxSize(ctx, 1, 2)
+	r.Error(err)
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+
 	var aw, ah int
 	pm.WindowSetMaxSizeFn = func(ctx context.Context, width int, height int) error {
 		aw = width
@@ -105,9 +124,7 @@ func Test_PositionManager_WindowSetMaxSize(t *testing.T) {
 		return nil
 	}
 
-	ctx := context.Background()
-
-	err := pm.WindowSetMaxSize(ctx, 1, 2)
+	err = pm.WindowSetMaxSize(ctx, 1, 2)
 	r.NoError(err)
 	r.Equal(1, aw)
 	r.Equal(2, ah)
@@ -127,6 +144,12 @@ func Test_PositionManager_WindowSetMinSize(t *testing.T) {
 
 	pm := PositionManger{}
 
+	ctx := context.Background()
+
+	err := pm.WindowSetMinSize(ctx, 1, 2)
+	r.Error(err)
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+
 	var aw, ah int
 	pm.WindowSetMinSizeFn = func(ctx context.Context, width int, height int) error {
 		aw = width
@@ -134,9 +157,7 @@ func Test_PositionManager_WindowSetMinSize(t *testing.T) {
 		return nil
 	}
 
-	ctx := context.Background()
-
-	err := pm.WindowSetMinSize(ctx, 1, 2)
+	err = pm.WindowSetMinSize(ctx, 1, 2)
 	r.NoError(err)
 	r.Equal(1, aw)
 	r.Equal(2, ah)
@@ -156,6 +177,12 @@ func Test_PositionManager_WindowSetPosition(t *testing.T) {
 
 	pm := PositionManger{}
 
+	ctx := context.Background()
+
+	err := pm.WindowSetPosition(ctx, 1, 2)
+	r.Error(err)
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+
 	var ax, ay int
 	pm.WindowSetPositionFn = func(ctx context.Context, x int, y int) error {
 		ax = x
@@ -163,9 +190,7 @@ func Test_PositionManager_WindowSetPosition(t *testing.T) {
 		return nil
 	}
 
-	ctx := context.Background()
-
-	err := pm.WindowSetPosition(ctx, 1, 2)
+	err = pm.WindowSetPosition(ctx, 1, 2)
 	r.NoError(err)
 	r.Equal(1, ax)
 	r.Equal(2, ay)
@@ -185,6 +210,12 @@ func Test_PositionManager_WindowSetSize(t *testing.T) {
 
 	pm := PositionManger{}
 
+	ctx := context.Background()
+
+	err := pm.WindowSetSize(ctx, 1, 2)
+	r.Error(err)
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+
 	var aw, ah int
 	pm.WindowSetSizeFn = func(ctx context.Context, width int, height int) error {
 		aw = width
@@ -192,9 +223,7 @@ func Test_PositionManager_WindowSetSize(t *testing.T) {
 		return nil
 	}
 
-	ctx := context.Background()
-
-	err := pm.WindowSetSize(ctx, 1, 2)
+	err = pm.WindowSetSize(ctx, 1, 2)
 	r.NoError(err)
 	r.Equal(1, aw)
 	r.Equal(2, ah)

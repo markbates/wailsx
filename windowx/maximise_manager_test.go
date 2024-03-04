@@ -5,6 +5,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/markbates/wailsx/wailsrun"
 	"github.com/markbates/wailsx/wailstest"
 	"github.com/stretchr/testify/require"
 )
@@ -15,15 +16,19 @@ func Test_MaximiserManager_WindowFullscreen(t *testing.T) {
 
 	mm := MaximiserManager{}
 
+	ctx := context.Background()
+
+	err := mm.WindowFullscreen(ctx)
+	r.Error(err)
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+
 	var called bool
 	mm.WindowFullscreenFn = func(ctx context.Context) error {
 		called = true
 		return nil
 	}
 
-	ctx := context.Background()
-
-	err := mm.WindowFullscreen(ctx)
+	err = mm.WindowFullscreen(ctx)
 	r.NoError(err)
 	r.True(called)
 
@@ -43,13 +48,17 @@ func Test_MaximiserManager_WindowIsFullscreen(t *testing.T) {
 
 	mm := MaximiserManager{}
 
+	ctx := context.Background()
+
+	_, err := mm.WindowIsFullscreen(ctx)
+	r.Error(err)
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+
 	var called bool
 	mm.WindowIsFullscreenFn = func(ctx context.Context) (bool, error) {
 		called = true
 		return true, nil
 	}
-
-	ctx := context.Background()
 
 	b, err := mm.WindowIsFullscreen(ctx)
 	r.NoError(err)
@@ -73,13 +82,17 @@ func Test_MaximiserManager_WindowIsMaximised(t *testing.T) {
 
 	mm := MaximiserManager{}
 
+	ctx := context.Background()
+
+	_, err := mm.WindowIsMaximised(ctx)
+	r.Error(err)
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+
 	var called bool
 	mm.WindowIsMaximisedFn = func(ctx context.Context) (bool, error) {
 		called = true
 		return true, nil
 	}
-
-	ctx := context.Background()
 
 	b, err := mm.WindowIsMaximised(ctx)
 	r.NoError(err)
@@ -102,13 +115,17 @@ func Test_MaximiserManager_WindowIsMinimised(t *testing.T) {
 
 	mm := MaximiserManager{}
 
+	ctx := context.Background()
+
+	_, err := mm.WindowIsMinimised(ctx)
+	r.Error(err)
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+
 	var called bool
 	mm.WindowIsMinimisedFn = func(ctx context.Context) (bool, error) {
 		called = true
 		return true, nil
 	}
-
-	ctx := context.Background()
 
 	b, err := mm.WindowIsMinimised(ctx)
 	r.NoError(err)
@@ -131,15 +148,19 @@ func Test_MaximiserManager_WindowMaximise(t *testing.T) {
 
 	mm := MaximiserManager{}
 
+	ctx := context.Background()
+
+	err := mm.WindowMaximise(ctx)
+	r.Error(err)
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+
 	var called bool
 	mm.WindowMaximiseFn = func(ctx context.Context) error {
 		called = true
 		return nil
 	}
 
-	ctx := context.Background()
-
-	err := mm.WindowMaximise(ctx)
+	err = mm.WindowMaximise(ctx)
 	r.NoError(err)
 	r.True(called)
 
@@ -158,15 +179,19 @@ func Test_MaximiserManager_WindowMinimise(t *testing.T) {
 
 	mm := MaximiserManager{}
 
+	ctx := context.Background()
+
+	err := mm.WindowMinimise(ctx)
+	r.Error(err)
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+
 	var called bool
 	mm.WindowMinimiseFn = func(ctx context.Context) error {
 		called = true
 		return nil
 	}
 
-	ctx := context.Background()
-
-	err := mm.WindowMinimise(ctx)
+	err = mm.WindowMinimise(ctx)
 	r.NoError(err)
 	r.True(called)
 
@@ -185,15 +210,19 @@ func Test_MaximiserManager_WindowUnfullscreen(t *testing.T) {
 
 	mm := MaximiserManager{}
 
+	ctx := context.Background()
+
+	err := mm.WindowUnfullscreen(ctx)
+	r.Error(err)
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+
 	var called bool
 	mm.WindowUnfullscreenFn = func(ctx context.Context) error {
 		called = true
 		return nil
 	}
 
-	ctx := context.Background()
-
-	err := mm.WindowUnfullscreen(ctx)
+	err = mm.WindowUnfullscreen(ctx)
 	r.NoError(err)
 	r.True(called)
 
@@ -212,15 +241,19 @@ func Test_MaximiserManager_WindowUnmaximise(t *testing.T) {
 
 	mm := MaximiserManager{}
 
+	ctx := context.Background()
+
+	err := mm.WindowUnmaximise(ctx)
+	r.Error(err)
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+
 	var called bool
 	mm.WindowUnmaximiseFn = func(ctx context.Context) error {
 		called = true
 		return nil
 	}
 
-	ctx := context.Background()
-
-	err := mm.WindowUnmaximise(ctx)
+	err = mm.WindowUnmaximise(ctx)
 	r.NoError(err)
 	r.True(called)
 
@@ -239,15 +272,19 @@ func Test_MaximiserManager_WindowUnminimise(t *testing.T) {
 
 	mm := MaximiserManager{}
 
+	ctx := context.Background()
+
+	err := mm.WindowUnminimise(ctx)
+	r.Error(err)
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+
 	var called bool
 	mm.WindowUnminimiseFn = func(ctx context.Context) error {
 		called = true
 		return nil
 	}
 
-	ctx := context.Background()
-
-	err := mm.WindowUnminimise(ctx)
+	err = mm.WindowUnminimise(ctx)
 	r.NoError(err)
 	r.True(called)
 
@@ -266,13 +303,17 @@ func Test_MaximiserManager_WindowIsNormal(t *testing.T) {
 
 	mm := MaximiserManager{}
 
+	ctx := context.Background()
+
+	_, err := mm.WindowIsNormal(ctx)
+	r.Error(err)
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+
 	var called bool
 	mm.WindowIsNormalFn = func(ctx context.Context) (bool, error) {
 		called = true
 		return true, nil
 	}
-
-	ctx := context.Background()
 
 	b, err := mm.WindowIsNormal(ctx)
 	r.NoError(err)
