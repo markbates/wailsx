@@ -10,10 +10,7 @@ import (
 var _ windowx.Maximiser = &MaximiserManager{}
 
 type MaximiserManager struct {
-	IsFullscreen bool
-	IsMaximised  bool
-	IsMinimised  bool
-	IsNormal     bool
+	windowx.MaximiserData
 }
 
 func (mm *MaximiserManager) WindowFullscreen(ctx context.Context) error {

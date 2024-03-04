@@ -2,12 +2,13 @@ package windowx
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/markbates/safe"
 	"github.com/markbates/wailsx/wailsrun"
 )
 
-var _ Maximiser = MaximiserManager{}
+var _ Maximiser = &MaximiserManager{}
 
 type MaximiserManager struct {
 	WindowFullscreenFn   func(ctx context.Context) error
@@ -20,15 +21,26 @@ type MaximiserManager struct {
 	WindowUnfullscreenFn func(ctx context.Context) error
 	WindowUnmaximiseFn   func(ctx context.Context) error
 	WindowUnminimiseFn   func(ctx context.Context) error
+
+	data MaximiserData
 }
 
-func (mm MaximiserManager) WindowFullscreen(ctx context.Context) error {
+func (mm *MaximiserManager) WindowFullscreen(ctx context.Context) error {
+	if mm == nil {
+		return fmt.Errorf("maximiser manager is nil")
+	}
+
 	return safe.Run(func() error {
 		if mm.WindowFullscreenFn == nil {
 			return wailsrun.WindowFullscreen(ctx)
 		}
 
-		return mm.WindowFullscreenFn(ctx)
+		err := mm.WindowFullscreenFn(ctx)
+		if err != nil {
+			return err
+		}
+
+		return mm.data.SetFullscreen()
 	})
 }
 
@@ -80,53 +92,98 @@ func (mm MaximiserManager) WindowIsMinimised(ctx context.Context) (bool, error) 
 	return b, err
 }
 
-func (mm MaximiserManager) WindowMaximise(ctx context.Context) error {
+func (mm *MaximiserManager) WindowMaximise(ctx context.Context) error {
+	if mm == nil {
+		return fmt.Errorf("maximiser manager is nil")
+	}
+
 	return safe.Run(func() error {
 		if mm.WindowMaximiseFn == nil {
 			return wailsrun.WindowMaximise(ctx)
 		}
 
-		return mm.WindowMaximiseFn(ctx)
+		err := mm.WindowMaximiseFn(ctx)
+		if err != nil {
+			return err
+		}
+
+		return mm.data.SetMaximised()
 	})
 }
 
-func (mm MaximiserManager) WindowMinimise(ctx context.Context) error {
+func (mm *MaximiserManager) WindowMinimise(ctx context.Context) error {
+	if mm == nil {
+		return fmt.Errorf("maximiser manager is nil")
+	}
+
 	return safe.Run(func() error {
 		if mm.WindowMinimiseFn == nil {
 			return wailsrun.WindowMinimise(ctx)
 		}
 
-		return mm.WindowMinimiseFn(ctx)
+		err := mm.WindowMinimiseFn(ctx)
+		if err != nil {
+			return err
+		}
+
+		return mm.data.SetMinimised()
 	})
 }
 
-func (mm MaximiserManager) WindowUnfullscreen(ctx context.Context) error {
+func (mm *MaximiserManager) WindowUnfullscreen(ctx context.Context) error {
+	if mm == nil {
+		return fmt.Errorf("maximiser manager is nil")
+	}
+
 	return safe.Run(func() error {
 		if mm.WindowUnfullscreenFn == nil {
 			return wailsrun.WindowUnfullscreen(ctx)
 		}
 
-		return mm.WindowUnfullscreenFn(ctx)
+		err := mm.WindowUnfullscreenFn(ctx)
+		if err != nil {
+			return err
+		}
+
+		return mm.data.SetUnfullscreen()
 	})
 }
 
-func (mm MaximiserManager) WindowUnmaximise(ctx context.Context) error {
+func (mm *MaximiserManager) WindowUnmaximise(ctx context.Context) error {
+	if mm == nil {
+		return fmt.Errorf("maximiser manager is nil")
+	}
+
 	return safe.Run(func() error {
 		if mm.WindowUnmaximiseFn == nil {
 			return wailsrun.WindowUnmaximise(ctx)
 		}
 
-		return mm.WindowUnmaximiseFn(ctx)
+		err := mm.WindowUnmaximiseFn(ctx)
+		if err != nil {
+			return err
+		}
+
+		return mm.data.SetUnmaximised()
 	})
 }
 
-func (mm MaximiserManager) WindowUnminimise(ctx context.Context) error {
+func (mm *MaximiserManager) WindowUnminimise(ctx context.Context) error {
+	if mm == nil {
+		return fmt.Errorf("maximiser manager is nil")
+	}
+
 	return safe.Run(func() error {
 		if mm.WindowUnminimiseFn == nil {
 			return wailsrun.WindowUnminimise(ctx)
 		}
 
-		return mm.WindowUnminimiseFn(ctx)
+		err := mm.WindowUnminimiseFn(ctx)
+		if err != nil {
+			return err
+		}
+
+		return mm.data.SetUnminimised()
 	})
 }
 
@@ -140,7 +197,11 @@ func (mm MaximiserManager) WindowIsNormal(ctx context.Context) (bool, error) {
 
 		var err error
 		b, err = mm.WindowIsNormalFn(ctx)
-		return err
+		if err != nil {
+			return err
+		}
+
+		return nil
 	})
 
 	return b, err
