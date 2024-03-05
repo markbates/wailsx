@@ -10,8 +10,8 @@ import (
 	"github.com/markbates/wailsx/wailsrun"
 )
 
-func NewManager() Manager {
-	return Manager{}
+func NewManager() *Manager {
+	return &Manager{}
 }
 
 var _ EventManager = &Manager{}

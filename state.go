@@ -17,8 +17,8 @@ var _ Startuper = &State{}
 var _ plugins.Plugin = &State{}
 
 type State struct {
-	eventx.Manager // emit events
-	*Layout        // layout of the app
+	*eventx.Manager // emit events
+	*Layout         // layout of the app
 
 	Name    string          // application name
 	Plugins plugins.Plugins // plugins for the state
