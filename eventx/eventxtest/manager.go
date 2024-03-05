@@ -1,155 +1,145 @@
 package eventxtest
 
-import (
-	"context"
-	"fmt"
-	"sync"
+// type CallbackCounter = eventx.CallbackCounter
 
-	"github.com/markbates/wailsx/eventx"
-	"github.com/markbates/wailsx/wailsrun"
-)
+// var _ eventx.EventManager = &Manager{}
 
-var _ eventx.EventManager = &Manager{}
+// type Manager struct {
+// 	eventx.EventsData
+// 	mu sync.Mutex
+// }
 
-type Manager struct {
-	Callbacks map[string]*CallbackCounter
-	Emitted   map[string][]any // emitted events
-	Caught    map[string][]any // caught events
+// func NewManager() (*Manager, error) {
+// 	m := &Manager{}
+// 	if err := m.init(); err != nil {
+// 		return nil, err
+// 	}
+// 	return m, nil
+// }
 
-	mu sync.Mutex
-}
+// func (ev *Manager) EventsEmit(ctx context.Context, event string, data ...any) error {
+// 	if err := ev.init(); err != nil {
+// 		return err
+// 	}
 
-func NewManager() (*Manager, error) {
-	m := &Manager{}
-	if err := m.init(); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
+// 	ev.mu.Lock()
+// 	defer ev.mu.Unlock()
 
-func (ev *Manager) EventsEmit(ctx context.Context, event string, data ...any) error {
-	if err := ev.init(); err != nil {
-		return err
-	}
+// 	ev.Emitted[event] = append(ev.Emitted[event], data...)
 
-	ev.mu.Lock()
-	defer ev.mu.Unlock()
+// 	cb, ok := ev.Callbacks[event]
+// 	if !ok {
+// 		return nil
+// 	}
 
-	ev.Emitted[event] = append(ev.Emitted[event], data...)
+// 	ev.Caught[event] = append(ev.Caught[event], data...)
 
-	cb, ok := ev.Callbacks[event]
-	if !ok {
-		return nil
-	}
+// 	if err := cb.Call(data...); err != nil {
+// 		return err
+// 	}
 
-	ev.Caught[event] = append(ev.Caught[event], data...)
+// 	ev.Callbacks[event] = cb
 
-	if err := cb.Call(data...); err != nil {
-		return err
-	}
+// 	return nil
+// }
 
-	ev.Callbacks[event] = cb
+// func (ev *Manager) EventsOff(ctx context.Context, event string, additional ...string) error {
+// 	if err := ev.init(); err != nil {
+// 		return err
+// 	}
 
-	return nil
-}
+// 	ev.mu.Lock()
+// 	defer ev.mu.Unlock()
 
-func (ev *Manager) EventsOff(ctx context.Context, event string, additional ...string) error {
-	if err := ev.init(); err != nil {
-		return err
-	}
+// 	evts := append([]string{event}, additional...)
+// 	for _, evt := range evts {
+// 		if cc, ok := ev.Callbacks[evt]; ok {
+// 			cc.Off = true
+// 			ev.Callbacks[evt] = cc
+// 		}
+// 	}
 
-	ev.mu.Lock()
-	defer ev.mu.Unlock()
+// 	return nil
+// }
 
-	evts := append([]string{event}, additional...)
-	for _, evt := range evts {
-		if cc, ok := ev.Callbacks[evt]; ok {
-			cc.Off = true
-			ev.Callbacks[evt] = cc
-		}
-	}
+// func (ev *Manager) EventsOffAll(ctx context.Context) error {
+// 	if err := ev.init(); err != nil {
+// 		return err
+// 	}
 
-	return nil
-}
+// 	ev.mu.Lock()
+// 	defer ev.mu.Unlock()
 
-func (ev *Manager) EventsOffAll(ctx context.Context) error {
-	if err := ev.init(); err != nil {
-		return err
-	}
+// 	for event, cc := range ev.Callbacks {
+// 		cc.Off = true
+// 		ev.Callbacks[event] = cc
+// 	}
 
-	ev.mu.Lock()
-	defer ev.mu.Unlock()
+// 	return nil
+// }
 
-	for event, cc := range ev.Callbacks {
-		cc.Off = true
-		ev.Callbacks[event] = cc
-	}
+// func (ev *Manager) EventsOn(ctx context.Context, event string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
+// 	if ev == nil {
+// 		return nil, fmt.Errorf("event manager is nil")
+// 	}
 
-	return nil
-}
+// 	ev.mu.Lock()
+// 	defer ev.mu.Unlock()
 
-func (ev *Manager) EventsOn(ctx context.Context, event string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
-	if ev == nil {
-		return nil, fmt.Errorf("event manager is nil")
-	}
+// 	ev.Callbacks[event] = &CallbackCounter{
+// 		Callback: callback,
+// 	}
 
-	ev.mu.Lock()
-	defer ev.mu.Unlock()
+// 	fn := func() error {
+// 		return ev.EventsOff(ctx, event)
+// 	}
 
-	ev.Callbacks[event] = &CallbackCounter{
-		Callback: callback,
-	}
+// 	return fn, nil
+// }
 
-	fn := func() error {
-		return ev.EventsOff(ctx, event)
-	}
+// func (ev *Manager) EventsOnMultiple(ctx context.Context, event string, callback wailsrun.CallbackFn, counter int) (wailsrun.CancelFn, error) {
+// 	if ev == nil {
+// 		return nil, fmt.Errorf("event manager is nil")
+// 	}
 
-	return fn, nil
-}
+// 	ev.mu.Lock()
+// 	defer ev.mu.Unlock()
 
-func (ev *Manager) EventsOnMultiple(ctx context.Context, event string, callback wailsrun.CallbackFn, counter int) (wailsrun.CancelFn, error) {
-	if ev == nil {
-		return nil, fmt.Errorf("event manager is nil")
-	}
+// 	ev.Callbacks[event] = &CallbackCounter{
+// 		Callback: callback,
+// 		MaxCalls: counter,
+// 	}
 
-	ev.mu.Lock()
-	defer ev.mu.Unlock()
+// 	fn := func() error {
+// 		return ev.EventsOff(ctx, event)
+// 	}
 
-	ev.Callbacks[event] = &CallbackCounter{
-		Callback: callback,
-		MaxCalls: counter,
-	}
+// 	return fn, nil
+// }
 
-	fn := func() error {
-		return ev.EventsOff(ctx, event)
-	}
+// func (ev *Manager) EventsOnce(ctx context.Context, event string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
+// 	return ev.EventsOnMultiple(ctx, event, callback, 1)
+// }
 
-	return fn, nil
-}
+// func (ev *Manager) init() error {
+// 	if ev == nil {
+// 		return fmt.Errorf("event manager is nil")
+// 	}
 
-func (ev *Manager) EventsOnce(ctx context.Context, event string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
-	return ev.EventsOnMultiple(ctx, event, callback, 1)
-}
+// 	ev.mu.Lock()
+// 	defer ev.mu.Unlock()
 
-func (ev *Manager) init() error {
-	if ev == nil {
-		return fmt.Errorf("event manager is nil")
-	}
+// 	if ev.Callbacks == nil {
+// 		ev.Callbacks = map[string]*CallbackCounter{}
+// 	}
 
-	ev.mu.Lock()
-	defer ev.mu.Unlock()
+// 	if ev.Emitted == nil {
+// 		ev.Emitted = map[string][]any{}
+// 	}
 
-	if ev.Callbacks == nil {
-		ev.Callbacks = map[string]*CallbackCounter{}
-	}
+// 	if ev.Caught == nil {
+// 		ev.Caught = map[string][]any{}
+// 	}
 
-	if ev.Emitted == nil {
-		ev.Emitted = map[string][]any{}
-	}
-
-	if ev.Caught == nil {
-		ev.Caught = map[string][]any{}
-	}
-
-	return nil
-}
+// 	return nil
+// }

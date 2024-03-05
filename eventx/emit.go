@@ -2,13 +2,18 @@ package eventx
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/markbates/safe"
 	"github.com/markbates/wailsx/msgx"
 	"github.com/markbates/wailsx/wailsrun"
 )
 
-func (em Manager) EventsEmit(ctx context.Context, event string, args ...any) (err error) {
+func (em *Manager) EventsEmit(ctx context.Context, event string, args ...any) (err error) {
+	if em == nil {
+		return fmt.Errorf("error manager is nil")
+	}
+
 	if len(args) == 0 {
 		args = []any{event}
 	}
@@ -21,13 +26,24 @@ func (em Manager) EventsEmit(ctx context.Context, event string, args ...any) (er
 	}
 
 	err = safe.Run(func() error {
+		events := []string{event}
 		if !em.DisableWildcardEmits {
-			if err := fn(ctx, "*", args...); err != nil {
+			events = append(events, "*")
+		}
+
+		for _, e := range events {
+			err := fn(ctx, e, args...)
+			if err != nil {
+				return err
+			}
+
+			err = em.data.EmitEvent(e, args...)
+			if err != nil {
 				return err
 			}
 		}
 
-		return fn(ctx, event, args...)
+		return nil
 	})
 
 	if err != nil {
@@ -37,13 +53,12 @@ func (em Manager) EventsEmit(ctx context.Context, event string, args ...any) (er
 	return nil
 }
 
-func (em Manager) handleArgs(event string, args ...any) []any {
-	if len(args) == 0 {
-		return args
-	}
-
+func (em *Manager) handleArgs(event string, args ...any) []any {
 	for i, a := range args {
 		switch t := a.(type) {
+		case msgx.Messenger:
+			//  do nothing
+			// it's already a message
 		case error:
 			args[i] = msgx.ErrorMessage{
 				Err: t,
@@ -61,9 +76,6 @@ func (em Manager) handleArgs(event string, args ...any) []any {
 				Time:  em.Now(),
 				Data:  t,
 			}
-		case msgx.Messenger:
-			//  do nothing
-			// it's already a message
 		default:
 			args[i] = msgx.Message{
 				Event: event,

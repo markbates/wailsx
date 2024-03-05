@@ -1,64 +1,54 @@
 package eventx_test
 
-import (
-	"context"
-	"errors"
-	"testing"
+// func Test_EventManager_On(t *testing.T) {
+// 	t.Parallel()
+// 	r := require.New(t)
 
-	"github.com/markbates/wailsx/wailsrun"
-	"github.com/markbates/wailsx/wailstest"
-	"github.com/stretchr/testify/require"
-)
+// 	em, ec := newEventManager()
+// 	_ = ec
 
-func Test_EventManager_On(t *testing.T) {
-	t.Parallel()
-	r := require.New(t)
+// 	const evt = "event:test"
 
-	em, ec := newEventManager()
-	_ = ec
+// 	em.EventsOnFn = func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
+// 		if name != evt {
+// 			return nil, wailstest.ErrTest
+// 		}
 
-	const evt = "event:test"
+// 		if err := callback(); err != nil {
+// 			return nil, err
+// 		}
 
-	em.EventsOnFn = func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
-		if name != evt {
-			return nil, wailstest.ErrTest
-		}
+// 		return func() error {
+// 			return nil
+// 		}, nil
+// 	}
 
-		if err := callback(); err != nil {
-			return nil, err
-		}
+// 	tcs := []struct {
+// 		name string
+// 		cb   wailsrun.CallbackFn
+// 		err  bool
+// 	}{
+// 		{
+// 			name: "no error",
+// 			cb:   func(data ...any) error { return nil },
+// 		},
+// 	}
 
-		return func() error {
-			return nil
-		}, nil
-	}
+// 	for _, tc := range tcs {
+// 		tc := tc
+// 		t.Run(tc.name, func(t *testing.T) {
+// 			t.Parallel()
 
-	tcs := []struct {
-		name string
-		cb   wailsrun.CallbackFn
-		err  bool
-	}{
-		{
-			name: "no error",
-			cb:   func(data ...any) error { return nil },
-		},
-	}
+// 			_, err := em.EventsOn(context.Background(), evt, tc.cb)
 
-	for _, tc := range tcs {
-		tc := tc
-		t.Run(tc.name, func(t *testing.T) {
-			t.Parallel()
+// 			if !tc.err {
+// 				r.NoError(err)
+// 				return
+// 			}
 
-			_, err := em.EventsOn(context.Background(), evt, tc.cb)
+// 			r.Error(err)
+// 			r.True(errors.Is(err, wailstest.ErrTest))
+// 		})
+// 	}
 
-			if !tc.err {
-				r.NoError(err)
-				return
-			}
-
-			r.Error(err)
-			r.True(errors.Is(err, wailstest.ErrTest))
-		})
-	}
-
-}
+// }

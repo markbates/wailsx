@@ -1,15 +1,12 @@
-package eventx_test
+package eventx
 
 import (
-	. "github.com/markbates/wailsx/eventx"
 	"github.com/markbates/wailsx/wailstest"
 )
 
-func newEventManager() (Manager, *EmitCatcher) {
-	ec := &EmitCatcher{}
+func newTestManager() Manager {
 	return Manager{
-		EventsEmitFn:         ec.Emit,
 		DisableWildcardEmits: true,
 		NowFn:                wailstest.NowTime,
-	}, ec
+	}
 }
