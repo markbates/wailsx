@@ -85,7 +85,6 @@ func (ev *EventsData) AddCallback(event string, cb wailsrun.CallbackFn, max int)
 	defer ev.mu.Unlock()
 
 	cc := &CallbackCounter{
-		Callback: cb,
 		MaxCalls: max,
 	}
 

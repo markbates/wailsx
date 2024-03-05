@@ -3,15 +3,12 @@ package eventx
 import (
 	"fmt"
 	"sync"
-
-	"github.com/markbates/wailsx/wailsrun"
 )
 
 type CallbackCounter struct {
-	Callback wailsrun.CallbackFn `json:"-"`
-	Called   int                 `json:"called"`
-	MaxCalls int                 `json:"max_calls"`
-	Off      bool                `json:"off"`
+	Called   int  `json:"called"`
+	MaxCalls int  `json:"max_calls"`
+	Off      bool `json:"off"`
 
 	my sync.RWMutex
 }
