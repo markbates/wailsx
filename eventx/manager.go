@@ -48,6 +48,7 @@ var _ statedata.DataProvider[*EventsData] = &Manager{}
 
 type Manager struct {
 	DisableWildcardEmits bool
+	DisableStateData     bool
 
 	EventsEmitFn       func(ctx context.Context, name string, data ...any) error
 	EventsOffAllFn     func(ctx context.Context) error
@@ -90,6 +91,8 @@ func (em *Manager) init(ctx context.Context) error {
 	if em == nil {
 		return fmt.Errorf("error manager is nil")
 	}
+
+	em.data.DisableStateData = em.DisableStateData
 
 	return nil
 }

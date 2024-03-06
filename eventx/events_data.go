@@ -13,9 +13,10 @@ import (
 var _ statedata.DataProvider[*EventsData] = &EventsData{}
 
 type EventsData struct {
-	Callbacks map[string]*CallbackCounter `json:"callbacks"`
-	Emitted   map[string][]Event          `json:"emitted"` // emitted events
-	Caught    map[string][]Event          `json:"caught"`  // caught events
+	DisableStateData bool                        `json:"-"`
+	Callbacks        map[string]*CallbackCounter `json:"callbacks"`
+	Emitted          map[string][]Event          `json:"emitted"` // emitted events
+	Caught           map[string][]Event          `json:"caught"`  // caught events
 
 	mu sync.Mutex
 }
@@ -23,6 +24,10 @@ type EventsData struct {
 func (ev *EventsData) EmitEvent(event string, now time.Time, data ...any) error {
 	if err := ev.init(); err != nil {
 		return err
+	}
+
+	if ev.DisableStateData {
+		return nil
 	}
 
 	if now.IsZero() {
@@ -110,6 +115,10 @@ func (ev *EventsData) StateData(ctx context.Context) (statedata.Data[*EventsData
 
 	if err := ev.init(); err != nil {
 		return sd, err
+	}
+
+	if ev.DisableStateData {
+		sd.Data = nil
 	}
 
 	return sd, nil

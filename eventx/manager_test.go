@@ -101,3 +101,24 @@ func Test_Manager_StateData_JSON(t *testing.T) {
 
 	r.Equal(exp, act)
 }
+
+func Test_Manager_DisableStateData(t *testing.T) {
+	t.Parallel()
+	r := require.New(t)
+
+	ctx := context.Background()
+
+	const name = "test:event"
+
+	em := NewNOOPManager()
+	em.DisableStateData = true
+
+	for i := 0; i < 5; i++ {
+		err := em.EventsEmit(ctx, name, i)
+		r.NoError(err)
+	}
+
+	sd, err := em.StateData(ctx)
+	r.NoError(err)
+	r.Nil(sd.Data)
+}

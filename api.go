@@ -18,7 +18,7 @@ type WailsAPI interface {
 	logx.WailsLogger
 	windowx.WindowManager
 
-	StateData(context.Context) (statedata.Data[*APIData], error)
+	APIStateDataProvider
 }
 
 var _ WailsAPI = &API{}
@@ -50,24 +50,26 @@ func (api *API) StateData(ctx context.Context) (statedata.Data[*APIData], error)
 
 	data := &APIData{}
 
-	if x, ok := api.WindowManager.(interface {
-		StateData(context.Context) (statedata.Data[*windowx.WindowData], error)
-	}); ok {
+	if x, ok := api.WindowManager.(windowx.StateDataProvider); ok {
 		wd, err := x.StateData(ctx)
 		if err != nil {
 			return sd, err
 		}
-		data.WindowData = wd.Data
+
+		if wd.Data != nil {
+			data.WindowData = wd.Data
+		}
 	}
 
-	if x, ok := api.EventManager.(interface {
-		StateData(context.Context) (statedata.Data[*eventx.EventsData], error)
-	}); ok {
+	if x, ok := api.EventManager.(eventx.StateDataProvider); ok {
 		ed, err := x.StateData(ctx)
 		if err != nil {
 			return sd, err
 		}
-		data.EventsData = ed.Data
+
+		if ed.Data != nil {
+			data.EventsData = ed.Data
+		}
 	}
 
 	return sd, nil
