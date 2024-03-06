@@ -17,6 +17,6 @@ func (pm *PositionManger) StateData(ctx context.Context) (statedata.Data[*Positi
 	return pm.data.StateData(ctx)
 }
 
-func (th ThemeManager) StateData(ctx context.Context) (statedata.Data[ThemerData], error) {
+func (th Themer) StateData(ctx context.Context) (statedata.Data[ThemeData], error) {
 	return th.data.StateData(ctx)
 }

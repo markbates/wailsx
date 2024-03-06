@@ -53,7 +53,7 @@ func Test_DialogManager_MessageDialog(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			r := require.New(t)
 
-			dm := DialogManager{
+			dm := Manager{
 				MessageDialogFn: tc.fn,
 			}
 
@@ -115,7 +115,7 @@ func Test_DialogManager_OpenDirectoryDialog(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			r := require.New(t)
 
-			dm := DialogManager{
+			dm := Manager{
 				OpenDirectoryDialogFn: tc.fn,
 			}
 
@@ -176,7 +176,7 @@ func Test_DialogManager_OpenFileDialog(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			r := require.New(t)
 
-			dm := DialogManager{
+			dm := Manager{
 				OpenFileDialogFn: tc.fn,
 			}
 
@@ -237,7 +237,7 @@ func Test_DialogManager_OpenMultipleFilesDialog(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			r := require.New(t)
 
-			dm := DialogManager{
+			dm := Manager{
 				OpenMultipleFilesDialogFn: tc.fn,
 			}
 
@@ -298,7 +298,7 @@ func Test_DialogManager_SaveFileDialog(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			r := require.New(t)
 
-			dm := DialogManager{
+			dm := Manager{
 				SaveFileDialogFn: tc.fn,
 			}
 

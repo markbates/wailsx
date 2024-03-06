@@ -7,7 +7,7 @@ import (
 	"github.com/markbates/wailsx/statedata"
 )
 
-type ThemerData struct {
+type ThemeData struct {
 	BackgroundColour struct {
 		R uint8
 		G uint8
@@ -19,13 +19,13 @@ type ThemerData struct {
 	IsSystemTheme bool
 }
 
-func (th ThemerData) PluginName() string {
+func (th ThemeData) PluginName() string {
 	return fmt.Sprintf("%T", th)
 }
 
-func (th ThemerData) StateData(ctx context.Context) (statedata.Data[ThemerData], error) {
-	return statedata.Data[ThemerData]{
-		Name: ThemerStateDataName,
+func (th ThemeData) StateData(ctx context.Context) (statedata.Data[ThemeData], error) {
+	return statedata.Data[ThemeData]{
+		Name: ThemeStataDataName,
 		Data: th,
 	}, nil
 }

@@ -7,13 +7,13 @@ import (
 	"github.com/markbates/wailsx/wailsrun"
 )
 
-var _ WindowManager = Manager{}
+var _ WindowManager = &Manager{}
 
 type Manager struct {
 	Maximiser
 	Positioner
 	Reloader
-	Themer
+	ThemeManager
 	Toggler
 
 	ScreenGetAllFn         func(ctx context.Context) ([]Screen, error)
@@ -25,21 +25,21 @@ type Manager struct {
 
 func NewManager() *Manager {
 	return &Manager{
-		Maximiser:  &MaximiseManager{},
-		Positioner: &PositionManger{},
-		Reloader:   &Reload{},
-		Themer:     &ThemeManager{},
-		Toggler:    &Toggle{},
+		Maximiser:    &MaximiseManager{},
+		Positioner:   &PositionManger{},
+		Reloader:     &Reload{},
+		ThemeManager: &Themer{},
+		Toggler:      &Toggle{},
 	}
 }
 
 func NewNOOPManager() *Manager {
 	return &Manager{
-		Maximiser:  NewNOOPMaximiseManager(),
-		Positioner: NewNOOPPositionManager(),
-		Reloader:   NewNOOPReload(),
-		Themer:     NewNOOPThemeManager(),
-		Toggler:    NewNOOPToggle(),
+		Maximiser:    NewNOOPMaximiseManager(),
+		Positioner:   NewNOOPPositionManager(),
+		Reloader:     NewNOOPReload(),
+		ThemeManager: NewNOOPThemer(),
+		Toggler:      NewNOOPToggle(),
 		ScreenGetAllFn: func(ctx context.Context) ([]Screen, error) {
 			return nil, nil
 		},

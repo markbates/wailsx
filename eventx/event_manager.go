@@ -14,3 +14,8 @@ type EventManager interface {
 	EventsOnMultiple(ctx context.Context, name string, callback wailsrun.CallbackFn, counter int) (wailsrun.CancelFn, error)
 	EventsOnce(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error)
 }
+
+type EventManagerDataProvider interface {
+	EventManager
+	StateDataProvider
+}

@@ -5,6 +5,6 @@ const (
 	MaximiserStateDataName  = "maximiser"
 	PositionerStateDataName = "positioner"
 	ReloaderStateDataName   = "reloader"
-	ThemerStateDataName     = "themer"
+	ThemeStataDataName      = "themer"
 	TogglerStateDataName    = "toggler"
 )

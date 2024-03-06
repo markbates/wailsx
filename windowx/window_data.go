@@ -9,7 +9,7 @@ import (
 type WindowData struct {
 	*MaximiserData  `json:"maximiser_data,omitempty"`
 	*PositionerData `json:"positioner_data,omitempty"`
-	*ThemerData     `json:"themer_data,omitempty"`
+	*ThemeData      `json:"themer_data,omitempty"`
 }
 
 func (wm *Manager) StateData(ctx context.Context) (statedata.Data[*WindowData], error) {
@@ -42,14 +42,14 @@ func (wm *Manager) StateData(ctx context.Context) (statedata.Data[*WindowData], 
 		data.PositionerData = pd.Data
 	}
 
-	if x, ok := wm.Themer.(interface {
-		StateData(context.Context) (statedata.Data[*ThemerData], error)
+	if x, ok := wm.ThemeManager.(interface {
+		StateData(context.Context) (statedata.Data[*ThemeData], error)
 	}); ok {
 		td, err := x.StateData(ctx)
 		if err != nil {
 			return sd, err
 		}
-		data.ThemerData = td.Data
+		data.ThemeData = td.Data
 	}
 
 	sd.Data = data

@@ -7,15 +7,17 @@ import (
 	"github.com/markbates/wailsx/dialogx"
 	"github.com/markbates/wailsx/eventx"
 	"github.com/markbates/wailsx/logx"
+	"github.com/markbates/wailsx/menux"
 	"github.com/markbates/wailsx/statedata"
 	"github.com/markbates/wailsx/wailsrun"
 	"github.com/markbates/wailsx/windowx"
 )
 
 type WailsAPI interface {
-	dialogx.Dialoger
+	dialogx.DialogManager
 	eventx.EventManager
 	logx.WailsLogger
+	menux.MenuManager
 	windowx.WindowManager
 
 	APIStateDataProvider
@@ -25,17 +27,19 @@ var _ WailsAPI = &API{}
 
 func NewAPI() *API {
 	return &API{
-		Dialoger:      dialogx.DialogManager{},
+		DialogManager: dialogx.Manager{},
 		EventManager:  eventx.NewManager(),
 		WailsLogger:   logx.NewLogger(os.Stdout, wailsrun.INFO),
+		MenuManager:   menux.Manager{},
 		WindowManager: windowx.NewManager(),
 	}
 }
 
 type API struct {
-	dialogx.Dialoger
+	dialogx.DialogManager
 	eventx.EventManager
 	logx.WailsLogger
+	menux.MenuManager
 	windowx.WindowManager
 }
 

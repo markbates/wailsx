@@ -10,11 +10,11 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func Test_ThemeManager_WindowSetDarkTheme(t *testing.T) {
+func Test_Themer_WindowSetDarkTheme(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 
-	tm := ThemeManager{}
+	tm := Themer{}
 
 	ctx := context.Background()
 	err := tm.WindowSetDarkTheme(ctx)
@@ -40,11 +40,11 @@ func Test_ThemeManager_WindowSetDarkTheme(t *testing.T) {
 	r.True(errors.Is(err, wailstest.ErrTest))
 }
 
-func Test_ThemeManager_WindowSetLightTheme(t *testing.T) {
+func Test_Themer_WindowSetLightTheme(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 
-	tm := ThemeManager{}
+	tm := Themer{}
 
 	ctx := context.Background()
 	err := tm.WindowSetLightTheme(ctx)
@@ -70,11 +70,11 @@ func Test_ThemeManager_WindowSetLightTheme(t *testing.T) {
 	r.True(errors.Is(err, wailstest.ErrTest))
 }
 
-func Test_ThemeManager_WindowSetSystemDefaultTheme(t *testing.T) {
+func Test_Themer_WindowSetSystemDefaultTheme(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 
-	tm := ThemeManager{}
+	tm := Themer{}
 
 	ctx := context.Background()
 	err := tm.WindowSetSystemDefaultTheme(ctx)
@@ -100,11 +100,11 @@ func Test_ThemeManager_WindowSetSystemDefaultTheme(t *testing.T) {
 	r.True(errors.Is(err, wailstest.ErrTest))
 }
 
-func Test_ThemeManager_WindowSetBackgroundColour(t *testing.T) {
+func Test_Themer_WindowSetBackgroundColour(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 
-	tm := ThemeManager{}
+	tm := Themer{}
 
 	ctx := context.Background()
 	err := tm.WindowSetBackgroundColour(ctx, 0, 0, 0, 0)

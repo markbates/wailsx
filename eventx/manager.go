@@ -44,7 +44,7 @@ func NewNOOPManager() *Manager {
 }
 
 var _ EventManager = &Manager{}
-var _ statedata.DataProvider[*EventsData] = &Manager{}
+var _ StateDataProvider = &Manager{}
 
 type Manager struct {
 	DisableWildcardEmits bool
