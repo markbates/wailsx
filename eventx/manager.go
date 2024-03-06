@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"sync"
 	"time"
 
 	"github.com/markbates/wailsx/statedata"
@@ -11,7 +12,9 @@ import (
 )
 
 func NewManager() *Manager {
-	return &Manager{}
+	return &Manager{
+		NowFn: time.Now,
+	}
 }
 
 var _ EventManager = &Manager{}
@@ -29,6 +32,7 @@ type Manager struct {
 
 	NowFn func() time.Time
 
+	mu   sync.RWMutex
 	data EventsData
 }
 
@@ -54,4 +58,12 @@ func (em *Manager) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.MarshalIndent(&em.data, "", "  ")
+}
+
+func (em *Manager) init(ctx context.Context) error {
+	if em == nil {
+		return fmt.Errorf("error manager is nil")
+	}
+
+	return nil
 }

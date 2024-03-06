@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/markbates/wailsx/msgx"
+	"github.com/markbates/wailsx/eventx/msgx"
 	"github.com/markbates/wailsx/wailsrun"
 	"github.com/markbates/wailsx/wailstest"
 	"github.com/stretchr/testify/require"
@@ -171,9 +171,10 @@ func Test_Manager_Emit_Args(t *testing.T) {
 
 			evnt := ed.Emitted[event][0]
 
-			msg, ok := evnt.(msgx.Messenger)
-			r.True(ok, "evnt is not a Messenger", evnt)
+			msgs := evnt.Data
+			r.Len(msgs, 1)
 
+			msg := msgs[0]
 			r.Equal(tc.exp.MsgEvent(), msg.MsgEvent())
 			r.Equal(tc.exp.MsgText(), msg.MsgText())
 			r.Equal(tc.exp.MsgTime(), msg.MsgTime())

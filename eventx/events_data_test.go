@@ -3,6 +3,7 @@ package eventx
 import (
 	"testing"
 
+	"github.com/markbates/wailsx/wailstest"
 	"github.com/stretchr/testify/require"
 )
 
@@ -20,7 +21,7 @@ func Test_EventsData_EmitEvent(t *testing.T) {
 
 	r.NoError(err)
 
-	err = ev.EmitEvent(event, "test")
+	err = ev.EmitEvent(event, wailstest.NowTime(), "test")
 	r.NoError(err)
 
 	r.Len(ev.Emitted[event], 1)

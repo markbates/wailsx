@@ -2,9 +2,11 @@ package eventx
 
 import (
 	"context"
+	"os"
 	"strings"
 	"testing"
 
+	"github.com/markbates/wailsx/eventx/msgx"
 	"github.com/markbates/wailsx/wailstest"
 	"github.com/stretchr/testify/require"
 )
@@ -31,13 +33,32 @@ func Test_Manager_StateData_JSON(t *testing.T) {
 	_, err := em.StateData(ctx)
 	r.Error(err)
 
+	const name = "test:event"
+
+	msg := msgx.Message{
+		Event: name,
+		Data:  1,
+		Text:  "my arg",
+		Time:  wailstest.NowTime(),
+	}
+
+	event := Event{
+		Name:      name,
+		Data:      []msgx.Messenger{msg},
+		EmittedAt: wailstest.NowTime(),
+	}
+
 	em = &Manager{
 		data: EventsData{
-			Emitted: map[string][]any{
-				"test:event": {"my arg"},
+			Emitted: map[string][]Event{
+				"test:event": {
+					event,
+				},
 			},
-			Caught: map[string][]any{
-				"test:event": {"my arg"},
+			Caught: map[string][]Event{
+				"test:event": {
+					event,
+				},
 			},
 			Callbacks: map[string]*CallbackCounter{
 				"test:event": {
@@ -62,26 +83,19 @@ func Test_Manager_StateData_JSON(t *testing.T) {
 	act := string(b)
 	act = strings.TrimSpace(act)
 
-	exp := `
-{
-  "callbacks": {
-    "test:event": {
-      "called": 3,
-      "max_calls": 5,
-      "off": false
-    }
-  },
-  "emitted": {
-    "test:event": [
-      "my arg"
-    ]
-  },
-  "caught": {
-    "test:event": [
-      "my arg"
-    ]
-  }
-}`
+	// fmt.Println(act)
+
+	// f, err := os.Create("testdata/state.json")
+	// r.NoError(err)
+	// enc := json.NewEncoder(f)
+	// enc.SetIndent("", "  ")
+	// r.NoError(enc.Encode(data))
+	// r.NoError(f.Close())
+
+	b, err = os.ReadFile("testdata/state.json")
+	r.NoError(err)
+
+	exp := string(b)
 
 	exp = strings.TrimSpace(exp)
 

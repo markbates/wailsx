@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"sync"
+	"time"
 
 	"github.com/markbates/wailsx/statedata"
 	"github.com/markbates/wailsx/wailsrun"
@@ -13,21 +14,30 @@ var _ statedata.StateDataProvider[*EventsData] = &EventsData{}
 
 type EventsData struct {
 	Callbacks map[string]*CallbackCounter `json:"callbacks"`
-	Emitted   map[string][]any            `json:"emitted"` // emitted events
-	Caught    map[string][]any            `json:"caught"`  // caught events
+	Emitted   map[string][]Event          `json:"emitted"` // emitted events
+	Caught    map[string][]Event          `json:"caught"`  // caught events
 
 	mu sync.Mutex
 }
 
-func (ev *EventsData) EmitEvent(event string, data ...any) error {
+func (ev *EventsData) EmitEvent(event string, now time.Time, data ...any) error {
 	if err := ev.init(); err != nil {
 		return err
+	}
+
+	if now.IsZero() {
+		now = time.Now()
 	}
 
 	ev.mu.Lock()
 	defer ev.mu.Unlock()
 
-	ev.Emitted[event] = append(ev.Emitted[event], data...)
+	envt, err := NewEvent(event, now, data...)
+	if err != nil {
+		return err
+	}
+
+	ev.Emitted[event] = append(ev.Emitted[event], envt)
 
 	cc, ok := ev.Callbacks[event]
 	if !ok {
@@ -40,7 +50,7 @@ func (ev *EventsData) EmitEvent(event string, data ...any) error {
 	}
 
 	if b {
-		ev.Caught[event] = append(ev.Caught[event], data...)
+		ev.Caught[event] = append(ev.Caught[event], envt)
 	}
 
 	return nil
@@ -118,11 +128,11 @@ func (ev *EventsData) init() error {
 	}
 
 	if ev.Emitted == nil {
-		ev.Emitted = map[string][]any{}
+		ev.Emitted = map[string][]Event{}
 	}
 
 	if ev.Caught == nil {
-		ev.Caught = map[string][]any{}
+		ev.Caught = map[string][]Event{}
 	}
 	return nil
 }
