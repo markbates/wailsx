@@ -17,7 +17,7 @@ func NewManager() *Manager {
 	}
 }
 
-func NewNOOPManager() *Manager {
+func NopManager() *Manager {
 	return &Manager{
 		NowFn: time.Now,
 		EventsEmitFn: func(ctx context.Context, name string, data ...any) error {

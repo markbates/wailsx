@@ -4,14 +4,15 @@ import (
 	"context"
 
 	"github.com/markbates/safe"
+	"github.com/markbates/wailsx/statedata"
 	"github.com/markbates/wailsx/wailsrun"
 )
 
-var _ WindowManager = &Manager{}
+var _ WindowManagerDataProvider = &Manager{}
 
 type Manager struct {
 	MaximiseManager
-	PositionerManager
+	PositionManager
 	ReloadManager
 	ThemeManager
 	Toggler
@@ -25,21 +26,21 @@ type Manager struct {
 
 func NewManager() *Manager {
 	return &Manager{
-		MaximiseManager:   &Maximiser{},
-		PositionerManager: &Positioner{},
-		ReloadManager:     &Reloader{},
-		ThemeManager:      &Themer{},
-		Toggler:           &Toggle{},
+		MaximiseManager: &Maximiser{},
+		PositionManager: &Positioner{},
+		ReloadManager:   &Reloader{},
+		ThemeManager:    &Themer{},
+		Toggler:         &Toggle{},
 	}
 }
 
-func NewNOOPManager() *Manager {
+func NopManager() *Manager {
 	return &Manager{
-		MaximiseManager:   NewNOOPMaximiser(),
-		PositionerManager: NewNOOPPositioner(),
-		ReloadManager:     NewNOOPReloader(),
-		ThemeManager:      NewNOOPThemer(),
-		Toggler:           NewNOOPToggle(),
+		MaximiseManager: NopMaximiser(),
+		PositionManager: NopPositioner(),
+		ReloadManager:   NopReloader(),
+		ThemeManager:    NopThemer(),
+		Toggler:         NopToggle(),
 
 		ScreenGetAllFn: func(ctx context.Context) ([]Screen, error) {
 			return nil, nil
@@ -126,4 +127,44 @@ func (wm Manager) WindowSetTitle(ctx context.Context, title string) error {
 		}
 		return wm.WindowSetTitleFn(ctx, title)
 	})
+}
+
+func (wm *Manager) StateData(ctx context.Context) (statedata.Data[*WindowData], error) {
+	sd := statedata.Data[*WindowData]{
+		Name: ManagerStateDataName,
+	}
+
+	if wm == nil {
+		return sd, nil
+	}
+
+	data := &WindowData{}
+
+	if x, ok := wm.MaximiseManager.(MaximiseManagerDataProvider); ok {
+		md, err := x.StateData(ctx)
+		if err != nil {
+			return sd, err
+		}
+		data.MaximiserData = md.Data
+	}
+
+	if x, ok := wm.PositionManager.(PositionManagerDataProvider); ok {
+		pd, err := x.StateData(ctx)
+		if err != nil {
+			return sd, err
+		}
+		data.PositionData = pd.Data
+	}
+
+	if x, ok := wm.ThemeManager.(ThemeManagerDataProvider); ok {
+		td, err := x.StateData(ctx)
+		if err != nil {
+			return sd, err
+		}
+		data.ThemeData = td.Data
+	}
+
+	sd.Data = data
+
+	return sd, nil
 }

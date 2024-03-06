@@ -9,7 +9,7 @@ import (
 
 var _ ReloadManager = Reloader{}
 
-func NewNOOPReloader() Reloader {
+func NopReloader() Reloader {
 	return Reloader{
 		WindowReloadFn:    func(ctx context.Context) error { return nil },
 		WindowReloadAppFn: func(ctx context.Context) error { return nil },

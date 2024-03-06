@@ -8,9 +8,9 @@ import (
 	"github.com/markbates/wailsx/statedata"
 )
 
-var _ statedata.DataProvider[*PositionerData] = &PositionerData{}
+var _ statedata.DataProvider[*PositionData] = &PositionData{}
 
-type PositionerData struct {
+type PositionData struct {
 	IsCentered bool
 	X          int
 	Y          int
@@ -24,7 +24,7 @@ type PositionerData struct {
 	my sync.Mutex
 }
 
-func (pd *PositionerData) SetCentered() error {
+func (pd *PositionData) SetCentered() error {
 	if pd == nil {
 		return fmt.Errorf("positioner data is nil")
 	}
@@ -36,7 +36,7 @@ func (pd *PositionerData) SetCentered() error {
 	return nil
 }
 
-func (pd *PositionerData) SetPosition(x, y int) error {
+func (pd *PositionData) SetPosition(x, y int) error {
 	if pd == nil {
 		return fmt.Errorf("positioner data is nil")
 	}
@@ -53,7 +53,7 @@ func (pd *PositionerData) SetPosition(x, y int) error {
 	return nil
 }
 
-func (pd *PositionerData) SetSize(w, h int) error {
+func (pd *PositionData) SetSize(w, h int) error {
 	if pd == nil {
 		return fmt.Errorf("positioner data is nil")
 	}
@@ -70,7 +70,7 @@ func (pd *PositionerData) SetSize(w, h int) error {
 	return nil
 }
 
-func (pd *PositionerData) SetMaxSize(w, h int) error {
+func (pd *PositionData) SetMaxSize(w, h int) error {
 	if pd == nil {
 		return fmt.Errorf("positioner data is nil")
 	}
@@ -87,7 +87,7 @@ func (pd *PositionerData) SetMaxSize(w, h int) error {
 	return nil
 }
 
-func (pd *PositionerData) SetMinSize(w, h int) error {
+func (pd *PositionData) SetMinSize(w, h int) error {
 	if pd == nil {
 		return fmt.Errorf("positioner data is nil")
 	}
@@ -104,12 +104,12 @@ func (pd *PositionerData) SetMinSize(w, h int) error {
 	return nil
 }
 
-func (pd *PositionerData) PluginName() string {
+func (pd *PositionData) PluginName() string {
 	return fmt.Sprintf("%T", pd)
 }
 
-func (pd *PositionerData) StateData(ctx context.Context) (statedata.Data[*PositionerData], error) {
-	return statedata.Data[*PositionerData]{
+func (pd *PositionData) StateData(ctx context.Context) (statedata.Data[*PositionData], error) {
+	return statedata.Data[*PositionData]{
 		Name: PositionerStateDataName,
 		Data: pd,
 	}, nil

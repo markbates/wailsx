@@ -8,9 +8,9 @@ import (
 	"github.com/markbates/wailsx/wailsrun"
 )
 
-var _ MaximiseManager = &Maximiser{}
+var _ MaximiseManagerDataProvider = &Maximiser{}
 
-func NewNOOPMaximiser() *Maximiser {
+func NopMaximiser() *Maximiser {
 	return &Maximiser{
 		WindowFullscreenFn:   func(ctx context.Context) error { return nil },
 		WindowIsFullscreenFn: func(ctx context.Context) (bool, error) { return false, nil },
@@ -60,6 +60,10 @@ func (mm *Maximiser) WindowFullscreen(ctx context.Context) error {
 }
 
 func (mm *Maximiser) WindowIsFullscreen(ctx context.Context) (bool, error) {
+	if mm == nil {
+		return false, fmt.Errorf("maximiser manager is nil")
+	}
+
 	var b bool
 
 	err := safe.Run(func() error {
@@ -76,6 +80,10 @@ func (mm *Maximiser) WindowIsFullscreen(ctx context.Context) (bool, error) {
 }
 
 func (mm *Maximiser) WindowIsMaximised(ctx context.Context) (bool, error) {
+	if mm == nil {
+		return false, fmt.Errorf("maximiser manager is nil")
+	}
+
 	var b bool
 
 	err := safe.Run(func() error {
@@ -92,6 +100,10 @@ func (mm *Maximiser) WindowIsMaximised(ctx context.Context) (bool, error) {
 }
 
 func (mm *Maximiser) WindowIsMinimised(ctx context.Context) (bool, error) {
+	if mm == nil {
+		return false, fmt.Errorf("maximiser manager is nil")
+	}
+
 	var b bool
 
 	err := safe.Run(func() error {
@@ -203,6 +215,10 @@ func (mm *Maximiser) WindowUnminimise(ctx context.Context) error {
 }
 
 func (mm *Maximiser) WindowIsNormal(ctx context.Context) (bool, error) {
+	if mm == nil {
+		return false, fmt.Errorf("maximiser manager is nil")
+	}
+
 	var b bool
 
 	err := safe.Run(func() error {

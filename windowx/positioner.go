@@ -2,16 +2,15 @@ package windowx
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/markbates/safe"
-	"github.com/markbates/wailsx/statedata"
 	"github.com/markbates/wailsx/wailsrun"
 )
 
-var _ PositionerManager = &Positioner{}
-var _ statedata.DataProvider[*PositionerData] = &PositionerData{}
+var _ PositionManager = &Positioner{}
 
-func NewNOOPPositioner() *Positioner {
+func NopPositioner() *Positioner {
 	return &Positioner{
 		WindowCenterFn:      func(ctx context.Context) error { return nil },
 		WindowGetPositionFn: func(ctx context.Context) (int, int, error) { return 0, 0, nil },
@@ -32,10 +31,14 @@ type Positioner struct {
 	WindowSetPositionFn func(ctx context.Context, x int, y int) error
 	WindowSetSizeFn     func(ctx context.Context, width int, height int) error
 
-	data PositionerData
+	data PositionData
 }
 
 func (pm *Positioner) WindowCenter(ctx context.Context) error {
+	if pm == nil {
+		return nil
+	}
+
 	return safe.Run(func() error {
 		if pm.WindowCenterFn == nil {
 			return wailsrun.WindowCenter(ctx)
@@ -45,6 +48,10 @@ func (pm *Positioner) WindowCenter(ctx context.Context) error {
 }
 
 func (pm *Positioner) WindowGetPosition(ctx context.Context) (int, int, error) {
+	if pm == nil {
+		return 0, 0, fmt.Errorf("positioner manager is nil")
+	}
+
 	var x, y int
 	err := safe.Run(func() error {
 		var err error
@@ -59,6 +66,10 @@ func (pm *Positioner) WindowGetPosition(ctx context.Context) (int, int, error) {
 }
 
 func (pm *Positioner) WindowGetSize(ctx context.Context) (int, int, error) {
+	if pm == nil {
+		return 0, 0, fmt.Errorf("positioner manager is nil")
+	}
+
 	var w, h int
 	err := safe.Run(func() error {
 		var err error
@@ -73,6 +84,10 @@ func (pm *Positioner) WindowGetSize(ctx context.Context) (int, int, error) {
 }
 
 func (pm *Positioner) WindowSetMaxSize(ctx context.Context, width int, height int) error {
+	if pm == nil {
+		return fmt.Errorf("positioner manager is nil")
+	}
+
 	return safe.Run(func() error {
 		if pm.WindowSetMaxSizeFn == nil {
 			return wailsrun.WindowSetMaxSize(ctx, width, height)
@@ -82,6 +97,10 @@ func (pm *Positioner) WindowSetMaxSize(ctx context.Context, width int, height in
 }
 
 func (pm *Positioner) WindowSetMinSize(ctx context.Context, width int, height int) error {
+	if pm == nil {
+		return fmt.Errorf("positioner manager is nil")
+	}
+
 	return safe.Run(func() error {
 		if pm.WindowSetMinSizeFn == nil {
 			return wailsrun.WindowSetMinSize(ctx, width, height)
@@ -91,6 +110,10 @@ func (pm *Positioner) WindowSetMinSize(ctx context.Context, width int, height in
 }
 
 func (pm *Positioner) WindowSetPosition(ctx context.Context, x int, y int) error {
+	if pm == nil {
+		return fmt.Errorf("positioner manager is nil")
+	}
+
 	return safe.Run(func() error {
 		if pm.WindowSetPositionFn == nil {
 			return wailsrun.WindowSetPosition(ctx, x, y)
@@ -100,6 +123,10 @@ func (pm *Positioner) WindowSetPosition(ctx context.Context, x int, y int) error
 }
 
 func (pm *Positioner) WindowSetSize(ctx context.Context, width int, height int) error {
+	if pm == nil {
+		return fmt.Errorf("positioner manager is nil")
+	}
+
 	return safe.Run(func() error {
 		if pm.WindowSetSizeFn == nil {
 			return wailsrun.WindowSetSize(ctx, width, height)

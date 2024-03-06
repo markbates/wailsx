@@ -13,7 +13,7 @@ func (mm *Maximiser) StateData(ctx context.Context) (statedata.Data[*MaximiserDa
 	return mm.data.StateData(ctx)
 }
 
-func (pm *Positioner) StateData(ctx context.Context) (statedata.Data[*PositionerData], error) {
+func (pm *Positioner) StateData(ctx context.Context) (statedata.Data[*PositionData], error) {
 	return pm.data.StateData(ctx)
 }
 

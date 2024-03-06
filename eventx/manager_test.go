@@ -110,7 +110,7 @@ func Test_Manager_DisableStateData(t *testing.T) {
 
 	const name = "test:event"
 
-	em := NewNOOPManager()
+	em := NopManager()
 	em.DisableStateData = true
 
 	for i := 0; i < 5; i++ {

@@ -9,7 +9,7 @@ import (
 
 var _ ThemeManager = Themer{}
 
-func NewNOOPThemer() Themer {
+func NopThemer() Themer {
 	return Themer{
 		WindowSetBackgroundColourFn:   func(ctx context.Context, R, G, B, A uint8) error { return nil },
 		WindowSetDarkThemeFn:          func(ctx context.Context) error { return nil },

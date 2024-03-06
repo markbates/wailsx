@@ -16,7 +16,7 @@ func (e es) Error() string {
 	return string(e)
 }
 
-func NewNOOPManager() Manager {
+func NopManager() Manager {
 	return Manager{
 		MenuSetApplicationMenuFn:    func(ctx context.Context, me *menu.Menu) error { return nil },
 		MenuUpdateApplicationMenuFn: func(ctx context.Context) error { return nil },

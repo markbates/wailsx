@@ -9,7 +9,7 @@ import (
 
 var _ Toggler = Toggle{}
 
-func NewNOOPToggle() Toggle {
+func NopToggle() Toggle {
 	return Toggle{
 		HideFn:       func(ctx context.Context) error { return nil },
 		ShowFn:       func(ctx context.Context) error { return nil },
