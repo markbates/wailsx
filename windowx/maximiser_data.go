@@ -8,7 +8,7 @@ import (
 	"github.com/markbates/wailsx/statedata"
 )
 
-var _ statedata.StateDataProvider[*MaximiserData] = &MaximiserData{}
+var _ statedata.DataProvider[*MaximiserData] = &MaximiserData{}
 
 type MaximiserData struct {
 	IsFullscreen bool `json:"is_fullscreen,omitempty"`
@@ -19,8 +19,8 @@ type MaximiserData struct {
 	mu sync.RWMutex
 }
 
-func (md *MaximiserData) StateData(ctx context.Context) (statedata.StateData[*MaximiserData], error) {
-	sd := statedata.StateData[*MaximiserData]{
+func (md *MaximiserData) StateData(ctx context.Context) (statedata.Data[*MaximiserData], error) {
+	sd := statedata.Data[*MaximiserData]{
 		Name: MaximiserStateDataName,
 		Data: md,
 	}

@@ -5,17 +5,17 @@ import (
 	"fmt"
 )
 
-var _ StateDataProvider[any] = StateData[any]{}
+var _ DataProvider[any] = Data[any]{}
 
-type StateData[T any] struct {
+type Data[T any] struct {
 	Name string `json:"name,omitempty"` // name of the data
 	Data T      `json:"data,omitempty"` // data for the state
 }
 
-func (sd StateData[T]) PluginName() string {
+func (sd Data[T]) PluginName() string {
 	return fmt.Sprintf("%T: %s", sd, sd.Name)
 }
 
-func (sd StateData[T]) StateData(ctx context.Context) (StateData[T], error) {
+func (sd Data[T]) StateData(ctx context.Context) (Data[T], error) {
 	return sd, nil
 }

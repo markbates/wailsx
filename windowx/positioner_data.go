@@ -8,7 +8,7 @@ import (
 	"github.com/markbates/wailsx/statedata"
 )
 
-var _ statedata.StateDataProvider[*PositionerData] = &PositionerData{}
+var _ statedata.DataProvider[*PositionerData] = &PositionerData{}
 
 type PositionerData struct {
 	IsCentered bool
@@ -108,8 +108,8 @@ func (pd *PositionerData) PluginName() string {
 	return fmt.Sprintf("%T", pd)
 }
 
-func (pd *PositionerData) StateData(ctx context.Context) (statedata.StateData[*PositionerData], error) {
-	return statedata.StateData[*PositionerData]{
+func (pd *PositionerData) StateData(ctx context.Context) (statedata.Data[*PositionerData], error) {
+	return statedata.Data[*PositionerData]{
 		Name: PositionerStateDataName,
 		Data: pd,
 	}, nil

@@ -44,7 +44,7 @@ func NewNOOPManager() *Manager {
 }
 
 var _ EventManager = &Manager{}
-var _ statedata.StateDataProvider[*EventsData] = &Manager{}
+var _ statedata.DataProvider[*EventsData] = &Manager{}
 
 type Manager struct {
 	DisableWildcardEmits bool
@@ -62,9 +62,9 @@ type Manager struct {
 	data EventsData
 }
 
-func (em *Manager) StateData(ctx context.Context) (statedata.StateData[*EventsData], error) {
+func (em *Manager) StateData(ctx context.Context) (statedata.Data[*EventsData], error) {
 	if em == nil {
-		return statedata.StateData[*EventsData]{}, fmt.Errorf("error manager is nil")
+		return statedata.Data[*EventsData]{}, fmt.Errorf("error manager is nil")
 	}
 
 	return em.data.StateData(ctx)

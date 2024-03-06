@@ -23,8 +23,8 @@ func (th ThemerData) PluginName() string {
 	return fmt.Sprintf("%T", th)
 }
 
-func (th ThemerData) StateData(ctx context.Context) (statedata.StateData[ThemerData], error) {
-	return statedata.StateData[ThemerData]{
+func (th ThemerData) StateData(ctx context.Context) (statedata.Data[ThemerData], error) {
+	return statedata.Data[ThemerData]{
 		Name: ThemerStateDataName,
 		Data: th,
 	}, nil

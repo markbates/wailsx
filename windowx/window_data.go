@@ -12,8 +12,8 @@ type WindowData struct {
 	*ThemerData     `json:"themer_data,omitempty"`
 }
 
-func (wm *Manager) StateData(ctx context.Context) (statedata.StateData[*WindowData], error) {
-	sd := statedata.StateData[*WindowData]{
+func (wm *Manager) StateData(ctx context.Context) (statedata.Data[*WindowData], error) {
+	sd := statedata.Data[*WindowData]{
 		Name: ManagerStateDataName,
 	}
 	if wm == nil {
@@ -23,7 +23,7 @@ func (wm *Manager) StateData(ctx context.Context) (statedata.StateData[*WindowDa
 	data := &WindowData{}
 
 	if x, ok := wm.Maximiser.(interface {
-		StateData(context.Context) (statedata.StateData[*MaximiserData], error)
+		StateData(context.Context) (statedata.Data[*MaximiserData], error)
 	}); ok {
 		md, err := x.StateData(ctx)
 		if err != nil {
@@ -33,7 +33,7 @@ func (wm *Manager) StateData(ctx context.Context) (statedata.StateData[*WindowDa
 	}
 
 	if x, ok := wm.Positioner.(interface {
-		StateData(context.Context) (statedata.StateData[*PositionerData], error)
+		StateData(context.Context) (statedata.Data[*PositionerData], error)
 	}); ok {
 		pd, err := x.StateData(ctx)
 		if err != nil {
@@ -43,7 +43,7 @@ func (wm *Manager) StateData(ctx context.Context) (statedata.StateData[*WindowDa
 	}
 
 	if x, ok := wm.Themer.(interface {
-		StateData(context.Context) (statedata.StateData[*ThemerData], error)
+		StateData(context.Context) (statedata.Data[*ThemerData], error)
 	}); ok {
 		td, err := x.StateData(ctx)
 		if err != nil {

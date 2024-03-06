@@ -33,8 +33,8 @@ type API struct {
 	windowx.WindowManager
 }
 
-func (api *API) StateData(ctx context.Context) (statedata.StateData[*APIData], error) {
-	sd := statedata.StateData[*APIData]{
+func (api *API) StateData(ctx context.Context) (statedata.Data[*APIData], error) {
+	sd := statedata.Data[*APIData]{
 		Name: "api",
 	}
 
@@ -45,7 +45,7 @@ func (api *API) StateData(ctx context.Context) (statedata.StateData[*APIData], e
 	data := &APIData{}
 
 	if x, ok := api.WindowManager.(interface {
-		StateData(context.Context) (statedata.StateData[*windowx.WindowData], error)
+		StateData(context.Context) (statedata.Data[*windowx.WindowData], error)
 	}); ok {
 		wd, err := x.StateData(ctx)
 		if err != nil {
@@ -55,7 +55,7 @@ func (api *API) StateData(ctx context.Context) (statedata.StateData[*APIData], e
 	}
 
 	if x, ok := api.EventManager.(interface {
-		StateData(context.Context) (statedata.StateData[*eventx.EventsData], error)
+		StateData(context.Context) (statedata.Data[*eventx.EventsData], error)
 	}); ok {
 		ed, err := x.StateData(ctx)
 		if err != nil {

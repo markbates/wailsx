@@ -9,14 +9,14 @@ import (
 	"github.com/markbates/wailsx/statedata"
 )
 
-func (mm *MaximiseManager) StateData(ctx context.Context) (statedata.StateData[*MaximiserData], error) {
+func (mm *MaximiseManager) StateData(ctx context.Context) (statedata.Data[*MaximiserData], error) {
 	return mm.data.StateData(ctx)
 }
 
-func (pm *PositionManger) StateData(ctx context.Context) (statedata.StateData[*PositionerData], error) {
+func (pm *PositionManger) StateData(ctx context.Context) (statedata.Data[*PositionerData], error) {
 	return pm.data.StateData(ctx)
 }
 
-func (th ThemeManager) StateData(ctx context.Context) (statedata.StateData[ThemerData], error) {
+func (th ThemeManager) StateData(ctx context.Context) (statedata.Data[ThemerData], error) {
 	return th.data.StateData(ctx)
 }

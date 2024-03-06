@@ -9,7 +9,7 @@ import (
 )
 
 var _ Positioner = &PositionManger{}
-var _ statedata.StateDataProvider[*PositionerData] = &PositionerData{}
+var _ statedata.DataProvider[*PositionerData] = &PositionerData{}
 
 func NewNOOPPositionManager() *PositionManger {
 	return &PositionManger{

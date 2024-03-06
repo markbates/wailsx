@@ -10,7 +10,7 @@ import (
 	"github.com/markbates/wailsx/wailsrun"
 )
 
-var _ statedata.StateDataProvider[*EventsData] = &EventsData{}
+var _ statedata.DataProvider[*EventsData] = &EventsData{}
 
 type EventsData struct {
 	Callbacks map[string]*CallbackCounter `json:"callbacks"`
@@ -102,8 +102,8 @@ func (ev *EventsData) AddCallback(event string, cb wailsrun.CallbackFn, max int)
 	return nil
 }
 
-func (ev *EventsData) StateData(ctx context.Context) (statedata.StateData[*EventsData], error) {
-	sd := statedata.StateData[*EventsData]{
+func (ev *EventsData) StateData(ctx context.Context) (statedata.Data[*EventsData], error) {
+	sd := statedata.Data[*EventsData]{
 		Name: EventManagerStateDataName,
 		Data: ev,
 	}
