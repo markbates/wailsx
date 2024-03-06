@@ -5,9 +5,9 @@ import (
 )
 
 type WindowManager interface {
-	Maximiser
-	Positioner
-	Reloader
+	MaximiseManager
+	PositionerManager
+	ReloadManager
 	ThemeManager
 	Toggler
 

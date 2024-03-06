@@ -8,6 +8,8 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/menu"
 )
 
+var _ MenuManager = Manager{}
+
 type Manager struct {
 	MenuSetApplicationMenuFn    func(ctx context.Context, menu *menu.Menu) error
 	MenuUpdateApplicationMenuFn func(ctx context.Context) error

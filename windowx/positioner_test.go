@@ -14,7 +14,7 @@ func Test_PositionManager_WindowCenter(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 
-	pm := PositionManger{}
+	pm := Positioner{}
 
 	ctx := context.Background()
 
@@ -45,7 +45,7 @@ func Test_PositionManager_WindowGetPosition(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 
-	pm := PositionManger{}
+	pm := Positioner{}
 
 	ctx := context.Background()
 
@@ -77,7 +77,7 @@ func Test_PositionManager_WindowGetSize(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 
-	pm := PositionManger{}
+	pm := Positioner{}
 
 	ctx := context.Background()
 
@@ -109,7 +109,7 @@ func Test_PositionManager_WindowSetMaxSize(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 
-	pm := PositionManger{}
+	pm := Positioner{}
 
 	ctx := context.Background()
 
@@ -142,7 +142,7 @@ func Test_PositionManager_WindowSetMinSize(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 
-	pm := PositionManger{}
+	pm := Positioner{}
 
 	ctx := context.Background()
 
@@ -175,7 +175,7 @@ func Test_PositionManager_WindowSetPosition(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 
-	pm := PositionManger{}
+	pm := Positioner{}
 
 	ctx := context.Background()
 
@@ -208,7 +208,7 @@ func Test_PositionManager_WindowSetSize(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 
-	pm := PositionManger{}
+	pm := Positioner{}
 
 	ctx := context.Background()
 

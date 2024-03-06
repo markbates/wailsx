@@ -14,7 +14,7 @@ func Test_Reload_WindowReload(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 
-	rd := Reload{}
+	rd := Reloader{}
 
 	ctx := context.Background()
 
@@ -46,7 +46,7 @@ func Test_Reload_WindowReloadApp(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 
-	rd := Reload{}
+	rd := Reloader{}
 
 	ctx := context.Background()
 

@@ -10,9 +10,9 @@ import (
 var _ WindowManager = &Manager{}
 
 type Manager struct {
-	Maximiser
-	Positioner
-	Reloader
+	MaximiseManager
+	PositionerManager
+	ReloadManager
 	ThemeManager
 	Toggler
 
@@ -25,21 +25,22 @@ type Manager struct {
 
 func NewManager() *Manager {
 	return &Manager{
-		Maximiser:    &MaximiseManager{},
-		Positioner:   &PositionManger{},
-		Reloader:     &Reload{},
-		ThemeManager: &Themer{},
-		Toggler:      &Toggle{},
+		MaximiseManager:   &Maximiser{},
+		PositionerManager: &Positioner{},
+		ReloadManager:     &Reloader{},
+		ThemeManager:      &Themer{},
+		Toggler:           &Toggle{},
 	}
 }
 
 func NewNOOPManager() *Manager {
 	return &Manager{
-		Maximiser:    NewNOOPMaximiseManager(),
-		Positioner:   NewNOOPPositionManager(),
-		Reloader:     NewNOOPReload(),
-		ThemeManager: NewNOOPThemer(),
-		Toggler:      NewNOOPToggle(),
+		MaximiseManager:   NewNOOPMaximiser(),
+		PositionerManager: NewNOOPPositioner(),
+		ReloadManager:     NewNOOPReloader(),
+		ThemeManager:      NewNOOPThemer(),
+		Toggler:           NewNOOPToggle(),
+
 		ScreenGetAllFn: func(ctx context.Context) ([]Screen, error) {
 			return nil, nil
 		},

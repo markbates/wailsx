@@ -22,7 +22,7 @@ func (wm *Manager) StateData(ctx context.Context) (statedata.Data[*WindowData], 
 
 	data := &WindowData{}
 
-	if x, ok := wm.Maximiser.(interface {
+	if x, ok := wm.MaximiseManager.(interface {
 		StateData(context.Context) (statedata.Data[*MaximiserData], error)
 	}); ok {
 		md, err := x.StateData(ctx)
@@ -32,7 +32,7 @@ func (wm *Manager) StateData(ctx context.Context) (statedata.Data[*WindowData], 
 		data.MaximiserData = md.Data
 	}
 
-	if x, ok := wm.Positioner.(interface {
+	if x, ok := wm.PositionerManager.(interface {
 		StateData(context.Context) (statedata.Data[*PositionerData], error)
 	}); ok {
 		pd, err := x.StateData(ctx)

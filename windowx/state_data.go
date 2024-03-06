@@ -9,11 +9,11 @@ import (
 	"github.com/markbates/wailsx/statedata"
 )
 
-func (mm *MaximiseManager) StateData(ctx context.Context) (statedata.Data[*MaximiserData], error) {
+func (mm *Maximiser) StateData(ctx context.Context) (statedata.Data[*MaximiserData], error) {
 	return mm.data.StateData(ctx)
 }
 
-func (pm *PositionManger) StateData(ctx context.Context) (statedata.Data[*PositionerData], error) {
+func (pm *Positioner) StateData(ctx context.Context) (statedata.Data[*PositionerData], error) {
 	return pm.data.StateData(ctx)
 }
 
