@@ -10,6 +10,21 @@ import (
 
 var _ Maximiser = &MaximiseManager{}
 
+func NewNOOPMaximiseManager() *MaximiseManager {
+	return &MaximiseManager{
+		WindowFullscreenFn:   func(ctx context.Context) error { return nil },
+		WindowIsFullscreenFn: func(ctx context.Context) (bool, error) { return false, nil },
+		WindowIsMaximisedFn:  func(ctx context.Context) (bool, error) { return false, nil },
+		WindowIsMinimisedFn:  func(ctx context.Context) (bool, error) { return false, nil },
+		WindowIsNormalFn:     func(ctx context.Context) (bool, error) { return false, nil },
+		WindowMaximiseFn:     func(ctx context.Context) error { return nil },
+		WindowMinimiseFn:     func(ctx context.Context) error { return nil },
+		WindowUnfullscreenFn: func(ctx context.Context) error { return nil },
+		WindowUnmaximiseFn:   func(ctx context.Context) error { return nil },
+		WindowUnminimiseFn:   func(ctx context.Context) error { return nil },
+	}
+}
+
 type MaximiseManager struct {
 	WindowFullscreenFn   func(ctx context.Context) error
 	WindowIsFullscreenFn func(ctx context.Context) (bool, error)

@@ -11,6 +11,18 @@ import (
 var _ Positioner = &PositionManger{}
 var _ statedata.StateDataProvider[*PositionerData] = &PositionerData{}
 
+func NewNOOPPositionManager() *PositionManger {
+	return &PositionManger{
+		WindowCenterFn:      func(ctx context.Context) error { return nil },
+		WindowGetPositionFn: func(ctx context.Context) (int, int, error) { return 0, 0, nil },
+		WindowGetSizeFn:     func(ctx context.Context) (int, int, error) { return 0, 0, nil },
+		WindowSetMaxSizeFn:  func(ctx context.Context, width int, height int) error { return nil },
+		WindowSetMinSizeFn:  func(ctx context.Context, width int, height int) error { return nil },
+		WindowSetPositionFn: func(ctx context.Context, x int, y int) error { return nil },
+		WindowSetSizeFn:     func(ctx context.Context, width int, height int) error { return nil },
+	}
+}
+
 type PositionManger struct {
 	WindowCenterFn      func(ctx context.Context) error
 	WindowGetPositionFn func(ctx context.Context) (int, int, error)

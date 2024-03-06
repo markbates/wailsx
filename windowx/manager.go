@@ -33,6 +33,31 @@ func NewManager() *Manager {
 	}
 }
 
+func NewNOOPManager() *Manager {
+	return &Manager{
+		Maximiser:  NewNOOPMaximiseManager(),
+		Positioner: NewNOOPPositionManager(),
+		Reloader:   NewNOOPReload(),
+		Themer:     NewNOOPThemeManager(),
+		Toggler:    NewNOOPToggle(),
+		ScreenGetAllFn: func(ctx context.Context) ([]Screen, error) {
+			return nil, nil
+		},
+		WindowExecJSFn: func(ctx context.Context, js string) error {
+			return nil
+		},
+		WindowPrintFn: func(ctx context.Context) error {
+			return nil
+		},
+		WindowSetAlwaysOnTopFn: func(ctx context.Context, b bool) error {
+			return nil
+		},
+		WindowSetTitleFn: func(ctx context.Context, title string) error {
+			return nil
+		},
+	}
+}
+
 func (wm Manager) ScreenGetAll(ctx context.Context) ([]Screen, error) {
 	var screens []Screen
 

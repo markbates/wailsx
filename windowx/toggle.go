@@ -9,6 +9,14 @@ import (
 
 var _ Toggler = Toggle{}
 
+func NewNOOPToggle() Toggle {
+	return Toggle{
+		HideFn:       func(ctx context.Context) error { return nil },
+		ShowFn:       func(ctx context.Context) error { return nil },
+		WindowHideFn: func(ctx context.Context) error { return nil },
+	}
+}
+
 type Toggle struct {
 	HideFn       func(ctx context.Context) error
 	ShowFn       func(ctx context.Context) error

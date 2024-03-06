@@ -9,6 +9,15 @@ import (
 
 var _ Themer = ThemeManager{}
 
+func NewNOOPThemeManager() ThemeManager {
+	return ThemeManager{
+		WindowSetBackgroundColourFn:   func(ctx context.Context, R, G, B, A uint8) error { return nil },
+		WindowSetDarkThemeFn:          func(ctx context.Context) error { return nil },
+		WindowSetLightThemeFn:         func(ctx context.Context) error { return nil },
+		WindowSetSystemDefaultThemeFn: func(ctx context.Context) error { return nil },
+	}
+}
+
 type ThemeManager struct {
 	WindowSetBackgroundColourFn   func(ctx context.Context, R, G, B, A uint8) error
 	WindowSetDarkThemeFn          func(ctx context.Context) error

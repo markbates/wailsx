@@ -9,6 +9,13 @@ import (
 
 var _ Reloader = Reload{}
 
+func NewNOOPReload() Reload {
+	return Reload{
+		WindowReloadFn:    func(ctx context.Context) error { return nil },
+		WindowReloadAppFn: func(ctx context.Context) error { return nil },
+	}
+}
+
 type Reload struct {
 	WindowReloadAppFn func(ctx context.Context) error
 	WindowReloadFn    func(ctx context.Context) error

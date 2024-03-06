@@ -17,6 +17,32 @@ func NewManager() *Manager {
 	}
 }
 
+func NewNOOPManager() *Manager {
+	return &Manager{
+		NowFn: func() time.Time {
+			return time.Time{}
+		},
+		EventsEmitFn: func(ctx context.Context, name string, data ...any) error {
+			return nil
+		},
+		EventsOffAllFn: func(ctx context.Context) error {
+			return nil
+		},
+		EventsOffFn: func(ctx context.Context, name string, additional ...string) error {
+			return nil
+		},
+		EventsOnFn: func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
+			return func() error { return nil }, nil
+		},
+		EventsOnMultipleFn: func(ctx context.Context, name string, callback wailsrun.CallbackFn, counter int) (wailsrun.CancelFn, error) {
+			return func() error { return nil }, nil
+		},
+		EventsOnceFn: func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
+			return func() error { return nil }, nil
+		},
+	}
+}
+
 var _ EventManager = &Manager{}
 var _ statedata.StateDataProvider[*EventsData] = &Manager{}
 
