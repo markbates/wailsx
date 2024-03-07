@@ -60,33 +60,15 @@ func NopManager() *Manager {
 	}
 }
 
-func (wm Manager) ScreenGetAll(ctx context.Context) ([]Screen, error) {
-	var screens []Screen
+func (wm Manager) ScreenGetAll(ctx context.Context) (screens []Screen, err error) {
 
-	err := safe.Run(func() error {
-		if wm.ScreenGetAllFn == nil {
-			wm.ScreenGetAllFn = func(ctx context.Context) ([]Screen, error) {
-				wsc, err := wailsrun.ScreenGetAll(ctx)
-				if err != nil {
-					return nil, err
-				}
-
-				screens = make([]Screen, 0, len(wsc))
-				for _, sc := range wsc {
-					screens = append(screens, Screen{
-						Size: ScreenSize{
-							Width:  sc.Size.Width,
-							Height: sc.Size.Height,
-						},
-					})
-				}
-				return screens, nil
-			}
+	err = safe.Run(func() error {
+		fn := wm.ScreenGetAllFn
+		if fn == nil {
+			fn = wailsrun.ScreenGetAll
 		}
 
-		var err error
-		screens, err = wm.ScreenGetAllFn(ctx)
-
+		screens, err = fn(ctx)
 		return err
 	})
 
@@ -95,10 +77,12 @@ func (wm Manager) ScreenGetAll(ctx context.Context) ([]Screen, error) {
 
 func (wm Manager) WindowExecJS(ctx context.Context, js string) error {
 	return safe.Run(func() error {
-		if wm.WindowExecJSFn == nil {
-			return wailsrun.WindowExecJS(ctx, js)
+		fn := wm.WindowExecJSFn
+		if fn == nil {
+			fn = wailsrun.WindowExecJS
 		}
-		return wm.WindowExecJSFn(ctx, js)
+
+		return fn(ctx, js)
 	})
 }
 

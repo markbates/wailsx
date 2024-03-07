@@ -9,6 +9,10 @@ import (
 )
 
 func (em *Manager) EventsEmit(ctx context.Context, event string, args ...any) (err error) {
+	if em == nil {
+		return wailsrun.EventsEmit(ctx, event, args...)
+	}
+
 	if err := em.init(ctx); err != nil {
 		return err
 	}

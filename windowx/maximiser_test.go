@@ -10,386 +10,655 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func Test_MaximiserManager_WindowFullscreen(t *testing.T) {
+func Test_Nil_Maximiser(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
 
-	mm := Maximiser{}
+	var mm *Maximiser
 
 	ctx := context.Background()
 
 	err := mm.WindowFullscreen(ctx)
 	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowFullscreen")))
+	r.Equal(wailsrun.ErrNotAvailable("WindowFullscreen"), err)
 
-	var called bool
-	mm.WindowFullscreenFn = func(ctx context.Context) error {
-		called = true
-		return nil
-	}
-
-	err = mm.WindowFullscreen(ctx)
-	r.NoError(err)
-	r.True(called)
-
-	sd, err := mm.StateData(ctx)
-	r.NoError(err)
-	r.True(sd.Data.IsFullscreen)
-	r.False(sd.Data.IsMaximised)
-	r.False(sd.Data.IsMinimised)
-	r.False(sd.Data.IsNormal)
-
-	mm.WindowFullscreenFn = func(ctx context.Context) error {
-		return wailstest.ErrTest
-	}
-
-	err = mm.WindowFullscreen(ctx)
+	_, err = mm.WindowIsFullscreen(ctx)
 	r.Error(err)
-	r.True(errors.Is(err, wailstest.ErrTest))
+	r.Equal(wailsrun.ErrNotAvailable("WindowIsFullscreen"), err)
 
-}
-
-func Test_MaximiserManager_WindowIsFullscreen(t *testing.T) {
-	t.Parallel()
-	r := require.New(t)
-
-	mm := Maximiser{}
-
-	ctx := context.Background()
-
-	_, err := mm.WindowIsFullscreen(ctx)
+	_, err = mm.WindowIsMaximised(ctx)
 	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowIsFullscreen")))
+	r.Equal(wailsrun.ErrNotAvailable("WindowIsMaximised"), err)
 
-	var called bool
-	mm.WindowIsFullscreenFn = func(ctx context.Context) (bool, error) {
-		called = true
-		return true, nil
-	}
-
-	b, err := mm.WindowIsFullscreen(ctx)
-	r.NoError(err)
-	r.True(called)
-	r.True(b)
-
-	mm.WindowIsFullscreenFn = func(ctx context.Context) (bool, error) {
-		return false, wailstest.ErrTest
-	}
-
-	b, err = mm.WindowIsFullscreen(ctx)
+	_, err = mm.WindowIsMinimised(ctx)
 	r.Error(err)
-	r.True(errors.Is(err, wailstest.ErrTest))
-	r.False(b)
-
-}
-
-func Test_MaximiserManager_WindowIsMaximised(t *testing.T) {
-	t.Parallel()
-	r := require.New(t)
-
-	mm := Maximiser{}
-
-	ctx := context.Background()
-
-	_, err := mm.WindowIsMaximised(ctx)
-	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowIsMaximised")))
-
-	var called bool
-	mm.WindowIsMaximisedFn = func(ctx context.Context) (bool, error) {
-		called = true
-		return true, nil
-	}
-
-	b, err := mm.WindowIsMaximised(ctx)
-	r.NoError(err)
-	r.True(called)
-	r.True(b)
-
-	mm.WindowIsMaximisedFn = func(ctx context.Context) (bool, error) {
-		return false, wailstest.ErrTest
-	}
-
-	b, err = mm.WindowIsMaximised(ctx)
-	r.Error(err)
-	r.True(errors.Is(err, wailstest.ErrTest))
-	r.False(b)
-}
-
-func Test_MaximiserManager_WindowIsMinimised(t *testing.T) {
-	t.Parallel()
-	r := require.New(t)
-
-	mm := Maximiser{}
-
-	ctx := context.Background()
-
-	_, err := mm.WindowIsMinimised(ctx)
-	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowIsMinimised")))
-
-	var called bool
-	mm.WindowIsMinimisedFn = func(ctx context.Context) (bool, error) {
-		called = true
-		return true, nil
-	}
-
-	b, err := mm.WindowIsMinimised(ctx)
-	r.NoError(err)
-	r.True(called)
-	r.True(b)
-
-	mm.WindowIsMinimisedFn = func(ctx context.Context) (bool, error) {
-		return false, wailstest.ErrTest
-	}
-
-	b, err = mm.WindowIsMinimised(ctx)
-	r.Error(err)
-	r.True(errors.Is(err, wailstest.ErrTest))
-	r.False(b)
-}
-
-func Test_MaximiserManager_WindowMaximise(t *testing.T) {
-	t.Parallel()
-	r := require.New(t)
-
-	mm := Maximiser{}
-
-	ctx := context.Background()
-
-	err := mm.WindowMaximise(ctx)
-	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowMaximise")))
-
-	var called bool
-	mm.WindowMaximiseFn = func(ctx context.Context) error {
-		called = true
-		return nil
-	}
-
-	err = mm.WindowMaximise(ctx)
-	r.NoError(err)
-	r.True(called)
-
-	sd, err := mm.StateData(ctx)
-	r.NoError(err)
-	r.False(sd.Data.IsFullscreen)
-	r.True(sd.Data.IsMaximised)
-	r.False(sd.Data.IsMinimised)
-	r.False(sd.Data.IsNormal)
-
-	mm.WindowMaximiseFn = func(ctx context.Context) error {
-		return wailstest.ErrTest
-	}
+	r.Equal(wailsrun.ErrNotAvailable("WindowIsMinimised"), err)
 
 	err = mm.WindowMaximise(ctx)
 	r.Error(err)
-	r.True(errors.Is(err, wailstest.ErrTest))
-}
-
-func Test_MaximiserManager_WindowMinimise(t *testing.T) {
-	t.Parallel()
-	r := require.New(t)
-
-	mm := Maximiser{}
-
-	ctx := context.Background()
-
-	err := mm.WindowMinimise(ctx)
-	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowMinimise")))
-
-	var called bool
-	mm.WindowMinimiseFn = func(ctx context.Context) error {
-		called = true
-		return nil
-	}
-
-	err = mm.WindowMinimise(ctx)
-	r.NoError(err)
-	r.True(called)
-
-	sd, err := mm.StateData(ctx)
-	r.NoError(err)
-	r.False(sd.Data.IsFullscreen)
-	r.False(sd.Data.IsMaximised)
-	r.True(sd.Data.IsMinimised)
-	r.False(sd.Data.IsNormal)
-
-	mm.WindowMinimiseFn = func(ctx context.Context) error {
-		return wailstest.ErrTest
-	}
+	r.Equal(wailsrun.ErrNotAvailable("WindowMaximise"), err)
 
 	err = mm.WindowMinimise(ctx)
 	r.Error(err)
-	r.True(errors.Is(err, wailstest.ErrTest))
-}
-
-func Test_MaximiserManager_WindowUnfullscreen(t *testing.T) {
-	t.Parallel()
-	r := require.New(t)
-
-	mm := Maximiser{}
-
-	ctx := context.Background()
-
-	err := mm.WindowUnfullscreen(ctx)
-	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowUnfullscreen")))
-
-	var called bool
-	mm.WindowUnfullscreenFn = func(ctx context.Context) error {
-		called = true
-		return nil
-	}
-
-	err = mm.WindowUnfullscreen(ctx)
-	r.NoError(err)
-	r.True(called)
-
-	sd, err := mm.StateData(ctx)
-	r.NoError(err)
-	r.False(sd.Data.IsFullscreen)
-	r.False(sd.Data.IsMaximised)
-	r.False(sd.Data.IsMinimised)
-	r.True(sd.Data.IsNormal)
-
-	mm.WindowUnfullscreenFn = func(ctx context.Context) error {
-		return wailstest.ErrTest
-	}
+	r.Equal(wailsrun.ErrNotAvailable("WindowMinimise"), err)
 
 	err = mm.WindowUnfullscreen(ctx)
 	r.Error(err)
-	r.True(errors.Is(err, wailstest.ErrTest))
-}
-
-func Test_MaximiserManager_WindowUnmaximise(t *testing.T) {
-	t.Parallel()
-	r := require.New(t)
-
-	mm := Maximiser{}
-
-	ctx := context.Background()
-
-	err := mm.WindowUnmaximise(ctx)
-	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowUnmaximise")))
-
-	var called bool
-	mm.WindowUnmaximiseFn = func(ctx context.Context) error {
-		called = true
-		return nil
-	}
-
-	err = mm.WindowUnmaximise(ctx)
-	r.NoError(err)
-	r.True(called)
-
-	sd, err := mm.StateData(ctx)
-	r.NoError(err)
-	r.False(sd.Data.IsFullscreen)
-	r.False(sd.Data.IsMaximised)
-	r.False(sd.Data.IsMinimised)
-	r.True(sd.Data.IsNormal)
-
-	mm.WindowUnmaximiseFn = func(ctx context.Context) error {
-		return wailstest.ErrTest
-	}
+	r.Equal(wailsrun.ErrNotAvailable("WindowUnfullscreen"), err)
 
 	err = mm.WindowUnmaximise(ctx)
 	r.Error(err)
-	r.True(errors.Is(err, wailstest.ErrTest))
-}
-
-func Test_MaximiserManager_WindowUnminimise(t *testing.T) {
-	t.Parallel()
-	r := require.New(t)
-
-	mm := Maximiser{}
-
-	ctx := context.Background()
-
-	err := mm.WindowUnminimise(ctx)
-	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowUnminimise")))
-
-	var called bool
-	mm.WindowUnminimiseFn = func(ctx context.Context) error {
-		called = true
-		return nil
-	}
-
-	err = mm.WindowUnminimise(ctx)
-	r.NoError(err)
-	r.True(called)
-
-	sd, err := mm.StateData(ctx)
-	r.NoError(err)
-	r.False(sd.Data.IsFullscreen)
-	r.False(sd.Data.IsMaximised)
-	r.False(sd.Data.IsMinimised)
-	r.True(sd.Data.IsNormal)
-
-	mm.WindowUnminimiseFn = func(ctx context.Context) error {
-		return wailstest.ErrTest
-	}
+	r.Equal(wailsrun.ErrNotAvailable("WindowUnmaximise"), err)
 
 	err = mm.WindowUnminimise(ctx)
 	r.Error(err)
-	r.True(errors.Is(err, wailstest.ErrTest))
+	r.Equal(wailsrun.ErrNotAvailable("WindowUnminimise"), err)
+
+	_, err = mm.WindowIsNormal(ctx)
+	r.Error(err)
+	r.Equal(wailsrun.ErrNotAvailable("WindowIsNormal"), err)
+
+	err = mm.WindowToggleMaximise(ctx)
+	r.Error(err)
+	r.Equal(wailsrun.ErrNotAvailable("WindowToggleMaximise"), err)
 }
 
-func Test_MaximiserManager_WindowIsNormal(t *testing.T) {
+func Test_Maximiser_WindowFullscreen(t *testing.T) {
 	t.Parallel()
-	r := require.New(t)
-
-	mm := Maximiser{}
 
 	ctx := context.Background()
 
-	_, err := mm.WindowIsNormal(ctx)
-	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowIsNormal")))
-
-	var called bool
-	mm.WindowIsNormalFn = func(ctx context.Context) (bool, error) {
-		called = true
-		return true, nil
+	tcs := []struct {
+		name string
+		fn   func(ctx context.Context) error
+		err  error
+	}{
+		{
+			name: "with function",
+			fn: func(ctx context.Context) error {
+				return nil
+			},
+		},
+		{
+			name: "no function",
+			err:  wailsrun.ErrNotAvailable("WindowFullscreen"),
+		},
+		{
+			name: "with error",
+			fn: func(ctx context.Context) error {
+				return wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func(ctx context.Context) error {
+				panic(wailstest.ErrTest)
+			},
+			err: wailstest.ErrTest,
+		},
 	}
 
-	b, err := mm.WindowIsNormal(ctx)
-	r.NoError(err)
-	r.True(called)
-	r.True(b)
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			r := require.New(t)
 
-	mm.WindowIsNormalFn = func(ctx context.Context) (bool, error) {
-		return false, wailstest.ErrTest
+			mm := Maximiser{
+				WindowFullscreenFn: tc.fn,
+			}
+
+			err := mm.WindowFullscreen(ctx)
+
+			if tc.err != nil {
+				r.Error(err)
+				r.True(errors.Is(err, tc.err))
+				return
+			}
+
+			r.NoError(err)
+			r.True(mm.data.IsFullscreen)
+		})
 	}
-
-	b, err = mm.WindowIsNormal(ctx)
-	r.Error(err)
-	r.True(errors.Is(err, wailstest.ErrTest))
-	r.False(b)
 }
 
-func Test_MaximiseManager_StateData(t *testing.T) {
+func Test_Maximiser_WindowIsFullscreen(t *testing.T) {
 	t.Parallel()
-	r := require.New(t)
 
-	mm := &Maximiser{}
+	ctx := context.Background()
 
-	sd, err := mm.StateData(context.Background())
-	r.NoError(err)
-	r.NotNil(sd)
-	r.Equal("maximiser", sd.Name)
+	tcs := []struct {
+		name string
+		fn   func(ctx context.Context) (bool, error)
+		exp  bool
+		err  error
+	}{
+		{
+			name: "with function",
+			fn: func(ctx context.Context) (bool, error) {
+				return true, nil
+			},
+			exp: true,
+		},
+		{
+			name: "no function",
+			err:  wailsrun.ErrNotAvailable("WindowIsFullscreen"),
+		},
+		{
+			name: "with error",
+			fn: func(ctx context.Context) (bool, error) {
+				return false, wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func(ctx context.Context) (bool, error) {
+				panic(wailstest.ErrTest)
+			},
+			err: wailstest.ErrTest,
+		},
+	}
 
-	mj := sd.Data
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			r := require.New(t)
 
-	r.False(mj.IsFullscreen)
-	r.False(mj.IsMaximised)
-	r.False(mj.IsMinimised)
-	r.False(mj.IsNormal)
+			mm := Maximiser{
+				WindowIsFullscreenFn: tc.fn,
+			}
 
+			is, err := mm.WindowIsFullscreen(ctx)
+
+			if tc.err != nil {
+				r.Error(err)
+				r.True(errors.Is(err, tc.err))
+				return
+			}
+
+			r.NoError(err)
+			r.Equal(tc.exp, is)
+		})
+	}
+}
+
+func Test_Maximiser_WindowIsMaximised(t *testing.T) {
+	t.Parallel()
+
+	ctx := context.Background()
+
+	tcs := []struct {
+		name string
+		fn   func(ctx context.Context) (bool, error)
+		exp  bool
+		err  error
+	}{
+		{
+			name: "with function",
+			fn: func(ctx context.Context) (bool, error) {
+				return true, nil
+			},
+			exp: true,
+		},
+		{
+			name: "no function",
+			err:  wailsrun.ErrNotAvailable("WindowIsMaximised"),
+		},
+		{
+			name: "with error",
+			fn: func(ctx context.Context) (bool, error) {
+				return false, wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func(ctx context.Context) (bool, error) {
+				panic(wailstest.ErrTest)
+			},
+			err: wailstest.ErrTest,
+		},
+	}
+
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			r := require.New(t)
+
+			mm := Maximiser{
+				WindowIsMaximisedFn: tc.fn,
+			}
+
+			is, err := mm.WindowIsMaximised(ctx)
+
+			if tc.err != nil {
+				r.Error(err)
+				r.True(errors.Is(err, tc.err))
+				return
+			}
+
+			r.NoError(err)
+			r.Equal(tc.exp, is)
+		})
+	}
+}
+
+func Test_Maximiser_WindowIsMinimised(t *testing.T) {
+	t.Parallel()
+
+	ctx := context.Background()
+
+	tcs := []struct {
+		name string
+		fn   func(ctx context.Context) (bool, error)
+		exp  bool
+		err  error
+	}{
+		{
+			name: "with function",
+			fn: func(ctx context.Context) (bool, error) {
+				return true, nil
+			},
+			exp: true,
+		},
+		{
+			name: "no function",
+			err:  wailsrun.ErrNotAvailable("WindowIsMinimised"),
+		},
+		{
+			name: "with error",
+			fn: func(ctx context.Context) (bool, error) {
+				return false, wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func(ctx context.Context) (bool, error) {
+				panic(wailstest.ErrTest)
+			},
+			err: wailstest.ErrTest,
+		},
+	}
+
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			r := require.New(t)
+
+			mm := Maximiser{
+				WindowIsMinimisedFn: tc.fn,
+			}
+
+			is, err := mm.WindowIsMinimised(ctx)
+
+			if tc.err != nil {
+				r.Error(err)
+				r.True(errors.Is(err, tc.err))
+				return
+			}
+
+			r.NoError(err)
+			r.Equal(tc.exp, is)
+		})
+	}
+}
+
+func Test_Maximiser_WindowMaximise(t *testing.T) {
+	t.Parallel()
+
+	ctx := context.Background()
+
+	tcs := []struct {
+		name string
+		fn   func(ctx context.Context) error
+		err  error
+	}{
+		{
+			name: "with function",
+			fn: func(ctx context.Context) error {
+				return nil
+			},
+		},
+		{
+			name: "no function",
+			err:  wailsrun.ErrNotAvailable("WindowMaximise"),
+		},
+		{
+			name: "with error",
+			fn: func(ctx context.Context) error {
+				return wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func(ctx context.Context) error {
+				panic(wailstest.ErrTest)
+			},
+			err: wailstest.ErrTest,
+		},
+	}
+
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			r := require.New(t)
+
+			mm := Maximiser{
+				WindowMaximiseFn: tc.fn,
+			}
+
+			err := mm.WindowMaximise(ctx)
+
+			if tc.err != nil {
+				r.Error(err)
+				r.True(errors.Is(err, tc.err))
+				return
+			}
+
+			r.NoError(err)
+			r.True(mm.data.IsMaximised)
+		})
+	}
+}
+
+func Test_Maximiser_WindowMinimise(t *testing.T) {
+	t.Parallel()
+
+	ctx := context.Background()
+
+	tcs := []struct {
+		name string
+		fn   func(ctx context.Context) error
+		err  error
+	}{
+		{
+			name: "with function",
+			fn: func(ctx context.Context) error {
+				return nil
+			},
+		},
+		{
+			name: "no function",
+			err:  wailsrun.ErrNotAvailable("WindowMinimise"),
+		},
+		{
+			name: "with error",
+			fn: func(ctx context.Context) error {
+				return wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func(ctx context.Context) error {
+				panic(wailstest.ErrTest)
+			},
+			err: wailstest.ErrTest,
+		},
+	}
+
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			r := require.New(t)
+
+			mm := Maximiser{
+				WindowMinimiseFn: tc.fn,
+			}
+
+			err := mm.WindowMinimise(ctx)
+
+			if tc.err != nil {
+				r.Error(err)
+				r.True(errors.Is(err, tc.err))
+				return
+			}
+
+			r.NoError(err)
+			r.True(mm.data.IsMinimised)
+		})
+	}
+}
+
+func Test_Maximiser_WindowUnfullscreen(t *testing.T) {
+	t.Parallel()
+
+	ctx := context.Background()
+
+	tcs := []struct {
+		name string
+		fn   func(ctx context.Context) error
+		err  error
+	}{
+		{
+			name: "with function",
+			fn: func(ctx context.Context) error {
+				return nil
+			},
+		},
+		{
+			name: "no function",
+			err:  wailsrun.ErrNotAvailable("WindowUnfullscreen"),
+		},
+		{
+			name: "with error",
+			fn: func(ctx context.Context) error {
+				return wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func(ctx context.Context) error {
+				panic(wailstest.ErrTest)
+			},
+			err: wailstest.ErrTest,
+		},
+	}
+
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			r := require.New(t)
+
+			mm := Maximiser{
+				WindowUnfullscreenFn: tc.fn,
+			}
+
+			err := mm.WindowUnfullscreen(ctx)
+
+			if tc.err != nil {
+				r.Error(err)
+				r.True(errors.Is(err, tc.err))
+				return
+			}
+
+			r.NoError(err)
+			r.False(mm.data.IsFullscreen)
+		})
+	}
+}
+
+func Test_Maximiser_WindowUnmaximise(t *testing.T) {
+	t.Parallel()
+
+	ctx := context.Background()
+
+	tcs := []struct {
+		name string
+		fn   func(ctx context.Context) error
+		err  error
+	}{
+		{
+			name: "with function",
+			fn: func(ctx context.Context) error {
+				return nil
+			},
+		},
+		{
+			name: "no function",
+			err:  wailsrun.ErrNotAvailable("WindowUnmaximise"),
+		},
+		{
+			name: "with error",
+			fn: func(ctx context.Context) error {
+				return wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func(ctx context.Context) error {
+				panic(wailstest.ErrTest)
+			},
+			err: wailstest.ErrTest,
+		},
+	}
+
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			r := require.New(t)
+
+			mm := Maximiser{
+				WindowUnmaximiseFn: tc.fn,
+			}
+
+			err := mm.WindowUnmaximise(ctx)
+
+			if tc.err != nil {
+				r.Error(err)
+				r.True(errors.Is(err, tc.err))
+				return
+			}
+
+			r.NoError(err)
+			r.False(mm.data.IsMaximised)
+		})
+	}
+}
+
+func Test_Maximiser_WindowUnminimise(t *testing.T) {
+	t.Parallel()
+
+	ctx := context.Background()
+
+	tcs := []struct {
+		name string
+		fn   func(ctx context.Context) error
+		err  error
+	}{
+		{
+			name: "with function",
+			fn: func(ctx context.Context) error {
+				return nil
+			},
+		},
+		{
+			name: "no function",
+			err:  wailsrun.ErrNotAvailable("WindowUnminimise"),
+		},
+		{
+			name: "with error",
+			fn: func(ctx context.Context) error {
+				return wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func(ctx context.Context) error {
+				panic(wailstest.ErrTest)
+			},
+			err: wailstest.ErrTest,
+		},
+	}
+
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			r := require.New(t)
+
+			mm := Maximiser{
+				WindowUnminimiseFn: tc.fn,
+			}
+
+			err := mm.WindowUnminimise(ctx)
+
+			if tc.err != nil {
+				r.Error(err)
+				r.True(errors.Is(err, tc.err))
+				return
+			}
+
+			r.NoError(err)
+			r.False(mm.data.IsMinimised)
+		})
+	}
+}
+
+func Test_Maximiser_WindowIsNormal(t *testing.T) {
+	t.Parallel()
+
+	ctx := context.Background()
+
+	tcs := []struct {
+		name string
+		fn   func(ctx context.Context) (bool, error)
+		exp  bool
+		err  error
+	}{
+		{
+			name: "with function",
+			fn: func(ctx context.Context) (bool, error) {
+				return true, nil
+			},
+			exp: true,
+		},
+		{
+			name: "no function",
+			err:  wailsrun.ErrNotAvailable("WindowIsNormal"),
+		},
+		{
+			name: "with error",
+			fn: func(ctx context.Context) (bool, error) {
+				return false, wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func(ctx context.Context) (bool, error) {
+				panic(wailstest.ErrTest)
+			},
+			err: wailstest.ErrTest,
+		},
+	}
+
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			r := require.New(t)
+
+			mm := Maximiser{
+				WindowIsNormalFn: tc.fn,
+			}
+
+			is, err := mm.WindowIsNormal(ctx)
+
+			if tc.err != nil {
+				r.Error(err)
+				r.True(errors.Is(err, tc.err))
+				return
+			}
+
+			r.NoError(err)
+			r.Equal(tc.exp, is)
+		})
+	}
 }
 
 func Test_Maximiser_WindowToggleMaximise(t *testing.T) {
@@ -416,6 +685,13 @@ func Test_Maximiser_WindowToggleMaximise(t *testing.T) {
 			name: "with error",
 			fn: func(ctx context.Context) error {
 				return wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func(ctx context.Context) error {
+				panic(wailstest.ErrTest)
 			},
 			err: wailstest.ErrTest,
 		},
@@ -471,5 +747,24 @@ func Test_Maximiser_WindowToggleMaximise(t *testing.T) {
 		r.False(mm.data.IsMinimised)
 
 	})
+}
+
+func Test_NopMaximiser(t *testing.T) {
+	t.Parallel()
+	r := require.New(t)
+
+	mm := NopMaximiser()
+	r.NotNil(mm)
+	r.NotNil(mm.WindowFullscreenFn)
+	r.NotNil(mm.WindowIsFullscreenFn)
+	r.NotNil(mm.WindowIsMaximisedFn)
+	r.NotNil(mm.WindowIsMinimisedFn)
+	r.NotNil(mm.WindowIsNormalFn)
+	r.NotNil(mm.WindowMaximiseFn)
+	r.NotNil(mm.WindowMinimiseFn)
+	r.NotNil(mm.WindowToggleMaximiseFn)
+	r.NotNil(mm.WindowUnfullscreenFn)
+	r.NotNil(mm.WindowUnmaximiseFn)
+	r.NotNil(mm.WindowUnminimiseFn)
 
 }

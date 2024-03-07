@@ -2,7 +2,6 @@ package eventx
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/markbates/safe"
 	"github.com/markbates/wailsx/wailsrun"
@@ -10,7 +9,7 @@ import (
 
 func (em *Manager) EventsOn(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
 	if em == nil {
-		return nil, fmt.Errorf("error manager is nil")
+		return wailsrun.EventsOn(ctx, name, callback)
 	}
 
 	var fn wailsrun.CancelFn

@@ -2,7 +2,6 @@ package eventx
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/markbates/safe"
 	"github.com/markbates/wailsx/wailsrun"
@@ -10,18 +9,19 @@ import (
 
 func (em *Manager) EventsOnMultiple(ctx context.Context, name string, callback wailsrun.CallbackFn, counter int) (wailsrun.CancelFn, error) {
 	if em == nil {
-		return nil, fmt.Errorf("error manager is nil")
+		return wailsrun.EventsOnMultiple(ctx, name, callback, counter)
 	}
 
-	var fn wailsrun.CancelFn
+	var cancel wailsrun.CancelFn
 
 	err := safe.Run(func() error {
-		if em.EventsOnMultipleFn == nil {
-			em.EventsOnMultipleFn = wailsrun.EventsOnMultiple
+		fn := em.EventsOnMultipleFn
+		if fn == nil {
+			fn = wailsrun.EventsOnMultiple
 		}
 
 		var err error
-		fn, err = em.EventsOnMultipleFn(ctx, name, callback, counter)
+		cancel, err = fn(ctx, name, callback, counter)
 		if err != nil {
 			return err
 		}
@@ -33,5 +33,5 @@ func (em *Manager) EventsOnMultiple(ctx context.Context, name string, callback w
 		return nil, err
 	}
 
-	return fn, err
+	return cancel, err
 }

@@ -8,9 +8,9 @@ import (
 )
 
 type API interface {
-	// BrowserOpenURL(ctx context.Context, url string) error
-	// ClipboardGetText(ctx context.Context) (string, error)
-	// ClipboardSetText(ctx context.Context, text string) error
+	BrowserOpenURL(ctx context.Context, url string) error
+	ClipboardGetText(ctx context.Context) (string, error)
+	ClipboardSetText(ctx context.Context, text string) error
 	EventsEmit(ctx context.Context, event string, data ...any) error
 	EventsOff(ctx context.Context, event string, additional ...string) error
 	EventsOffAll(ctx context.Context) error
@@ -39,7 +39,7 @@ type API interface {
 	OpenDirectoryDialog(ctx context.Context, dialogOptions OpenDialogOptions) (string, error)
 	OpenFileDialog(ctx context.Context, dialogOptions OpenDialogOptions) (string, error)
 	OpenMultipleFilesDialog(ctx context.Context, dialogOptions OpenDialogOptions) ([]string, error)
-	// Quit(ctx context.Context) error
+	Quit(ctx context.Context) error
 	SaveFileDialog(ctx context.Context, dialogOptions SaveDialogOptions) (string, error)
 	Show(ctx context.Context) error
 	WindowCenter(ctx context.Context) error

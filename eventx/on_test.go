@@ -1,54 +1,72 @@
-package eventx_test
+package eventx
 
-// func Test_EventManager_On(t *testing.T) {
-// 	t.Parallel()
-// 	r := require.New(t)
+import (
+	"context"
+	"testing"
 
-// 	em, ec := newEventManager()
-// 	_ = ec
+	"github.com/markbates/wailsx/wailsrun"
+	"github.com/markbates/wailsx/wailstest"
+	"github.com/stretchr/testify/require"
+)
 
-// 	const evt = "event:test"
+func Test_Manager_EventsOn(t *testing.T) {
+	t.Parallel()
 
-// 	em.EventsOnFn = func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
-// 		if name != evt {
-// 			return nil, wailstest.ErrTest
-// 		}
+	ctx := context.Background()
 
-// 		if err := callback(); err != nil {
-// 			return nil, err
-// 		}
+	tcs := []struct {
+		name string
+		fn   func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error)
+		err  error
+	}{
+		{
+			name: "with function",
+			fn: func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
+				return nil, nil
+			},
+		},
+		{
+			name: "with error",
+			fn: func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
+				return nil, wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
+				panic(wailstest.ErrTest)
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "no function",
+			err:  wailsrun.ErrNotAvailable("EventsOn"),
+		},
+	}
 
-// 		return func() error {
-// 			return nil
-// 		}, nil
-// 	}
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
 
-// 	tcs := []struct {
-// 		name string
-// 		cb   wailsrun.CallbackFn
-// 		err  bool
-// 	}{
-// 		{
-// 			name: "no error",
-// 			cb:   func(data ...any) error { return nil },
-// 		},
-// 	}
+			r := require.New(t)
 
-// 	for _, tc := range tcs {
-// 		tc := tc
-// 		t.Run(tc.name, func(t *testing.T) {
-// 			t.Parallel()
+			m := &Manager{
+				EventsOnFn: tc.fn,
+			}
 
-// 			_, err := em.EventsOn(context.Background(), evt, tc.cb)
+			_, err := m.EventsOn(ctx, "test", func(data ...any) error {
+				return nil
+			})
 
-// 			if !tc.err {
-// 				r.NoError(err)
-// 				return
-// 			}
+			if tc.err != nil {
+				r.Error(err)
+				r.Equal(tc.err, err)
+				return
+			}
 
-// 			r.Error(err)
-// 			r.True(errors.Is(err, wailstest.ErrTest))
-// 		})
-// 	}
+			r.NoError(err)
+		})
+	}
 
-// }
+}

@@ -2,7 +2,6 @@ package windowx
 
 import (
 	"context"
-	"errors"
 	"testing"
 
 	"github.com/markbates/wailsx/wailsrun"
@@ -12,64 +11,102 @@ import (
 
 func Test_Reload_WindowReload(t *testing.T) {
 	t.Parallel()
-	r := require.New(t)
-
-	rd := Reloader{}
 
 	ctx := context.Background()
 
-	var called bool
-	rd.WindowReloadFn = func(ctx context.Context) error {
-		called = true
-		return nil
+	tcs := []struct {
+		name string
+		fn   func(ctx context.Context) error
+		err  error
+	}{
+		{
+			name: "with function",
+			fn: func(ctx context.Context) error {
+				return nil
+			},
+		},
+		{
+			name: "with error",
+			fn: func(ctx context.Context) error {
+				return wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func(ctx context.Context) error {
+				panic(wailstest.ErrTest)
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with nil function",
+			err:  wailsrun.ErrNotAvailable("WindowReload"),
+		},
 	}
 
-	err := rd.WindowReload(ctx)
-	r.NoError(err)
-	r.True(called)
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			r := require.New(t)
 
-	rd.WindowReloadFn = func(ctx context.Context) error {
-		return wailstest.ErrTest
+			rld := Reloader{
+				WindowReloadFn: tc.fn,
+			}
+
+			err := rld.WindowReload(ctx)
+			r.Equal(tc.err, err)
+		})
 	}
-
-	err = rd.WindowReload(ctx)
-	r.Error(err)
-	r.True(errors.Is(err, wailstest.ErrTest))
-
-	rd.WindowReloadFn = nil
-	err = rd.WindowReload(ctx)
-	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowReload")))
 }
 
 func Test_Reload_WindowReloadApp(t *testing.T) {
 	t.Parallel()
-	r := require.New(t)
-
-	rd := Reloader{}
 
 	ctx := context.Background()
 
-	var called bool
-	rd.WindowReloadAppFn = func(ctx context.Context) error {
-		called = true
-		return nil
+	tcs := []struct {
+		name string
+		fn   func(ctx context.Context) error
+		err  error
+	}{
+		{
+			name: "with function",
+			fn: func(ctx context.Context) error {
+				return nil
+			},
+		},
+		{
+			name: "with error",
+			fn: func(ctx context.Context) error {
+				return wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func(ctx context.Context) error {
+				panic(wailstest.ErrTest)
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with nil function",
+			err:  wailsrun.ErrNotAvailable("WindowReloadApp"),
+		},
 	}
 
-	err := rd.WindowReloadApp(ctx)
-	r.NoError(err)
-	r.True(called)
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			r := require.New(t)
 
-	rd.WindowReloadAppFn = func(ctx context.Context) error {
-		return wailstest.ErrTest
+			rld := Reloader{
+				WindowReloadAppFn: tc.fn,
+			}
+
+			err := rld.WindowReloadApp(ctx)
+			r.Equal(tc.err, err)
+		})
 	}
-
-	err = rd.WindowReloadApp(ctx)
-	r.Error(err)
-	r.True(errors.Is(err, wailstest.ErrTest))
-
-	rd.WindowReloadAppFn = nil
-	err = rd.WindowReloadApp(ctx)
-	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowReloadApp")))
 }

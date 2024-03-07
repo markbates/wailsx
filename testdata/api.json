@@ -69,6 +69,15 @@
         "max_h": 800,
         "min_w": 20,
         "min_h": 30
+      },
+      "themer": {
+        "background_colour": {
+          "r": 1,
+          "g": 2,
+          "b": 3,
+          "a": 4
+        },
+        "is_dark_theme": true
       }
     }
   }

@@ -44,6 +44,9 @@ func Test_API_StateData(t *testing.T) {
 	err = api.WindowSetBackgroundColour(ctx, 1, 2, 3, 4)
 	r.NoError(err)
 
+	err = api.WindowSetDarkTheme(ctx)
+	r.NoError(err)
+
 	err = api.WindowMaximise(ctx)
 	r.NoError(err)
 

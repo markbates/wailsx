@@ -2,7 +2,6 @@ package windowx
 
 import (
 	"context"
-	"errors"
 	"testing"
 
 	"github.com/markbates/wailsx/wailsrun"
@@ -12,163 +11,322 @@ import (
 
 func Test_Manager_ScreenGetAll(t *testing.T) {
 	t.Parallel()
-	r := require.New(t)
-
-	wm := Manager{}
 
 	ctx := context.Background()
 
-	_, err := wm.ScreenGetAll(ctx)
-	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable("ScreenGetAll")))
-
-	wm.ScreenGetAllFn = func(ctx context.Context) ([]Screen, error) {
-		return []Screen{
-			{
-				Size: ScreenSize{
-					Width: 100,
-				},
+	exp := []Screen{
+		{
+			Size: ScreenSize{
+				Width: 100,
 			},
-		}, nil
+		},
 	}
 
-	screens, err := wm.ScreenGetAll(ctx)
-	r.NoError(err)
-	r.Len(screens, 1)
-
-	screen := screens[0]
-	w := screen.Size.Width
-	r.Equal(100, w)
-
-	wm.ScreenGetAllFn = func(ctx context.Context) ([]Screen, error) {
-		return nil, wailstest.ErrTest
+	tcs := []struct {
+		name string
+		fn   func(ctx context.Context) ([]Screen, error)
+		err  error
+	}{
+		{
+			name: "with function",
+			fn: func(ctx context.Context) ([]Screen, error) {
+				return exp, nil
+			},
+		},
+		{
+			name: "with error",
+			fn: func(ctx context.Context) ([]Screen, error) {
+				return nil, wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func(ctx context.Context) ([]Screen, error) {
+				panic(wailstest.ErrTest)
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with nil function",
+			err:  wailsrun.ErrNotAvailable("ScreenGetAll"),
+		},
 	}
 
-	_, err = wm.ScreenGetAll(ctx)
-	r.Error(err)
-	r.True(errors.Is(err, wailstest.ErrTest))
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			r := require.New(t)
+
+			wm := Manager{
+				ScreenGetAllFn: tc.fn,
+			}
+
+			act, err := wm.ScreenGetAll(ctx)
+			r.Equal(tc.err, err)
+
+			if tc.err == nil {
+				r.Equal(exp, act)
+			}
+		})
+	}
+
 }
 
 func Test_Manager_WindowExecJS(t *testing.T) {
 	t.Parallel()
-	r := require.New(t)
-
-	wm := Manager{}
 
 	ctx := context.Background()
 
-	err := wm.WindowExecJS(ctx, "")
-	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowExecJS")))
-
-	var act string
-	wm.WindowExecJSFn = func(ctx context.Context, js string) error {
-		if len(js) == 0 {
-			return wailstest.ErrTest
-		}
-		act = js
-		return nil
+	tcs := []struct {
+		name string
+		fn   func(ctx context.Context, js string) error
+		err  error
+	}{
+		{
+			name: "with function",
+			fn: func(ctx context.Context, js string) error {
+				return nil
+			},
+		},
+		{
+			name: "with error",
+			fn: func(ctx context.Context, js string) error {
+				return wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func(ctx context.Context, js string) error {
+				panic(wailstest.ErrTest)
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with nil function",
+			err:  wailsrun.ErrNotAvailable("WindowExecJS"),
+		},
 	}
 
-	exp := "alert('hello')"
-	err = wm.WindowExecJS(ctx, exp)
-	r.NoError(err)
-	r.Equal(exp, act)
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			r := require.New(t)
 
-	err = wm.WindowExecJS(ctx, "")
-	r.Error(err)
-	r.True(errors.Is(err, wailstest.ErrTest))
+			wm := Manager{
+				WindowExecJSFn: tc.fn,
+			}
+
+			err := wm.WindowExecJS(ctx, "")
+			r.Equal(tc.err, err)
+		})
+	}
+
 }
 
 func Test_Manager_WindowPrint(t *testing.T) {
 	t.Parallel()
-	r := require.New(t)
-
-	wm := Manager{}
 
 	ctx := context.Background()
-	err := wm.WindowPrint(ctx)
-	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowPrint")))
 
-	var called bool
-	wm.WindowPrintFn = func(ctx context.Context) error {
-		called = true
-		return nil
+	tcs := []struct {
+		name string
+		fn   func(ctx context.Context) error
+		err  error
+	}{
+		{
+			name: "with function",
+			fn: func(ctx context.Context) error {
+				return nil
+			},
+		},
+		{
+			name: "with error",
+			fn: func(ctx context.Context) error {
+				return wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func(ctx context.Context) error {
+				panic(wailstest.ErrTest)
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with nil function",
+			err:  wailsrun.ErrNotAvailable("WindowPrint"),
+		},
 	}
 
-	err = wm.WindowPrint(ctx)
-	r.NoError(err)
-	r.True(called)
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			r := require.New(t)
 
-	wm.WindowPrintFn = func(ctx context.Context) error {
-		return wailstest.ErrTest
+			wm := Manager{
+				WindowPrintFn: tc.fn,
+			}
+
+			err := wm.WindowPrint(ctx)
+			r.Equal(tc.err, err)
+		})
 	}
-
-	err = wm.WindowPrint(ctx)
-	r.Error(err)
-	r.True(errors.Is(err, wailstest.ErrTest))
 }
 
 func Test_Manager_WindowSetAlwaysOnTop(t *testing.T) {
 	t.Parallel()
-	r := require.New(t)
 
-	wm := Manager{}
 	ctx := context.Background()
 
-	err := wm.WindowSetAlwaysOnTop(ctx, true)
-	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowSetAlwaysOnTop")))
-
-	var act bool
-	wm.WindowSetAlwaysOnTopFn = func(ctx context.Context, b bool) error {
-		act = b
-		return nil
+	tcs := []struct {
+		name string
+		fn   func(ctx context.Context, b bool) error
+		err  error
+	}{
+		{
+			name: "with function",
+			fn: func(ctx context.Context, b bool) error {
+				return nil
+			},
+		},
+		{
+			name: "with error",
+			fn: func(ctx context.Context, b bool) error {
+				return wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func(ctx context.Context, b bool) error {
+				panic(wailstest.ErrTest)
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with nil function",
+			err:  wailsrun.ErrNotAvailable("WindowSetAlwaysOnTop"),
+		},
 	}
 
-	err = wm.WindowSetAlwaysOnTop(ctx, true)
-	r.NoError(err)
-	r.True(act)
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			r := require.New(t)
 
-	wm.WindowSetAlwaysOnTopFn = func(ctx context.Context, b bool) error {
-		return wailstest.ErrTest
+			wm := Manager{
+				WindowSetAlwaysOnTopFn: tc.fn,
+			}
+
+			err := wm.WindowSetAlwaysOnTop(ctx, false)
+			r.Equal(tc.err, err)
+		})
 	}
-
-	err = wm.WindowSetAlwaysOnTop(ctx, true)
-	r.Error(err)
-	r.True(errors.Is(err, wailstest.ErrTest))
 }
 
 func Test_Manager_WindowSetTitle(t *testing.T) {
 	t.Parallel()
-	r := require.New(t)
-
-	wm := Manager{}
 
 	ctx := context.Background()
 
-	err := wm.WindowSetTitle(ctx, "")
-	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowSetTitle")))
-
-	var act string
-	wm.WindowSetTitleFn = func(ctx context.Context, title string) error {
-		act = title
-		return nil
+	tcs := []struct {
+		name string
+		fn   func(ctx context.Context, title string) error
+		err  error
+	}{
+		{
+			name: "with function",
+			fn: func(ctx context.Context, title string) error {
+				return nil
+			},
+		},
+		{
+			name: "with error",
+			fn: func(ctx context.Context, title string) error {
+				return wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func(ctx context.Context, title string) error {
+				panic(wailstest.ErrTest)
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with nil function",
+			err:  wailsrun.ErrNotAvailable("WindowSetTitle"),
+		},
 	}
 
-	exp := "hello"
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			r := require.New(t)
 
-	err = wm.WindowSetTitle(ctx, exp)
+			wm := Manager{
+				WindowSetTitleFn: tc.fn,
+			}
+
+			err := wm.WindowSetTitle(ctx, "")
+			r.Equal(tc.err, err)
+		})
+	}
+}
+
+func Test_Manager_StateData(t *testing.T) {
+	t.Parallel()
+
+	r := require.New(t)
+
+	ctx := context.Background()
+
+	var wm *Manager
+
+	sd, err := wm.StateData(ctx)
 	r.NoError(err)
-	r.Equal(exp, act)
+	r.Equal(ManagerStateDataName, sd.Name)
 
-	wm.WindowSetTitleFn = func(ctx context.Context, title string) error {
-		return wailstest.ErrTest
-	}
+	wm = &Manager{}
 
-	err = wm.WindowSetTitle(ctx, exp)
-	r.Error(err)
-	r.True(errors.Is(err, wailstest.ErrTest))
+	sd, err = wm.StateData(ctx)
+	r.NoError(err)
+	r.Equal(ManagerStateDataName, sd.Name)
+
+	r.Nil(sd.Data.MaximiserData)
+	r.Nil(sd.Data.PositionData)
+	r.Nil(sd.Data.ThemeData)
+
+	wm = NopManager()
+
+	sd, err = wm.StateData(ctx)
+	r.NoError(err)
+	r.Equal(ManagerStateDataName, sd.Name)
+
+	r.NotNil(sd.Data.MaximiserData)
+	r.NotNil(sd.Data.PositionData)
+	r.NotNil(sd.Data.ThemeData)
+
+}
+
+func Test_NopManager(t *testing.T) {
+	t.Parallel()
+	r := require.New(t)
+
+	wm := NopManager()
+	r.NotNil(wm)
+	r.NotNil(wm.MaximiseManager)
+	r.NotNil(wm.PositionManager)
+	r.NotNil(wm.ReloadManager)
+	r.NotNil(wm.ThemeManager)
+	r.NotNil(wm.Toggler)
+	r.NotNil(wm.ScreenGetAllFn)
+	r.NotNil(wm.WindowExecJSFn)
+	r.NotNil(wm.WindowPrintFn)
+	r.NotNil(wm.WindowSetAlwaysOnTopFn)
+	r.NotNil(wm.WindowSetTitleFn)
 }

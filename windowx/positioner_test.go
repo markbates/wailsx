@@ -2,7 +2,6 @@ package windowx
 
 import (
 	"context"
-	"errors"
 	"testing"
 
 	"github.com/markbates/wailsx/wailsrun"
@@ -12,227 +11,432 @@ import (
 
 func Test_PositionManager_WindowCenter(t *testing.T) {
 	t.Parallel()
-	r := require.New(t)
-
-	pm := Positioner{}
 
 	ctx := context.Background()
 
+	r := require.New(t)
+
+	var pm *Positioner
 	err := pm.WindowCenter(ctx)
 	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowCenter")))
+	r.Equal(wailsrun.ErrNotAvailable("WindowCenter"), err)
 
-	var called bool
-	pm.WindowCenterFn = func(ctx context.Context) error {
-		called = true
-		return nil
+	tcs := []struct {
+		name string
+		fn   func(ctx context.Context) error
+		err  error
+	}{
+		{
+			name: "with function",
+			fn: func(ctx context.Context) error {
+				return nil
+			},
+		},
+		{
+			name: "with error",
+			fn: func(ctx context.Context) error {
+				return wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func(ctx context.Context) error {
+				panic(wailstest.ErrTest)
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with nil function",
+			err:  wailsrun.ErrNotAvailable("WindowCenter"),
+		},
 	}
 
-	err = pm.WindowCenter(ctx)
-	r.NoError(err)
-	r.True(called)
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
 
-	pm.WindowCenterFn = func(ctx context.Context) error {
-		return wailstest.ErrTest
+			r := require.New(t)
+
+			pm := &Positioner{
+				WindowCenterFn: tc.fn,
+			}
+
+			err := pm.WindowCenter(ctx)
+			r.Equal(tc.err, err)
+		})
 	}
-
-	err = pm.WindowCenter(ctx)
-	r.Error(err)
-	r.True(errors.Is(err, wailstest.ErrTest))
 }
 
 func Test_PositionManager_WindowGetPosition(t *testing.T) {
 	t.Parallel()
-	r := require.New(t)
-
-	pm := Positioner{}
 
 	ctx := context.Background()
 
+	r := require.New(t)
+
+	var pm *Positioner
 	_, _, err := pm.WindowGetPosition(ctx)
 	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowGetPosition")))
+	r.Equal(wailsrun.ErrNotAvailable("WindowGetPosition"), err)
 
-	ex := 1
-	ey := 2
-	pm.WindowGetPositionFn = func(ctx context.Context) (int, int, error) {
-		return ex, ey, nil
+	tcs := []struct {
+		name string
+		fn   func(ctx context.Context) (int, int, error)
+		err  error
+	}{
+		{
+			name: "with function",
+			fn: func(ctx context.Context) (int, int, error) {
+				return 0, 0, nil
+			},
+		},
+		{
+			name: "with error",
+			fn: func(ctx context.Context) (int, int, error) {
+				return 0, 0, wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func(ctx context.Context) (int, int, error) {
+				panic(wailstest.ErrTest)
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with nil function",
+			err:  wailsrun.ErrNotAvailable("WindowGetPosition"),
+		},
 	}
 
-	x, y, err := pm.WindowGetPosition(ctx)
-	r.NoError(err)
-	r.Equal(ex, x)
-	r.Equal(ey, y)
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
 
-	pm.WindowGetPositionFn = func(ctx context.Context) (int, int, error) {
-		return 0, 0, wailstest.ErrTest
+			r := require.New(t)
+
+			pm := &Positioner{
+				WindowGetPositionFn: tc.fn,
+			}
+
+			x, y, err := pm.WindowGetPosition(ctx)
+			r.Equal(tc.err, err)
+			r.Zero(x)
+			r.Zero(y)
+		})
 	}
-
-	_, _, err = pm.WindowGetPosition(ctx)
-	r.Error(err)
-	r.True(errors.Is(err, wailstest.ErrTest))
 }
 
 func Test_PositionManager_WindowGetSize(t *testing.T) {
 	t.Parallel()
-	r := require.New(t)
-
-	pm := Positioner{}
 
 	ctx := context.Background()
 
+	r := require.New(t)
+
+	var pm *Positioner
 	_, _, err := pm.WindowGetSize(ctx)
 	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowGetSize")))
+	r.Equal(wailsrun.ErrNotAvailable("WindowGetSize"), err)
 
-	ew := 1
-	eh := 2
-	pm.WindowGetSizeFn = func(ctx context.Context) (int, int, error) {
-		return ew, eh, nil
+	tcs := []struct {
+		name string
+		fn   func(ctx context.Context) (int, int, error)
+		err  error
+	}{
+		{
+			name: "with function",
+			fn: func(ctx context.Context) (int, int, error) {
+				return 0, 0, nil
+			},
+		},
+		{
+			name: "with error",
+			fn: func(ctx context.Context) (int, int, error) {
+				return 0, 0, wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func(ctx context.Context) (int, int, error) {
+				panic(wailstest.ErrTest)
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with nil function",
+			err:  wailsrun.ErrNotAvailable("WindowGetSize"),
+		},
 	}
 
-	w, h, err := pm.WindowGetSize(ctx)
-	r.NoError(err)
-	r.Equal(ew, w)
-	r.Equal(eh, h)
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
 
-	pm.WindowGetSizeFn = func(ctx context.Context) (int, int, error) {
-		return 0, 0, wailstest.ErrTest
+			r := require.New(t)
+
+			pm := &Positioner{
+				WindowGetSizeFn: tc.fn,
+			}
+
+			w, h, err := pm.WindowGetSize(ctx)
+			r.Equal(tc.err, err)
+			r.Zero(w)
+			r.Zero(h)
+		})
 	}
-
-	_, _, err = pm.WindowGetSize(ctx)
-	r.Error(err)
-	r.True(errors.Is(err, wailstest.ErrTest))
 }
 
 func Test_PositionManager_WindowSetMaxSize(t *testing.T) {
 	t.Parallel()
-	r := require.New(t)
-
-	pm := Positioner{}
 
 	ctx := context.Background()
 
-	err := pm.WindowSetMaxSize(ctx, 1, 2)
-	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowSetMaxSize")))
+	r := require.New(t)
 
-	var aw, ah int
-	pm.WindowSetMaxSizeFn = func(ctx context.Context, width int, height int) error {
-		aw = width
-		ah = height
-		return nil
+	var pm *Positioner
+	err := pm.WindowSetMaxSize(ctx, 0, 0)
+	r.Error(err)
+	r.Equal(wailsrun.ErrNotAvailable("WindowSetMaxSize"), err)
+
+	tcs := []struct {
+		name string
+		fn   func(ctx context.Context, width int, height int) error
+		err  error
+	}{
+		{
+			name: "with function",
+			fn: func(ctx context.Context, width int, height int) error {
+				return nil
+			},
+		},
+		{
+			name: "with error",
+			fn: func(ctx context.Context, width int, height int) error {
+				return wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func(ctx context.Context, width int, height int) error {
+				panic(wailstest.ErrTest)
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with nil function",
+			err:  wailsrun.ErrNotAvailable("WindowSetMaxSize"),
+		},
 	}
 
-	err = pm.WindowSetMaxSize(ctx, 1, 2)
-	r.NoError(err)
-	r.Equal(1, aw)
-	r.Equal(2, ah)
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
 
-	pm.WindowSetMaxSizeFn = func(ctx context.Context, width int, height int) error {
-		return wailstest.ErrTest
+			r := require.New(t)
+
+			pm := &Positioner{
+				WindowSetMaxSizeFn: tc.fn,
+			}
+
+			err := pm.WindowSetMaxSize(ctx, 0, 0)
+			r.Equal(tc.err, err)
+		})
 	}
-
-	err = pm.WindowSetMaxSize(ctx, 1, 2)
-	r.Error(err)
-	r.True(errors.Is(err, wailstest.ErrTest))
 }
 
 func Test_PositionManager_WindowSetMinSize(t *testing.T) {
 	t.Parallel()
-	r := require.New(t)
-
-	pm := Positioner{}
 
 	ctx := context.Background()
 
-	err := pm.WindowSetMinSize(ctx, 1, 2)
-	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowSetMinSize")))
+	r := require.New(t)
 
-	var aw, ah int
-	pm.WindowSetMinSizeFn = func(ctx context.Context, width int, height int) error {
-		aw = width
-		ah = height
-		return nil
+	var pm *Positioner
+	err := pm.WindowSetMinSize(ctx, 0, 0)
+	r.Error(err)
+	r.Equal(wailsrun.ErrNotAvailable("WindowSetMinSize"), err)
+
+	tcs := []struct {
+		name string
+		fn   func(ctx context.Context, width int, height int) error
+		err  error
+	}{
+		{
+			name: "with function",
+			fn: func(ctx context.Context, width int, height int) error {
+				return nil
+			},
+		},
+		{
+			name: "with error",
+			fn: func(ctx context.Context, width int, height int) error {
+				return wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func(ctx context.Context, width int, height int) error {
+				panic(wailstest.ErrTest)
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with nil function",
+			err:  wailsrun.ErrNotAvailable("WindowSetMinSize"),
+		},
 	}
 
-	err = pm.WindowSetMinSize(ctx, 1, 2)
-	r.NoError(err)
-	r.Equal(1, aw)
-	r.Equal(2, ah)
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
 
-	pm.WindowSetMinSizeFn = func(ctx context.Context, width int, height int) error {
-		return wailstest.ErrTest
+			r := require.New(t)
+
+			pm := &Positioner{
+				WindowSetMinSizeFn: tc.fn,
+			}
+
+			err := pm.WindowSetMinSize(ctx, 0, 0)
+			r.Equal(tc.err, err)
+		})
 	}
-
-	err = pm.WindowSetMinSize(ctx, 1, 2)
-	r.Error(err)
-	r.True(errors.Is(err, wailstest.ErrTest))
 }
 
 func Test_PositionManager_WindowSetPosition(t *testing.T) {
 	t.Parallel()
-	r := require.New(t)
-
-	pm := Positioner{}
 
 	ctx := context.Background()
 
-	err := pm.WindowSetPosition(ctx, 1, 2)
-	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowSetPosition")))
+	r := require.New(t)
 
-	var ax, ay int
-	pm.WindowSetPositionFn = func(ctx context.Context, x int, y int) error {
-		ax = x
-		ay = y
-		return nil
+	var pm *Positioner
+	err := pm.WindowSetPosition(ctx, 0, 0)
+	r.Error(err)
+	r.Equal(wailsrun.ErrNotAvailable("WindowSetPosition"), err)
+
+	tcs := []struct {
+		name string
+		fn   func(ctx context.Context, x int, y int) error
+		err  error
+	}{
+		{
+			name: "with function",
+			fn: func(ctx context.Context, x int, y int) error {
+				return nil
+			},
+		},
+		{
+			name: "with error",
+			fn: func(ctx context.Context, x int, y int) error {
+				return wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func(ctx context.Context, x int, y int) error {
+				panic(wailstest.ErrTest)
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with nil function",
+			err:  wailsrun.ErrNotAvailable("WindowSetPosition"),
+		},
 	}
 
-	err = pm.WindowSetPosition(ctx, 1, 2)
-	r.NoError(err)
-	r.Equal(1, ax)
-	r.Equal(2, ay)
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
 
-	pm.WindowSetPositionFn = func(ctx context.Context, x int, y int) error {
-		return wailstest.ErrTest
+			r := require.New(t)
+
+			pm := &Positioner{
+				WindowSetPositionFn: tc.fn,
+			}
+
+			err := pm.WindowSetPosition(ctx, 0, 0)
+			r.Equal(tc.err, err)
+		})
 	}
-
-	err = pm.WindowSetPosition(ctx, 1, 2)
-	r.Error(err)
-	r.True(errors.Is(err, wailstest.ErrTest))
 }
 
 func Test_PositionManager_WindowSetSize(t *testing.T) {
 	t.Parallel()
-	r := require.New(t)
-
-	pm := Positioner{}
 
 	ctx := context.Background()
 
-	err := pm.WindowSetSize(ctx, 1, 2)
-	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowSetSize")))
+	r := require.New(t)
 
-	var aw, ah int
-	pm.WindowSetSizeFn = func(ctx context.Context, width int, height int) error {
-		aw = width
-		ah = height
-		return nil
+	var pm *Positioner
+	err := pm.WindowSetSize(ctx, 0, 0)
+	r.Error(err)
+	r.Equal(wailsrun.ErrNotAvailable("WindowSetSize"), err)
+
+	tcs := []struct {
+		name string
+		fn   func(ctx context.Context, width int, height int) error
+		err  error
+	}{
+		{
+			name: "with function",
+			fn: func(ctx context.Context, width int, height int) error {
+				return nil
+			},
+		},
+		{
+			name: "with error",
+			fn: func(ctx context.Context, width int, height int) error {
+				return wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func(ctx context.Context, width int, height int) error {
+				panic(wailstest.ErrTest)
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with nil function",
+			err:  wailsrun.ErrNotAvailable("WindowSetSize"),
+		},
 	}
 
-	err = pm.WindowSetSize(ctx, 1, 2)
-	r.NoError(err)
-	r.Equal(1, aw)
-	r.Equal(2, ah)
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
 
-	pm.WindowSetSizeFn = func(ctx context.Context, width int, height int) error {
-		return wailstest.ErrTest
+			r := require.New(t)
+
+			pm := &Positioner{
+				WindowSetSizeFn: tc.fn,
+			}
+
+			err := pm.WindowSetSize(ctx, 0, 0)
+			r.Equal(tc.err, err)
+		})
 	}
+}
 
-	err = pm.WindowSetSize(ctx, 1, 2)
-	r.Error(err)
-	r.True(errors.Is(err, wailstest.ErrTest))
+func Test_NopPositioner(t *testing.T) {
+	t.Parallel()
+	r := require.New(t)
+
+	pm := NopPositioner()
+	r.NotNil(pm)
+	r.NotNil(pm.WindowCenterFn)
+	r.NotNil(pm.WindowGetPositionFn)
+	r.NotNil(pm.WindowGetSizeFn)
+	r.NotNil(pm.WindowSetMaxSizeFn)
+	r.NotNil(pm.WindowSetMinSizeFn)
+	r.NotNil(pm.WindowSetPositionFn)
+	r.NotNil(pm.WindowSetSizeFn)
 }

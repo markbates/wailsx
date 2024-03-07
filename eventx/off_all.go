@@ -2,7 +2,6 @@ package eventx
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/markbates/safe"
 	"github.com/markbates/wailsx/wailsrun"
@@ -10,7 +9,7 @@ import (
 
 func (em *Manager) EventsOffAll(ctx context.Context) error {
 	if em == nil {
-		return fmt.Errorf("error manager is nil")
+		return wailsrun.EventsOffAll(ctx)
 	}
 
 	return safe.Run(func() error {

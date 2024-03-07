@@ -84,7 +84,3 @@ func (pm *Positioner) StateData(ctx context.Context) (statedata.Data[*PositionDa
 
 	return sd, nil
 }
-
-func (th Themer) StateData(ctx context.Context) (statedata.Data[ThemeData], error) {
-	return th.data.StateData(ctx)
-}

@@ -16,7 +16,3 @@ func (mm *Maximiser) StateData(ctx context.Context) (statedata.Data[*MaximiserDa
 func (pm *Positioner) StateData(ctx context.Context) (statedata.Data[*PositionData], error) {
 	return pm.data.StateData(ctx)
 }
-
-func (th Themer) StateData(ctx context.Context) (statedata.Data[ThemeData], error) {
-	return th.data.StateData(ctx)
-}

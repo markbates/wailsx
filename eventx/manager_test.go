@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/markbates/wailsx/eventx/msgx"
+	"github.com/markbates/wailsx/wailsrun"
 	"github.com/markbates/wailsx/wailstest"
 	"github.com/stretchr/testify/require"
 )
@@ -121,4 +122,60 @@ func Test_Manager_DisableStateData(t *testing.T) {
 	sd, err := em.StateData(ctx)
 	r.NoError(err)
 	r.Nil(sd.Data)
+}
+
+func Test_Nil_Manager(t *testing.T) {
+	t.Parallel()
+	r := require.New(t)
+
+	var em *Manager
+
+	ctx := context.Background()
+
+	err := em.EventsEmit(ctx, "test:event")
+	r.Error(err)
+
+	exp := wailsrun.ErrNotAvailable("EventsEmit")
+	r.Equal(exp, err)
+
+	_, err = em.EventsOn(ctx, "test:event", func(args ...any) error {
+		return nil
+	})
+
+	r.Error(err)
+
+	exp = wailsrun.ErrNotAvailable("EventsOn")
+	r.Equal(exp, err)
+
+	_, err = em.EventsOnMultiple(ctx, "test:event", func(args ...any) error {
+		return nil
+	}, 1)
+
+	r.Error(err)
+
+	exp = wailsrun.ErrNotAvailable("EventsOnMultiple")
+	r.Equal(exp, err)
+
+	err = em.EventsOff(ctx, "test:event")
+
+	r.Error(err)
+
+	exp = wailsrun.ErrNotAvailable("EventsOff")
+	r.Equal(exp, err)
+
+	err = em.EventsOffAll(ctx)
+
+	r.Error(err)
+
+	exp = wailsrun.ErrNotAvailable("EventsOffAll")
+	r.Equal(exp, err)
+
+	_, err = em.EventsOnce(ctx, "test:event", func(args ...any) error {
+		return nil
+	})
+
+	r.Error(err)
+
+	exp = wailsrun.ErrNotAvailable("EventsOnce")
+	r.Equal(exp, err)
 }

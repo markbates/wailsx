@@ -5,41 +5,68 @@ import (
 	"testing"
 
 	"github.com/markbates/wailsx/wailsrun"
+	"github.com/markbates/wailsx/wailstest"
 	"github.com/stretchr/testify/require"
 )
 
 func Test_Manager_OnMultiple(t *testing.T) {
 	t.Parallel()
-	r := require.New(t)
 
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+	ctx := context.Background()
 
 	const event = "event:test"
 
-	em := NewManager()
-
-	var counter int
-	var canceled bool
-
-	fn := func(ctx context.Context, name string, callback wailsrun.CallbackFn, n int) (wailsrun.CancelFn, error) {
-		counter = n
-
-		return func() error {
-			canceled = true
-			return nil
-		}, nil
+	tcs := []struct {
+		name string
+		fn   func() error
+		err  error
+	}{
+		{
+			name: "with function",
+			fn: func() error {
+				return nil
+			},
+		},
+		{
+			name: "with error",
+			fn: func() error {
+				return wailstest.ErrTest
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "with panic",
+			fn: func() error {
+				panic(wailstest.ErrTest)
+			},
+			err: wailstest.ErrTest,
+		},
+		{
+			name: "no function",
+			err:  wailsrun.ErrNotAvailable("EventsOnMultiple"),
+		},
 	}
-	em.EventsOnMultipleFn = fn
 
-	cancelFn, err := em.EventsOnMultiple(ctx, event, func(data ...any) error {
-		return nil
-	}, 42)
+	for _, tc := range tcs {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
 
-	r.NoError(err)
-	r.NotNil(cancelFn)
-	r.Equal(42, counter)
+			r := require.New(t)
 
-	r.NoError(cancelFn())
-	r.True(canceled)
+			m := &Manager{}
+
+			if tc.fn != nil {
+				m.EventsOnMultipleFn = func(ctx context.Context, name string, callback wailsrun.CallbackFn, counter int) (wailsrun.CancelFn, error) {
+					return nil, tc.fn()
+				}
+			}
+
+			_, err := m.EventsOnMultiple(ctx, event, func(data ...any) error {
+				return nil
+			}, 1)
+
+			r.Equal(tc.err, err)
+		})
+	}
+
 }

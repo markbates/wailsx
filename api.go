@@ -2,8 +2,11 @@ package wailsx
 
 import (
 	"context"
+	"fmt"
 	"os"
 
+	"github.com/markbates/safe"
+	"github.com/markbates/wailsx/clipx"
 	"github.com/markbates/wailsx/dialogx"
 	"github.com/markbates/wailsx/eventx"
 	"github.com/markbates/wailsx/logx"
@@ -17,30 +20,42 @@ var _ wailsrun.API = &API{}
 
 func NewAPI() *API {
 	return &API{
-		DialogManager: dialogx.Manager{},
-		EventManager:  eventx.NewManager(),
-		WailsLogger:   logx.NewLogger(os.Stdout, wailsrun.INFO),
-		MenuManager:   menux.Manager{},
-		WindowManager: windowx.NewManager(),
+		ClipboardManager: &clipx.Manager{},
+		DialogManager:    dialogx.Manager{},
+		EventManager:     eventx.NewManager(),
+		MenuManager:      menux.Manager{},
+		WailsLogger:      logx.NewLogger(os.Stdout, wailsrun.INFO),
+		WindowManager:    windowx.NewManager(),
 	}
 }
 
 func NopAPI() *API {
 	return &API{
-		DialogManager: dialogx.NopManager(),
-		EventManager:  eventx.NopManager(),
-		WailsLogger:   logx.NewLogger(os.Stdout, wailsrun.INFO),
-		MenuManager:   menux.NopManager(),
-		WindowManager: windowx.NopManager(),
+		ClipboardManager: clipx.NopManager(),
+		DialogManager:    dialogx.NopManager(),
+		EventManager:     eventx.NopManager(),
+		MenuManager:      menux.NopManager(),
+		WailsLogger:      logx.NewLogger(os.Stdout, wailsrun.INFO),
+		WindowManager:    windowx.NopManager(),
+		BrowserOpenURLFn: func(ctx context.Context, url string) error {
+			return nil
+		},
+		QuitFn: func(ctx context.Context) error {
+			return nil
+		},
 	}
 }
 
 type API struct {
+	clipx.ClipboardManager
 	dialogx.DialogManager
 	eventx.EventManager
 	logx.WailsLogger
 	menux.MenuManager
 	windowx.WindowManager
+
+	BrowserOpenURLFn func(ctx context.Context, url string) error
+	QuitFn           func(ctx context.Context) error
 }
 
 func (api *API) StateData(ctx context.Context) (statedata.Data[*APIData], error) {
@@ -79,4 +94,34 @@ func (api *API) StateData(ctx context.Context) (statedata.Data[*APIData], error)
 	sd.Data = data
 
 	return sd, nil
+}
+
+func (api *API) BrowserOpenURL(ctx context.Context, url string) error {
+	if api == nil {
+		return fmt.Errorf("api is nil")
+	}
+
+	return safe.Run(func() error {
+		fn := api.BrowserOpenURLFn
+		if fn == nil {
+			fn = wailsrun.BrowserOpenURL
+		}
+
+		return fn(ctx, url)
+	})
+}
+
+func (api *API) Quit(ctx context.Context) error {
+	if api == nil {
+		return nil
+	}
+
+	return safe.Run(func() error {
+		fn := api.QuitFn
+		if fn == nil {
+			fn = wailsrun.Quit
+		}
+
+		return fn(ctx)
+	})
 }

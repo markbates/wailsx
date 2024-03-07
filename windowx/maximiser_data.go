@@ -19,23 +19,6 @@ type MaximiserData struct {
 	mu sync.RWMutex
 }
 
-func (md *MaximiserData) StateData(ctx context.Context) (statedata.Data[*MaximiserData], error) {
-	sd := statedata.Data[*MaximiserData]{
-		Name: MaximiserStateDataName,
-		Data: md,
-	}
-
-	if md == nil {
-		return sd, fmt.Errorf("maximiser data is nil")
-	}
-
-	return sd, nil
-}
-
-func (md *MaximiserData) PluginName() string {
-	return fmt.Sprintf("%T", md)
-}
-
 func (md *MaximiserData) SetFullscreen() error {
 	if md == nil {
 		return fmt.Errorf("maximiser data is nil")
@@ -161,7 +144,24 @@ func (md *MaximiserData) ToggleMaximised() error {
 	if md.IsMaximised {
 		md.IsMinimised = false
 	}
-	md.IsNormal = false
+	md.IsNormal = !md.IsMaximised
 
 	return nil
+}
+
+func (md *MaximiserData) StateData(ctx context.Context) (statedata.Data[*MaximiserData], error) {
+	sd := statedata.Data[*MaximiserData]{
+		Name: MaximiserStateDataName,
+		Data: md,
+	}
+
+	if md == nil {
+		return sd, fmt.Errorf("maximiser data is nil")
+	}
+
+	return sd, nil
+}
+
+func (md *MaximiserData) PluginName() string {
+	return fmt.Sprintf("%T", md)
 }

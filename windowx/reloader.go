@@ -23,20 +23,22 @@ type Reloader struct {
 
 func (r Reloader) WindowReload(ctx context.Context) error {
 	return safe.Run(func() error {
-		if r.WindowReloadFn != nil {
-			return r.WindowReloadFn(ctx)
+		fn := r.WindowReloadFn
+		if fn == nil {
+			fn = wailsrun.WindowReload
 		}
 
-		return wailsrun.WindowReload(ctx)
+		return fn(ctx)
 	})
 }
 
 func (r Reloader) WindowReloadApp(ctx context.Context) error {
 	return safe.Run(func() error {
-		if r.WindowReloadAppFn != nil {
-			return r.WindowReloadAppFn(ctx)
+		fn := r.WindowReloadAppFn
+		if fn == nil {
+			fn = wailsrun.WindowReloadApp
 		}
 
-		return wailsrun.WindowReloadApp(ctx)
+		return fn(ctx)
 	})
 }
