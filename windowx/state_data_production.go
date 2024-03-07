@@ -11,8 +11,8 @@ import (
 	"github.com/markbates/wailsx/wailsrun"
 )
 
-func (mm *MaximiseManager) StateData(ctx context.Context) (statedata.StateData[*MaximiserData], error) {
-	sd := statedata.StateData[*MaximiserData]{
+func (mm *Maximiser) StateData(ctx context.Context) (statedata.Data[*MaximiserData], error) {
+	sd := statedata.Data[*MaximiserData]{
 		Name: MaximiserStateDataName,
 	}
 
@@ -53,8 +53,8 @@ func (mm *MaximiseManager) StateData(ctx context.Context) (statedata.StateData[*
 	return sd, nil
 }
 
-func (pm *PositionManger) StateData(ctx context.Context) (statedata.StateData[*PositionerData], error) {
-	sd := statedata.StateData[*PositionerData]{
+func (pm *Positioner) StateData(ctx context.Context) (statedata.Data[*PositionData], error) {
+	sd := statedata.Data[*PositionData]{
 		Name: "positioner",
 	}
 
@@ -85,6 +85,6 @@ func (pm *PositionManger) StateData(ctx context.Context) (statedata.StateData[*P
 	return sd, nil
 }
 
-func (th ThemeManager) StateData(ctx context.Context) (statedata.StateData[ThemerData], error) {
+func (th Themer) StateData(ctx context.Context) (statedata.Data[ThemeData], error) {
 	return th.data.StateData(ctx)
 }

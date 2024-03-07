@@ -11,15 +11,15 @@ import (
 var _ statedata.DataProvider[*PositionData] = &PositionData{}
 
 type PositionData struct {
-	IsCentered bool
-	X          int
-	Y          int
-	W          int
-	H          int
-	MaxW       int
-	MaxH       int
-	MinW       int
-	MinH       int
+	IsCentered bool `json:"is_centered,omitempty"`
+	X          int  `json:"x,omitempty"`
+	Y          int  `json:"y,omitempty"`
+	W          int  `json:"w,omitempty"`
+	H          int  `json:"h,omitempty"`
+	MaxW       int  `json:"max_w,omitempty"`
+	MaxH       int  `json:"max_h,omitempty"`
+	MinW       int  `json:"min_w,omitempty"`
+	MinH       int  `json:"min_h,omitempty"`
 
 	my sync.Mutex
 }

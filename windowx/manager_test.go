@@ -20,7 +20,7 @@ func Test_Manager_ScreenGetAll(t *testing.T) {
 
 	_, err := wm.ScreenGetAll(ctx)
 	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable("ScreenGetAll")))
 
 	wm.ScreenGetAllFn = func(ctx context.Context) ([]Screen, error) {
 		return []Screen{
@@ -59,7 +59,7 @@ func Test_Manager_WindowExecJS(t *testing.T) {
 
 	err := wm.WindowExecJS(ctx, "")
 	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowExecJS")))
 
 	var act string
 	wm.WindowExecJSFn = func(ctx context.Context, js string) error {
@@ -89,7 +89,7 @@ func Test_Manager_WindowPrint(t *testing.T) {
 	ctx := context.Background()
 	err := wm.WindowPrint(ctx)
 	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowPrint")))
 
 	var called bool
 	wm.WindowPrintFn = func(ctx context.Context) error {
@@ -119,7 +119,7 @@ func Test_Manager_WindowSetAlwaysOnTop(t *testing.T) {
 
 	err := wm.WindowSetAlwaysOnTop(ctx, true)
 	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowSetAlwaysOnTop")))
 
 	var act bool
 	wm.WindowSetAlwaysOnTopFn = func(ctx context.Context, b bool) error {
@@ -150,7 +150,7 @@ func Test_Manager_WindowSetTitle(t *testing.T) {
 
 	err := wm.WindowSetTitle(ctx, "")
 	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowSetTitle")))
 
 	var act string
 	wm.WindowSetTitleFn = func(ctx context.Context, title string) error {

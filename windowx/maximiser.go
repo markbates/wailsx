@@ -12,30 +12,32 @@ var _ MaximiseManagerDataProvider = &Maximiser{}
 
 func NopMaximiser() *Maximiser {
 	return &Maximiser{
-		WindowFullscreenFn:   func(ctx context.Context) error { return nil },
-		WindowIsFullscreenFn: func(ctx context.Context) (bool, error) { return false, nil },
-		WindowIsMaximisedFn:  func(ctx context.Context) (bool, error) { return false, nil },
-		WindowIsMinimisedFn:  func(ctx context.Context) (bool, error) { return false, nil },
-		WindowIsNormalFn:     func(ctx context.Context) (bool, error) { return false, nil },
-		WindowMaximiseFn:     func(ctx context.Context) error { return nil },
-		WindowMinimiseFn:     func(ctx context.Context) error { return nil },
-		WindowUnfullscreenFn: func(ctx context.Context) error { return nil },
-		WindowUnmaximiseFn:   func(ctx context.Context) error { return nil },
-		WindowUnminimiseFn:   func(ctx context.Context) error { return nil },
+		WindowFullscreenFn:     func(ctx context.Context) error { return nil },
+		WindowIsFullscreenFn:   func(ctx context.Context) (bool, error) { return false, nil },
+		WindowIsMaximisedFn:    func(ctx context.Context) (bool, error) { return false, nil },
+		WindowIsMinimisedFn:    func(ctx context.Context) (bool, error) { return false, nil },
+		WindowIsNormalFn:       func(ctx context.Context) (bool, error) { return false, nil },
+		WindowMaximiseFn:       func(ctx context.Context) error { return nil },
+		WindowMinimiseFn:       func(ctx context.Context) error { return nil },
+		WindowToggleMaximiseFn: func(ctx context.Context) error { return nil },
+		WindowUnfullscreenFn:   func(ctx context.Context) error { return nil },
+		WindowUnmaximiseFn:     func(ctx context.Context) error { return nil },
+		WindowUnminimiseFn:     func(ctx context.Context) error { return nil },
 	}
 }
 
 type Maximiser struct {
-	WindowFullscreenFn   func(ctx context.Context) error
-	WindowIsFullscreenFn func(ctx context.Context) (bool, error)
-	WindowIsMaximisedFn  func(ctx context.Context) (bool, error)
-	WindowIsMinimisedFn  func(ctx context.Context) (bool, error)
-	WindowIsNormalFn     func(ctx context.Context) (bool, error)
-	WindowMaximiseFn     func(ctx context.Context) error
-	WindowMinimiseFn     func(ctx context.Context) error
-	WindowUnfullscreenFn func(ctx context.Context) error
-	WindowUnmaximiseFn   func(ctx context.Context) error
-	WindowUnminimiseFn   func(ctx context.Context) error
+	WindowFullscreenFn     func(ctx context.Context) error
+	WindowIsFullscreenFn   func(ctx context.Context) (bool, error)
+	WindowIsMaximisedFn    func(ctx context.Context) (bool, error)
+	WindowIsMinimisedFn    func(ctx context.Context) (bool, error)
+	WindowIsNormalFn       func(ctx context.Context) (bool, error)
+	WindowMaximiseFn       func(ctx context.Context) error
+	WindowMinimiseFn       func(ctx context.Context) error
+	WindowToggleMaximiseFn func(ctx context.Context) error
+	WindowUnfullscreenFn   func(ctx context.Context) error
+	WindowUnmaximiseFn     func(ctx context.Context) error
+	WindowUnminimiseFn     func(ctx context.Context) error
 
 	data MaximiserData
 }
@@ -236,4 +238,24 @@ func (mm *Maximiser) WindowIsNormal(ctx context.Context) (bool, error) {
 	})
 
 	return b, err
+}
+
+func (mm *Maximiser) WindowToggleMaximise(ctx context.Context) error {
+	if mm == nil {
+		return fmt.Errorf("maximiser manager is nil")
+	}
+
+	return safe.Run(func() error {
+		fn := mm.WindowToggleMaximiseFn
+
+		if fn == nil {
+			fn = wailsrun.WindowToggleMaximise
+		}
+
+		if err := fn(ctx); err != nil {
+			return err
+		}
+
+		return mm.data.ToggleMaximised()
+	})
 }

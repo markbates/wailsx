@@ -1,5 +1,7 @@
 package windowx
 
+import "github.com/markbates/wailsx/wailsrun"
+
 const (
 	ManagerStateDataName    = "window"
 	MaximiserStateDataName  = "maximiser"
@@ -8,3 +10,6 @@ const (
 	ThemeStataDataName      = "themer"
 	TogglerStateDataName    = "toggler"
 )
+
+type Screen = wailsrun.Screen
+type ScreenSize = wailsrun.ScreenSize

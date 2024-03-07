@@ -19,7 +19,7 @@ func Test_Themer_WindowSetDarkTheme(t *testing.T) {
 	ctx := context.Background()
 	err := tm.WindowSetDarkTheme(ctx)
 	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowSetDarkTheme")))
 
 	var called bool
 	tm.WindowSetDarkThemeFn = func(ctx context.Context) error {
@@ -49,7 +49,7 @@ func Test_Themer_WindowSetLightTheme(t *testing.T) {
 	ctx := context.Background()
 	err := tm.WindowSetLightTheme(ctx)
 	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowSetLightTheme")))
 
 	var called bool
 	tm.WindowSetLightThemeFn = func(ctx context.Context) error {
@@ -79,7 +79,7 @@ func Test_Themer_WindowSetSystemDefaultTheme(t *testing.T) {
 	ctx := context.Background()
 	err := tm.WindowSetSystemDefaultTheme(ctx)
 	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowSetSystemDefaultTheme")))
 
 	var called bool
 	tm.WindowSetSystemDefaultThemeFn = func(ctx context.Context) error {
@@ -109,7 +109,7 @@ func Test_Themer_WindowSetBackgroundColour(t *testing.T) {
 	ctx := context.Background()
 	err := tm.WindowSetBackgroundColour(ctx, 0, 0, 0, 0)
 	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowSetBackgroundColour")))
 
 	var called bool
 	tm.WindowSetBackgroundColourFn = func(ctx context.Context, R, G, B, A uint8) error {

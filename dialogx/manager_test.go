@@ -30,7 +30,7 @@ func Test_DialogManager_MessageDialog(t *testing.T) {
 		},
 		{
 			name: "no function",
-			err:  wailsrun.ErrNotAvailable,
+			err:  wailsrun.ErrNotAvailable("MessageDialog"),
 		},
 		{
 			name: "error",
@@ -92,7 +92,7 @@ func Test_DialogManager_OpenDirectoryDialog(t *testing.T) {
 		},
 		{
 			name: "no function",
-			err:  wailsrun.ErrNotAvailable,
+			err:  wailsrun.ErrNotAvailable("OpenDirectoryDialog"),
 		},
 		{
 			name: "error",
@@ -153,7 +153,7 @@ func Test_DialogManager_OpenFileDialog(t *testing.T) {
 		},
 		{
 			name: "no function",
-			err:  wailsrun.ErrNotAvailable,
+			err:  wailsrun.ErrNotAvailable("OpenFileDialog"),
 		},
 		{
 			name: "error",
@@ -214,7 +214,7 @@ func Test_DialogManager_OpenMultipleFilesDialog(t *testing.T) {
 		},
 		{
 			name: "no function",
-			err:  wailsrun.ErrNotAvailable,
+			err:  wailsrun.ErrNotAvailable("OpenMultipleFilesDialog"),
 		},
 		{
 			name: "error",
@@ -275,7 +275,7 @@ func Test_DialogManager_SaveFileDialog(t *testing.T) {
 		},
 		{
 			name: "no function",
-			err:  wailsrun.ErrNotAvailable,
+			err:  wailsrun.ErrNotAvailable("SaveFileDialog"),
 		},
 		{
 			name: "error",

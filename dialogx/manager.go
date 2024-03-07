@@ -9,6 +9,16 @@ import (
 
 var _ DialogManager = Manager{}
 
+func NopManager() Manager {
+	return Manager{
+		MessageDialogFn:           func(ctx context.Context, opts MessageDialogOptions) (string, error) { return "", nil },
+		OpenDirectoryDialogFn:     func(ctx context.Context, opts OpenDialogOptions) (string, error) { return "", nil },
+		OpenFileDialogFn:          func(ctx context.Context, opts OpenDialogOptions) (string, error) { return "", nil },
+		OpenMultipleFilesDialogFn: func(ctx context.Context, opts OpenDialogOptions) ([]string, error) { return nil, nil },
+		SaveFileDialogFn:          func(ctx context.Context, opts SaveDialogOptions) (string, error) { return "", nil },
+	}
+}
+
 type Manager struct {
 	MessageDialogFn           func(ctx context.Context, opts MessageDialogOptions) (string, error)
 	OpenDirectoryDialogFn     func(ctx context.Context, opts OpenDialogOptions) (string, error)

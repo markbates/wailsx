@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/markbates/wailsx/wailsrun"
+	"github.com/markbates/wailsx/wailstest"
 )
 
 const (
@@ -17,9 +18,11 @@ func NewManager() *Manager {
 	}
 }
 
+// NopManager returns a new Manager with all the functions set to no-ops
+// This is useful for testing. The NowFn is set to wailstest.NowTime
 func NopManager() *Manager {
 	return &Manager{
-		NowFn: time.Now,
+		NowFn: wailstest.NowTime,
 		EventsEmitFn: func(ctx context.Context, name string, data ...any) error {
 			return nil
 		},

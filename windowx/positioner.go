@@ -40,10 +40,16 @@ func (pm *Positioner) WindowCenter(ctx context.Context) error {
 	}
 
 	return safe.Run(func() error {
-		if pm.WindowCenterFn == nil {
-			return wailsrun.WindowCenter(ctx)
+		fn := pm.WindowCenterFn
+		if fn == nil {
+			fn = wailsrun.WindowCenter
 		}
-		return pm.WindowCenterFn(ctx)
+
+		if err := fn(ctx); err != nil {
+			return err
+		}
+
+		return pm.data.SetCentered()
 	})
 }
 
@@ -55,11 +61,18 @@ func (pm *Positioner) WindowGetPosition(ctx context.Context) (int, int, error) {
 	var x, y int
 	err := safe.Run(func() error {
 		var err error
-		if pm.WindowGetPositionFn == nil {
-			pm.WindowGetPositionFn = wailsrun.WindowGetPosition
+
+		fn := pm.WindowGetPositionFn
+		if fn == nil {
+			fn = wailsrun.WindowGetPosition
 		}
-		x, y, err = pm.WindowGetPositionFn(ctx)
-		return err
+
+		x, y, err = fn(ctx)
+		if err != nil {
+			return err
+		}
+
+		return nil
 	})
 
 	return x, y, err
@@ -73,11 +86,18 @@ func (pm *Positioner) WindowGetSize(ctx context.Context) (int, int, error) {
 	var w, h int
 	err := safe.Run(func() error {
 		var err error
-		if pm.WindowGetSizeFn == nil {
-			pm.WindowGetSizeFn = wailsrun.WindowGetSize
+
+		fn := pm.WindowGetSizeFn
+		if fn == nil {
+			fn = wailsrun.WindowGetSize
 		}
-		w, h, err = pm.WindowGetSizeFn(ctx)
-		return err
+
+		w, h, err = fn(ctx)
+		if err != nil {
+			return err
+		}
+
+		return nil
 	})
 
 	return w, h, err
@@ -89,10 +109,16 @@ func (pm *Positioner) WindowSetMaxSize(ctx context.Context, width int, height in
 	}
 
 	return safe.Run(func() error {
-		if pm.WindowSetMaxSizeFn == nil {
-			return wailsrun.WindowSetMaxSize(ctx, width, height)
+		fn := pm.WindowSetMaxSizeFn
+		if fn == nil {
+			fn = wailsrun.WindowSetMaxSize
 		}
-		return pm.WindowSetMaxSizeFn(ctx, width, height)
+
+		if err := fn(ctx, width, height); err != nil {
+			return err
+		}
+
+		return pm.data.SetMaxSize(width, height)
 	})
 }
 
@@ -102,10 +128,16 @@ func (pm *Positioner) WindowSetMinSize(ctx context.Context, width int, height in
 	}
 
 	return safe.Run(func() error {
-		if pm.WindowSetMinSizeFn == nil {
-			return wailsrun.WindowSetMinSize(ctx, width, height)
+		fn := pm.WindowSetMinSizeFn
+		if fn == nil {
+			fn = wailsrun.WindowSetMinSize
 		}
-		return pm.WindowSetMinSizeFn(ctx, width, height)
+
+		if err := fn(ctx, width, height); err != nil {
+			return err
+		}
+
+		return pm.data.SetMinSize(width, height)
 	})
 }
 
@@ -115,10 +147,16 @@ func (pm *Positioner) WindowSetPosition(ctx context.Context, x int, y int) error
 	}
 
 	return safe.Run(func() error {
-		if pm.WindowSetPositionFn == nil {
-			return wailsrun.WindowSetPosition(ctx, x, y)
+		fn := pm.WindowSetPositionFn
+		if fn == nil {
+			fn = wailsrun.WindowSetPosition
 		}
-		return pm.WindowSetPositionFn(ctx, x, y)
+
+		if err := fn(ctx, x, y); err != nil {
+			return err
+		}
+
+		return pm.data.SetPosition(x, y)
 	})
 }
 
@@ -128,9 +166,15 @@ func (pm *Positioner) WindowSetSize(ctx context.Context, width int, height int) 
 	}
 
 	return safe.Run(func() error {
-		if pm.WindowSetSizeFn == nil {
-			return wailsrun.WindowSetSize(ctx, width, height)
+		fn := pm.WindowSetSizeFn
+		if fn == nil {
+			fn = wailsrun.WindowSetSize
 		}
-		return pm.WindowSetSizeFn(ctx, width, height)
+
+		if err := fn(ctx, width, height); err != nil {
+			return err
+		}
+
+		return pm.data.SetSize(width, height)
 	})
 }

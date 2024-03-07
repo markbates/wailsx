@@ -14,6 +14,7 @@ func NopToggle() Toggle {
 		HideFn:       func(ctx context.Context) error { return nil },
 		ShowFn:       func(ctx context.Context) error { return nil },
 		WindowHideFn: func(ctx context.Context) error { return nil },
+		WindowShowFn: func(ctx context.Context) error { return nil },
 	}
 }
 
@@ -21,6 +22,7 @@ type Toggle struct {
 	HideFn       func(ctx context.Context) error
 	ShowFn       func(ctx context.Context) error
 	WindowHideFn func(ctx context.Context) error
+	WindowShowFn func(ctx context.Context) error
 }
 
 func (t Toggle) Hide(ctx context.Context) error {
@@ -47,5 +49,14 @@ func (t Toggle) WindowHide(ctx context.Context) error {
 			return wailsrun.WindowHide(ctx)
 		}
 		return t.WindowHideFn(ctx)
+	})
+}
+
+func (t Toggle) WindowShow(ctx context.Context) error {
+	return safe.Run(func() error {
+		if t.WindowShowFn == nil {
+			return wailsrun.WindowShow(ctx)
+		}
+		return t.WindowShowFn(ctx)
 	})
 }

@@ -14,6 +14,7 @@ type MaximiseManager interface {
 	WindowIsNormal(ctx context.Context) (bool, error)
 	WindowMaximise(ctx context.Context) error
 	WindowMinimise(ctx context.Context) error
+	WindowToggleMaximise(ctx context.Context) error
 	WindowUnfullscreen(ctx context.Context) error
 	WindowUnmaximise(ctx context.Context) error
 	WindowUnminimise(ctx context.Context) error

@@ -13,17 +13,7 @@ import (
 	"github.com/markbates/wailsx/windowx"
 )
 
-type WailsAPI interface {
-	dialogx.DialogManager
-	eventx.EventManager
-	logx.WailsLogger
-	menux.MenuManager
-	windowx.WindowManager
-
-	APIStateDataProvider
-}
-
-var _ WailsAPI = &API{}
+var _ wailsrun.API = &API{}
 
 func NewAPI() *API {
 	return &API{
@@ -32,6 +22,16 @@ func NewAPI() *API {
 		WailsLogger:   logx.NewLogger(os.Stdout, wailsrun.INFO),
 		MenuManager:   menux.Manager{},
 		WindowManager: windowx.NewManager(),
+	}
+}
+
+func NopAPI() *API {
+	return &API{
+		DialogManager: dialogx.NopManager(),
+		EventManager:  eventx.NopManager(),
+		WailsLogger:   logx.NewLogger(os.Stdout, wailsrun.INFO),
+		MenuManager:   menux.NopManager(),
+		WindowManager: windowx.NopManager(),
 	}
 }
 
@@ -45,7 +45,7 @@ type API struct {
 
 func (api *API) StateData(ctx context.Context) (statedata.Data[*APIData], error) {
 	sd := statedata.Data[*APIData]{
-		Name: "api",
+		Name: APIStateDataProviderName,
 	}
 
 	if api == nil {
@@ -61,7 +61,7 @@ func (api *API) StateData(ctx context.Context) (statedata.Data[*APIData], error)
 		}
 
 		if wd.Data != nil {
-			data.WindowData = wd.Data
+			data.Window = wd.Data
 		}
 	}
 
@@ -72,14 +72,11 @@ func (api *API) StateData(ctx context.Context) (statedata.Data[*APIData], error)
 		}
 
 		if ed.Data != nil {
-			data.EventsData = ed.Data
+			data.Events = ed.Data
 		}
 	}
 
-	return sd, nil
-}
+	sd.Data = data
 
-type APIData struct {
-	*eventx.EventsData
-	*windowx.WindowData
+	return sd, nil
 }

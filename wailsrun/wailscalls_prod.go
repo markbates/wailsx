@@ -345,5 +345,26 @@ func WindowUnminimise(ctx context.Context) error {
 }
 
 func ScreenGetAll(ctx context.Context) ([]Screen, error) {
-	return wailsrun.ScreenGetAll(ctx)
+	fss, err := wailsrun.ScreenGetAll(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	screens := make([]Screen, len(fss))
+	for i, fs := range fss {
+		screens[i] = Screen{
+			IsCurrent: fs.IsCurrent,
+			IsPrimary: fs.IsPrimary,
+			Size: ScreenSize{
+				Width:  fs.Size.Width,
+				Height: fs.Size.Height,
+			},
+			PhysicalSize: ScreenSize{
+				Width:  fs.PhysicalSize.Width,
+				Height: fs.PhysicalSize.Height,
+			},
+		}
+	}
+
+	return screens, nil
 }

@@ -39,7 +39,7 @@ func Test_Reload_WindowReload(t *testing.T) {
 	rd.WindowReloadFn = nil
 	err = rd.WindowReload(ctx)
 	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowReload")))
 }
 
 func Test_Reload_WindowReloadApp(t *testing.T) {
@@ -71,5 +71,5 @@ func Test_Reload_WindowReloadApp(t *testing.T) {
 	rd.WindowReloadAppFn = nil
 	err = rd.WindowReloadApp(ctx)
 	r.Error(err)
-	r.True(errors.Is(err, wailsrun.ErrNotAvailable))
+	r.True(errors.Is(err, wailsrun.ErrNotAvailable("WindowReloadApp")))
 }

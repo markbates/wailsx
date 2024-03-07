@@ -46,7 +46,7 @@ func Test_Manager_EventsOffAll(t *testing.T) {
 		},
 		{
 			name: "nil function",
-			err:  wailsrun.ErrNotAvailable,
+			err:  wailsrun.ErrNotAvailable("EventsOffAll"),
 		},
 	}
 

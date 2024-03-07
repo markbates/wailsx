@@ -147,3 +147,21 @@ func (md *MaximiserData) SetUnminimised() error {
 
 	return nil
 }
+
+func (md *MaximiserData) ToggleMaximised() error {
+	if md == nil {
+		return fmt.Errorf("maximiser data is nil")
+	}
+
+	md.mu.Lock()
+	defer md.mu.Unlock()
+
+	md.IsFullscreen = false
+	md.IsMaximised = !md.IsMaximised
+	if md.IsMaximised {
+		md.IsMinimised = false
+	}
+	md.IsNormal = false
+
+	return nil
+}

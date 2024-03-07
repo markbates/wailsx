@@ -33,7 +33,7 @@ func Test_Manager_MenuSetApplicationMenu(t *testing.T) {
 		{
 			name: "with nil function",
 			menu: me,
-			err:  wailsrun.ErrNotAvailable,
+			err:  wailsrun.ErrNotAvailable("MenuSetApplicationMenu"),
 		},
 		{
 			name: "with error",
@@ -97,7 +97,7 @@ func Test_Manager_MenuUpdateApplicationMenu(t *testing.T) {
 		},
 		{
 			name: "with nil function",
-			err:  wailsrun.ErrNotAvailable,
+			err:  wailsrun.ErrNotAvailable("MenuUpdateApplicationMenu"),
 		},
 		{
 			name: "with error",

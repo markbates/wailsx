@@ -4,7 +4,6 @@ package wailsrun
 
 import (
 	"context"
-	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -13,9 +12,6 @@ import (
 func Test_API(t *testing.T) {
 	t.Parallel()
 	r := require.New(t)
-
-	errs := ErrNotAvailable.Error()
-	r.Equal(string(ErrNotAvailable), errs)
 
 	type errFn func() error
 
@@ -238,7 +234,6 @@ func Test_API(t *testing.T) {
 	for _, tc := range tcs {
 		err := tc()
 		r.Error(err)
-		r.True(errors.Is(err, ErrNotAvailable))
 	}
 
 }

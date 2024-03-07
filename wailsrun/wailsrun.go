@@ -1,19 +1,27 @@
 package wailsrun
 
 import (
+	"fmt"
+
 	"github.com/wailsapp/wails/v2/pkg/logger"
 	wailsrun "github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
-const (
-	ErrNotAvailable = es("wails api calls are not available in this environment")
-)
+type ErrNotAvailable string
 
-type es string
-
-func (e es) Error() string {
-	return string(e)
+func (e ErrNotAvailable) Error() string {
+	return fmt.Sprintf("wails api calls are not available in this environment: %q", string(e))
 }
+
+// const (
+// 	ErrNotAvailable = es("wails api calls are not available in this environment")
+// )
+
+// type es string
+
+// func (e es) Error() string {
+// 	return string(e)
+// }
 
 const (
 	InfoDialog     = wailsrun.InfoDialog
@@ -38,5 +46,4 @@ type FileFilter = wailsrun.FileFilter
 type MessageDialogOptions = wailsrun.MessageDialogOptions
 type OpenDialogOptions = wailsrun.OpenDialogOptions
 type SaveDialogOptions = wailsrun.SaveDialogOptions
-type Screen = wailsrun.Screen
 type LogLevel = logger.LogLevel

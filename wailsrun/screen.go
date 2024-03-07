@@ -1,4 +1,4 @@
-package windowx
+package wailsrun
 
 type Screen struct {
 	IsCurrent bool `json:"isCurrent"`

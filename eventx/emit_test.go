@@ -45,7 +45,7 @@ func Test_Manager_Emit(t *testing.T) {
 		},
 		{
 			name: "nil function",
-			err:  wailsrun.ErrNotAvailable,
+			err:  wailsrun.ErrNotAvailable("EventsEmit"),
 		},
 	}
 

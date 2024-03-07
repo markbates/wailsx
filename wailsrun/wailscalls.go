@@ -11,261 +11,261 @@ import (
 )
 
 func BrowserOpenURL(ctx context.Context, url string) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("BrowserOpenURL")
 }
 
 func ClipboardGetText(ctx context.Context) (string, error) {
-	return "", ErrNotAvailable
+	return "", ErrNotAvailable("ClipboardGetText")
 }
 
 func ClipboardSetText(ctx context.Context, text string) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("ClipboardSetText")
 }
 
 func EventsEmit(ctx context.Context, event string, data ...any) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("EventsEmit")
 }
 
 func EventsOff(ctx context.Context, event string, additional ...string) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("EventsOff")
 }
 
 func EventsOffAll(ctx context.Context) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("EventsOffAll")
 }
 
 func EventsOn(ctx context.Context, eventName string, callback CallbackFn) (CancelFn, error) {
-	return nil, ErrNotAvailable
+	return nil, ErrNotAvailable("EventsOn")
 }
 
 func EventsOnMultiple(ctx context.Context, eventName string, callback CallbackFn, counter int) (CancelFn, error) {
-	return nil, ErrNotAvailable
+	return nil, ErrNotAvailable("EventsOnMultiple")
 }
 
 func EventsOnce(ctx context.Context, eventName string, callback CallbackFn) (CancelFn, error) {
-	return nil, ErrNotAvailable
+	return nil, ErrNotAvailable("EventsOnce")
 }
 
 func Hide(ctx context.Context) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("Hide")
 }
 
 func LogDebug(ctx context.Context, message string) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("LogDebug")
 }
 
 func LogDebugf(ctx context.Context, format string, args ...any) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("LogDebugf")
 }
 
 func LogError(ctx context.Context, message string) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("LogError")
 }
 
 func LogErrorf(ctx context.Context, format string, args ...any) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("LogErrorf")
 }
 
 func LogFatal(ctx context.Context, message string) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("LogFatal")
 }
 
 func LogFatalf(ctx context.Context, format string, args ...any) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("LogFatalf")
 }
 
 func LogInfo(ctx context.Context, message string) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("LogInfo")
 }
 
 func LogInfof(ctx context.Context, format string, args ...any) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("LogInfof")
 }
 
 func LogPrint(ctx context.Context, message string) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("LogPrint")
 }
 
 func LogPrintf(ctx context.Context, format string, args ...any) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("LogPrintf")
 }
 
 func LogSetLogLevel(ctx context.Context, level logger.LogLevel) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("LogSetLogLevel")
 }
 
 func LogTrace(ctx context.Context, message string) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("LogTrace")
 }
 
 func LogTracef(ctx context.Context, format string, args ...any) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("LogTracef")
 }
 
 func LogWarning(ctx context.Context, message string) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("LogWarning")
 }
 
 func LogWarningf(ctx context.Context, format string, args ...any) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("LogWarning")
 }
 
 func MenuSetApplicationMenu(ctx context.Context, menu *menu.Menu) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("MenuSetApplicationMenu")
 }
 
 func MenuUpdateApplicationMenu(ctx context.Context) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("MenuUpdateApplicationMenu")
 }
 
 func MessageDialog(ctx context.Context, dialogOptions MessageDialogOptions) (string, error) {
-	return "", ErrNotAvailable
+	return "", ErrNotAvailable("MessageDialog")
 }
 
 func OpenDirectoryDialog(ctx context.Context, dialogOptions OpenDialogOptions) (string, error) {
-	return "", ErrNotAvailable
+	return "", ErrNotAvailable("OpenDirectoryDialog")
 }
 
 func OpenFileDialog(ctx context.Context, dialogOptions OpenDialogOptions) (string, error) {
-	return "", ErrNotAvailable
+	return "", ErrNotAvailable("OpenFileDialog")
 }
 
 func OpenMultipleFilesDialog(ctx context.Context, dialogOptions OpenDialogOptions) ([]string, error) {
-	return nil, ErrNotAvailable
+	return nil, ErrNotAvailable("OpenMultipleFilesDialog")
 }
 
 func Quit(ctx context.Context) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("Quit")
 }
 
 func SaveFileDialog(ctx context.Context, dialogOptions SaveDialogOptions) (string, error) {
-	return "", ErrNotAvailable
+	return "", ErrNotAvailable("SaveFileDialog")
 }
 
 func Show(ctx context.Context) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("Show")
 }
 
 func WindowCenter(ctx context.Context) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("WindowCenter")
 }
 
 func WindowExecJS(ctx context.Context, js string) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("WindowExecJS")
 }
 
 func WindowFullscreen(ctx context.Context) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("WindowFullscreen")
 }
 
 func WindowGetPosition(ctx context.Context) (int, int, error) {
-	return 0, 0, ErrNotAvailable
+	return 0, 0, ErrNotAvailable("WindowGetPosition")
 }
 
 func WindowGetSize(ctx context.Context) (int, int, error) {
-	return 0, 0, ErrNotAvailable
+	return 0, 0, ErrNotAvailable("WindowGetSize")
 }
 
 func WindowHide(ctx context.Context) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("WindowHide")
 }
 
 func WindowIsFullscreen(ctx context.Context) (bool, error) {
-	return false, ErrNotAvailable
+	return false, ErrNotAvailable("WindowIsFullscreen")
 }
 
 func WindowIsMaximised(ctx context.Context) (bool, error) {
-	return false, ErrNotAvailable
+	return false, ErrNotAvailable("WindowIsMaximised")
 }
 
 func WindowIsMinimised(ctx context.Context) (bool, error) {
-	return false, ErrNotAvailable
+	return false, ErrNotAvailable("WindowIsMinimised")
 }
 
 func WindowIsNormal(ctx context.Context) (bool, error) {
-	return false, ErrNotAvailable
+	return false, ErrNotAvailable("WindowIsNormal")
 }
 
 func WindowMaximise(ctx context.Context) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("WindowMaximise")
 }
 
 func WindowMinimise(ctx context.Context) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("WindowMinimise")
 }
 
 func WindowPrint(ctx context.Context) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("WindowPrint")
 }
 
 func WindowReload(ctx context.Context) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("WindowReload")
 }
 
 func WindowReloadApp(ctx context.Context) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("WindowReloadApp")
 }
 
 func WindowSetAlwaysOnTop(ctx context.Context, b bool) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("WindowSetAlwaysOnTop")
 }
 
 func WindowSetBackgroundColour(ctx context.Context, R, G, B, A uint8) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("WindowSetBackgroundColour")
 }
 
 func WindowSetDarkTheme(ctx context.Context) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("WindowSetDarkTheme")
 }
 
 func WindowSetLightTheme(ctx context.Context) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("WindowSetLightTheme")
 }
 
 func WindowSetMaxSize(ctx context.Context, width int, height int) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("WindowSetMaxSize")
 }
 
 func WindowSetMinSize(ctx context.Context, width int, height int) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("WindowSetMinSize")
 }
 
 func WindowSetPosition(ctx context.Context, x int, y int) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("WindowSetPosition")
 }
 
 func WindowSetSize(ctx context.Context, width int, height int) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("WindowSetSize")
 }
 
 func WindowSetSystemDefaultTheme(ctx context.Context) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("WindowSetSystemDefaultTheme")
 }
 
 func WindowSetTitle(ctx context.Context, title string) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("WindowSetTitle")
 }
 
 func WindowShow(ctx context.Context) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("WindowShow")
 }
 
 func WindowToggleMaximise(ctx context.Context) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("WindowToggleMaximise")
 }
 
 func WindowUnfullscreen(ctx context.Context) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("WindowUnfullscreen")
 }
 
 func WindowUnmaximise(ctx context.Context) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("WindowUnmaximise")
 }
 
 func WindowUnminimise(ctx context.Context) error {
-	return ErrNotAvailable
+	return ErrNotAvailable("WindowUnminimise")
 }
 
 func ScreenGetAll(ctx context.Context) ([]Screen, error) {
-	return nil, ErrNotAvailable
+	return nil, ErrNotAvailable("ScreenGetAll")
 }
