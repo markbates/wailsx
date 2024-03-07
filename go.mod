@@ -1,6 +1,6 @@
 module github.com/markbates/wailsx
 
-go 1.22.0
+go 1.22
 
 require (
 	github.com/markbates/plugins v0.0.0-20240228174810-34b6b949cf9e
