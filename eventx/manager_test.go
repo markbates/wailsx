@@ -89,7 +89,6 @@ func Test_Manager_StateData_JSON(t *testing.T) {
 	// f, err := os.Create("testdata/state.json")
 	// r.NoError(err)
 	// enc := json.NewEncoder(f)
-	// enc.SetIndent("", "  ")
 	// r.NoError(enc.Encode(data))
 	// r.NoError(f.Close())
 

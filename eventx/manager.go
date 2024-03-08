@@ -51,7 +51,7 @@ func (em *Manager) MarshalJSON() ([]byte, error) {
 		return nil, fmt.Errorf("error manager is nil")
 	}
 
-	return json.MarshalIndent(&em.data, "", "  ")
+	return json.Marshal(em.data)
 }
 
 func (em *Manager) init(ctx context.Context) error {

@@ -24,6 +24,9 @@ jobs:
       - name: Build
         run: go build -v ./...
 
+      - name: Build Wails
+        run: go build -v -tags wails ./...
+
       - name: Run tests with Race Detector
         run: go test -race -vet=off ./...
 
