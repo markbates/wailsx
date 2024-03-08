@@ -1,6 +1,7 @@
 package eventx
 
 import (
+	"context"
 	"testing"
 
 	"github.com/markbates/wailsx/wailstest"
@@ -51,7 +52,7 @@ func Test_EventsData_DisableStateData(t *testing.T) {
 	r.Len(ev.Emitted[event], 0)
 	r.Len(ev.Caught[event], 0)
 
-	sd, err := ev.StateData(nil)
+	sd, err := ev.StateData(context.Background())
 	r.NoError(err)
 	r.Nil(sd.Data)
 
