@@ -9,14 +9,13 @@ The [`wailsx.API`](https://pkg.go.dev/github.com/markbates/wailsx#API) interface
 
 <figure id="listing-1-1" type="listing">
 
-```go
-package wailsrun
+<pre><code class="language-go" language="go" src="wailsrun/api.go">package wailsrun
 
 import (
-	"context"
+	&#34;context&#34;
 
-	"github.com/wailsapp/wails/v2/pkg/logger"
-	"github.com/wailsapp/wails/v2/pkg/menu"
+	&#34;github.com/wailsapp/wails/v2/pkg/logger&#34;
+	&#34;github.com/wailsapp/wails/v2/pkg/menu&#34;
 )
 
 type API interface {
@@ -86,10 +85,9 @@ type API interface {
 	WindowUnminimise(ctx context.Context) error
 	ScreenGetAll(ctx context.Context) ([]Screen, error)
 }
+</code></pre>
 
-```
-
-<figcaption>_Listing 1.1:_ The [`wailsx.API`](https://pkg.go.dev/github.com/markbates/wailsx#API) interface</figcaption>
+<figcaption><em class="figure-name">Listing 1.1:</em> The <a for="github.com/markbates/wailsx#API" href="https://pkg.go.dev/github.com/markbates/wailsx#API" target="_blank"><code>wailsx.API</code></a> interface</figcaption>
 </figure>
 
 ### Error Handling
@@ -98,27 +96,24 @@ In particular, the [`wailsx.API`](https://pkg.go.dev/github.com/markbates/wailsx
 
 <figure id="listing-1-2" type="listing">
 
-```shell
-$ go doc github.com/wailsapp/wails/v2/pkg/runtime.MenuSetApplicationMenu
+<cmd data-go-version="go1.22.0" doc="github.com/wailsapp/wails/v2/pkg/runtime.MenuSetApplicationMenu" exec="go doc github.com/wailsapp/wails/v2/pkg/runtime.MenuSetApplicationMenu"><pre><code class="language-shell" language="shell">$ go doc github.com/wailsapp/wails/v2/pkg/runtime.MenuSetApplicationMenu
 
-package runtime // import "github.com/wailsapp/wails/v2/pkg/runtime"
+package runtime // import &#34;github.com/wailsapp/wails/v2/pkg/runtime&#34;
 
 func MenuSetApplicationMenu(ctx context.Context, menu *menu.Menu)
 
 --------------------------------------------------------------------------------
 Go Version: go1.22.0
+</code></pre></cmd>
 
-```
-
-<figcaption>_Listing 1.2:_ The [`github.com/wailsapp/wails/v2/pkg/runtime.MenuSetApplicationMenu`](https://pkg.go.dev/github.com/wailsapp/wails/v2/pkg/runtime.MenuSetApplicationMenu) method</figcaption>
+<figcaption><em class="figure-name">Listing 1.2:</em> The <a for="github.com/wailsapp/wails/v2/pkg/runtime.MenuSetApplicationMenu" href="https://pkg.go.dev/github.com/wailsapp/wails/v2/pkg/runtime.MenuSetApplicationMenu" target="_blank"><code>github.com/wailsapp/wails/v2/pkg/runtime.MenuSetApplicationMenu</code></a> method</figcaption>
 </figure>
 
 <figure id="listing-1-3" type="listing">
 
-```shell
-$ go doc github.com/markbates/wailsx/wailsrun.API.MenuSetApplicationMenu
+<cmd data-go-version="go1.22.0" doc="github.com/markbates/wailsx/wailsrun.API.MenuSetApplicationMenu" exec="go doc github.com/markbates/wailsx/wailsrun.API.MenuSetApplicationMenu"><pre><code class="language-shell" language="shell">$ go doc github.com/markbates/wailsx/wailsrun.API.MenuSetApplicationMenu
 
-package wailsrun // import "github.com/markbates/wailsx/wailsrun"
+package wailsrun // import &#34;github.com/markbates/wailsx/wailsrun&#34;
 
 type API interface {
 	MenuSetApplicationMenu(ctx context.Context, menu *menu.Menu) error
@@ -126,9 +121,10 @@ type API interface {
 
 --------------------------------------------------------------------------------
 Go Version: go1.22.0
+</code></pre></cmd>
 
-```
-
-<figcaption>_Listing 1.3:_ The [`github.com/markbates/wailsx/wailsrun.API.MenuSetApplicationMenu`](https://pkg.go.dev/github.com/markbates/wailsx/wailsrun.API.MenuSetApplicationMenu) method</figcaption>
+<figcaption><em class="figure-name">Listing 1.3:</em> The <a for="github.com/markbates/wailsx/wailsrun.API.MenuSetApplicationMenu" href="https://pkg.go.dev/github.com/markbates/wailsx/wailsrun.API.MenuSetApplicationMenu" target="_blank"><code>github.com/markbates/wailsx/wailsrun.API.MenuSetApplicationMenu</code></a> method</figcaption>
 </figure>
+
+## Protecting Wails API Calls
 
