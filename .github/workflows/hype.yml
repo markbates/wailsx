@@ -19,7 +19,9 @@ jobs:
         run: go install github.com/gopherguides/hype/cmd/hype@rename-module-md
 
       - name: Run hype
-        run: hype export -format=markdown -f hype.md > README.md
+        run: |-
+          hype export -format=markdown -f hype.md > README.md
+          cat README.md
 
       - name: Commit README back to the repo
         run: |-
