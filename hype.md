@@ -30,3 +30,5 @@ In particular, the <godoc>github.com/markbates/wailsx#API</godoc> improves error
 <figcaption>The <godoc>github.com/markbates/wailsx/wailsrun.API.MenuSetApplicationMenu</godoc> method</figcaption>
 
 </figure>
+
+## Protecting Wails API Calls
