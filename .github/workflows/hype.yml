@@ -1,5 +1,5 @@
 name: Generate README with Hype
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   build:
@@ -9,6 +9,7 @@ jobs:
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
@@ -24,9 +25,6 @@ jobs:
           cat README.md
 
       - name: Commit README back to the repo
-        run: |-
-          git rev-parse --abbrev-ref HEAD
-          git config user.name 'GitHub Actions'
-          git config user.email 'actions@github.com'
-          git diff --quiet || (git add README.md && git commit -am "Updated README")
-          git push origin ${{github.event.pull_request.head.ref}}
+        uses: devops-infra/action-commit-push@master
+        with:
+          github_token: "${{ secrets.GITHUB_TOKEN }}"
