@@ -199,7 +199,7 @@ func Test_API_StateData(t *testing.T) {
 	r.Equal(x, wd.X)
 	r.Equal(y, wd.Y)
 
-	b, err := json.MarshalIndent(sd, "", "  ")
+	b, err := json.Marshal(sd)
 	r.NoError(err)
 
 	act := string(b)
