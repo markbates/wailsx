@@ -9,15 +9,10 @@ import (
 )
 
 type ThemeData struct {
-	BackgroundColour struct {
-		R uint8 `json:"r,omitempty"`
-		G uint8 `json:"g,omitempty"`
-		B uint8 `json:"b,omitempty"`
-		A uint8 `json:"a,omitempty"`
-	} `json:"background_colour,omitempty"`
-	IsDarkTheme   bool `json:"is_dark_theme,omitempty"`
-	IsLightTheme  bool `json:"is_light_theme,omitempty"`
-	IsSystemTheme bool `json:"is_system_theme,omitempty"`
+	BackgroundColour Colour `json:"background_colour,omitempty"`
+	IsDarkTheme      bool   `json:"is_dark_theme,omitempty"`
+	IsLightTheme     bool   `json:"is_light_theme,omitempty"`
+	IsSystemTheme    bool   `json:"is_system_theme,omitempty"`
 
 	mu sync.RWMutex
 }

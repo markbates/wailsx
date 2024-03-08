@@ -264,3 +264,35 @@ func Test_Themer_StateData(t *testing.T) {
 	r.False(sd.Data.IsLightTheme)
 	r.True(sd.Data.IsSystemTheme)
 }
+
+func Test_Nil_Themer(t *testing.T) {
+	t.Parallel()
+	r := require.New(t)
+	ctx := context.Background()
+
+	var th *Themer
+
+	err := th.WindowSetDarkTheme(ctx)
+	r.Error(err)
+	exp := wailsrun.ErrNotAvailable("WindowSetDarkTheme")
+	r.Equal(exp, err)
+
+	err = th.WindowSetLightTheme(ctx)
+	r.Error(err)
+	exp = wailsrun.ErrNotAvailable("WindowSetLightTheme")
+	r.Equal(exp, err)
+
+	err = th.WindowSetSystemDefaultTheme(ctx)
+	r.Error(err)
+	exp = wailsrun.ErrNotAvailable("WindowSetSystemDefaultTheme")
+	r.Equal(exp, err)
+
+	err = th.WindowSetBackgroundColour(ctx, 1, 2, 3, 4)
+	r.Error(err)
+	exp = wailsrun.ErrNotAvailable("WindowSetBackgroundColour")
+	r.Equal(exp, err)
+
+	_, err = th.StateData(ctx)
+	r.Error(err)
+
+}

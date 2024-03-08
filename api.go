@@ -64,7 +64,7 @@ func (api *API) StateData(ctx context.Context) (statedata.Data[*APIData], error)
 	}
 
 	if api == nil {
-		return sd, nil
+		return sd, fmt.Errorf("api is nil")
 	}
 
 	data := &APIData{}
@@ -98,7 +98,7 @@ func (api *API) StateData(ctx context.Context) (statedata.Data[*APIData], error)
 
 func (api *API) BrowserOpenURL(ctx context.Context, url string) error {
 	if api == nil {
-		return fmt.Errorf("api is nil")
+		return wailsrun.BrowserOpenURL(ctx, url)
 	}
 
 	return safe.Run(func() error {
@@ -113,7 +113,7 @@ func (api *API) BrowserOpenURL(ctx context.Context, url string) error {
 
 func (api *API) Quit(ctx context.Context) error {
 	if api == nil {
-		return nil
+		return wailsrun.Quit(ctx)
 	}
 
 	return safe.Run(func() error {

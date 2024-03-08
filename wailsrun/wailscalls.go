@@ -107,7 +107,7 @@ func LogWarning(ctx context.Context, message string) error {
 }
 
 func LogWarningf(ctx context.Context, format string, args ...any) error {
-	return ErrNotAvailable("LogWarning")
+	return ErrNotAvailable("LogWarningf")
 }
 
 func MenuSetApplicationMenu(ctx context.Context, menu *menu.Menu) error {
