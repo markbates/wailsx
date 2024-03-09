@@ -76,8 +76,6 @@ With the help of Go build tags, any direct calls made to the Wails API, _outside
 
 In the test seen in <ref>test-api</ref> we are making a direct call to the Wails API and checking the error returned. The test passes when the error returned is `ErrNotAvailable`.
 
-<code src="docs/examples/api_calls/api_calls_test.go"></code>
-
 <figure id="test-api" type="listing">
 
 <code src="docs/examples/api_calls/api_calls_test.go"></code>
