@@ -218,7 +218,7 @@ In the test seen in [Listing 1.7](#listing-1-7) we are making a direct call to t
 
 <figure id="listing-1-7" type="listing">
 
-<pre><code class="language-go" lang="go" src="docs/examples/api_calls/api_calls_test.go">package demo
+<pre><code class="language-go" language="go" src="docs/examples/api_calls/api_calls_test.go">package demo
 
 import (
 	&#34;context&#34;
@@ -277,7 +277,7 @@ If the tests are run in a Wails application, using one of the known build tags, 
 === RUN   Test_ErrNotAvailable
 === PAUSE Test_ErrNotAvailable
 === CONT  Test_ErrNotAvailable
-2024/03/09 04:37:50 cannot call &#39;github.com/wailsapp/wails/v2/pkg/runtime.BrowserOpenURL&#39;: An invalid context was passed. This method requires the specific context given in the lifecycle hooks:
+2024/03/09 04:53:47 cannot call &#39;github.com/wailsapp/wails/v2/pkg/runtime.BrowserOpenURL&#39;: An invalid context was passed. This method requires the specific context given in the lifecycle hooks:
 https://wails.io/docs/reference/runtime/intro
 exit status 1
 FAIL	demo	0.003s
