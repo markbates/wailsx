@@ -216,6 +216,34 @@ With the help of Go build tags, any direct calls made to the Wails API, _outside
 
 In the test seen in [Listing 1.7](#listing-1-7) we are making a direct call to the Wails API and checking the error returned. The test passes when the error returned is `ErrNotAvailable`.
 
+```go
+package demo
+
+import (
+	"context"
+	"testing"
+
+	"github.com/markbates/wailsx/wailsrun"
+	"github.com/stretchr/testify/require"
+)
+
+func Test_ErrNotAvailable(t *testing.T) {
+	t.Parallel()
+
+	r := require.New(t)
+
+	ctx := context.Background()
+
+	err := wailsrun.BrowserOpenURL(ctx, "https://example.com")
+	r.Error(err)
+
+	exp := wailsrun.ErrNotAvailable("BrowserOpenURL")
+	r.Equal(exp, err)
+}
+```
+<em>docs/examples/api_calls/api_calls_test.go</em>
+
+
 <figure id="listing-1-7" type="listing">
 
 <pre><code class="language-go" language="go" src="docs/examples/api_calls/api_calls_test.go">package demo
@@ -257,7 +285,7 @@ When running the tests outside of a Wails application, the `BrowserOpenURL` meth
 === CONT  Test_ErrNotAvailable
 --- PASS: Test_ErrNotAvailable (0.00s)
 PASS
-ok  	demo	0.003s
+ok  	demo	0.004s
 
 go: downloading github.com/stretchr/testify v1.9.0
 
@@ -277,10 +305,10 @@ If the tests are run in a Wails application, using one of the known build tags, 
 === RUN   Test_ErrNotAvailable
 === PAUSE Test_ErrNotAvailable
 === CONT  Test_ErrNotAvailable
-2024/03/09 04:53:47 cannot call &#39;github.com/wailsapp/wails/v2/pkg/runtime.BrowserOpenURL&#39;: An invalid context was passed. This method requires the specific context given in the lifecycle hooks:
+2024/03/09 04:54:57 cannot call &#39;github.com/wailsapp/wails/v2/pkg/runtime.BrowserOpenURL&#39;: An invalid context was passed. This method requires the specific context given in the lifecycle hooks:
 https://wails.io/docs/reference/runtime/intro
 exit status 1
-FAIL	demo	0.003s
+FAIL	demo	0.004s
 
 go: downloading github.com/stretchr/testify v1.9.0
 
