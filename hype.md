@@ -104,4 +104,4 @@ If the tests are run in a Wails application, using one of the known build tags, 
 
 </figure>
 
-<include src="events.md"></include>
+<include src="eventx/eventx.md"></include>
