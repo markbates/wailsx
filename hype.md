@@ -104,4 +104,11 @@ If the tests are run in a Wails application, using one of the known build tags, 
 
 </figure>
 
+<include src="clipx/clipx.md"></include>
+<include src="dialogx/dialogx.md"></include>
 <include src="eventx/eventx.md"></include>
+<include src="logx/logx.md"></include>
+<include src="menux/menux.md"></include>
+<include src="statedata/statedata.md"></include>
+<include src="wailsrun/wailsrun.md"></include>
+<include src="windowx/windowx.md"></include>
