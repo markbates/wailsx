@@ -218,7 +218,7 @@ In the test seen in [Listing 1.7](#listing-1-7) we are making a direct call to t
 
 <figure id="listing-1-7" type="listing">
 
-<pre><code class="language-go" language="go" src="docs/examples/api_calls/api_calls_test.go">package demo
+<pre lang="go"><code class="language-go" language="go" src="docs/examples/api_calls/api_calls_test.go">package demo
 
 import (
 	&#34;context&#34;
