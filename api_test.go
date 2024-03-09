@@ -18,8 +18,6 @@ func Test_API_BrowserOpenURL(t *testing.T) {
 
 	ctx := context.Background()
 
-	exp := wailsrun.ErrNotAvailable("BrowserOpenURL")
-
 	tcs := []struct {
 		name string
 		fn   func() error
@@ -31,7 +29,7 @@ func Test_API_BrowserOpenURL(t *testing.T) {
 		},
 		{
 			name: "with nil function",
-			err:  exp,
+			err:  wailsrun.ErrNotAvailable("BrowserOpenURL"),
 		},
 		{
 			name: "with error",

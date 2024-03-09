@@ -96,14 +96,14 @@ In particular, the [`wailsx.API`](https://pkg.go.dev/github.com/markbates/wailsx
 
 <figure id="listing-1-2" type="listing">
 
-<cmd data-go-version="go1.22.0" doc="github.com/wailsapp/wails/v2/pkg/runtime.MenuSetApplicationMenu" exec="go doc github.com/wailsapp/wails/v2/pkg/runtime.MenuSetApplicationMenu"><pre><code class="language-shell" language="shell">$ go doc github.com/wailsapp/wails/v2/pkg/runtime.MenuSetApplicationMenu
+<cmd data-go-version="go1.22.1" doc="github.com/wailsapp/wails/v2/pkg/runtime.MenuSetApplicationMenu" exec="go doc github.com/wailsapp/wails/v2/pkg/runtime.MenuSetApplicationMenu"><pre><code class="language-shell" language="shell">$ go doc github.com/wailsapp/wails/v2/pkg/runtime.MenuSetApplicationMenu
 
 package runtime // import &#34;github.com/wailsapp/wails/v2/pkg/runtime&#34;
 
 func MenuSetApplicationMenu(ctx context.Context, menu *menu.Menu)
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 </code></pre></cmd>
 
 <figcaption><em class="figure-name">Listing 1.2:</em> The <a for="github.com/wailsapp/wails/v2/pkg/runtime.MenuSetApplicationMenu" href="https://pkg.go.dev/github.com/wailsapp/wails/v2/pkg/runtime.MenuSetApplicationMenu" target="_blank"><code>github.com/wailsapp/wails/v2/pkg/runtime.MenuSetApplicationMenu</code></a> method</figcaption>
@@ -111,7 +111,7 @@ Go Version: go1.22.0
 
 <figure id="listing-1-3" type="listing">
 
-<cmd data-go-version="go1.22.0" doc="github.com/markbates/wailsx/wailsrun.API.MenuSetApplicationMenu" exec="go doc github.com/markbates/wailsx/wailsrun.API.MenuSetApplicationMenu"><pre><code class="language-shell" language="shell">$ go doc github.com/markbates/wailsx/wailsrun.API.MenuSetApplicationMenu
+<cmd data-go-version="go1.22.1" doc="github.com/markbates/wailsx/wailsrun.API.MenuSetApplicationMenu" exec="go doc github.com/markbates/wailsx/wailsrun.API.MenuSetApplicationMenu"><pre><code class="language-shell" language="shell">$ go doc github.com/markbates/wailsx/wailsrun.API.MenuSetApplicationMenu
 
 package wailsrun // import &#34;github.com/markbates/wailsx/wailsrun&#34;
 
@@ -120,7 +120,7 @@ type API interface {
 }
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 </code></pre></cmd>
 
 <figcaption><em class="figure-name">Listing 1.3:</em> The <a for="github.com/markbates/wailsx/wailsrun.API.MenuSetApplicationMenu" href="https://pkg.go.dev/github.com/markbates/wailsx/wailsrun.API.MenuSetApplicationMenu" target="_blank"><code>github.com/markbates/wailsx/wailsrun.API.MenuSetApplicationMenu</code></a> method</figcaption>

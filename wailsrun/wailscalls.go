@@ -3,6 +3,7 @@
 // when not built with wails, the stubs are used
 package wailsrun
 
+// snippet: BrowserOpenURL
 import (
 	"context"
 
@@ -13,6 +14,8 @@ import (
 func BrowserOpenURL(ctx context.Context, url string) error {
 	return ErrNotAvailable("BrowserOpenURL")
 }
+
+// snippet: BrowserOpenURL
 
 func ClipboardGetText(ctx context.Context) (string, error) {
 	return "", ErrNotAvailable("ClipboardGetText")
