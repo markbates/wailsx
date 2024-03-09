@@ -9,8 +9,11 @@ I love [Wails](https://wails.io) and have been using it to create some great app
 The <godoc>github.com/markbates/wailsx#API</godoc> interface, <ref>api-int</ref> declares an idiomatic interface for the <godoc>github.com/wailsapp/wails/v2/pkg/runtime</godoc> package.
 
 <figure id="api-int" type="listing">
+
 <code src="wailsrun/api.go"></code>
+
 <figcaption>The <godoc>github.com/markbates/wailsx#API</godoc> interface</figcaption>
+
 </figure>
 
 ### Error Handling
@@ -72,6 +75,8 @@ In these environments all of the Wails API calls will return the `ErrNotAvailabl
 With the help of Go build tags, any direct calls made to the Wails API, _outside_ of a running Wails application, will return the <godoc>github.com/markbates/wailsx/wailsrun.ErrNotAvailable</godoc> error. This allows for testing of the Wails API calls in a non-Wails environment.
 
 In the test seen in <ref>test-api</ref> we are making a direct call to the Wails API and checking the error returned. The test passes when the error returned is `ErrNotAvailable`.
+
+<code src="docs/examples/api_calls/api_calls_test.go"></code>
 
 <figure id="test-api" type="listing">
 
