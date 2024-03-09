@@ -19,7 +19,14 @@ I love [Wails](https://wails.io) and have been using it to create some great app
 * [<level>1.1.2.2</level> Testing Invalid Wails API Calls](#heading-4)
 
 
-* [<level>1.2</level> Events](#heading-5)
+* [<level>1.2</level> Clipboard](#heading-5)
+* [<level>1.3</level> Dialogs](#heading-6)
+* [<level>1.4</level> Events](#heading-7)
+* [<level>1.5</level> Logging](#heading-8)
+* [<level>1.6</level> Menus](#heading-9)
+* [<level>1.7</level> State Data](#heading-10)
+* [<level>1.8</level> Runtime](#heading-11)
+* [<level>1.9</level> Windows](#heading-12)
 </toc>
 
 ## <a id="heading-1"></a>The API Interface
@@ -296,7 +303,7 @@ $ go test -v -tags wails
 === RUN   Test_ErrNotAvailable
 === PAUSE Test_ErrNotAvailable
 === CONT  Test_ErrNotAvailable
-2024/03/09 17:56:33 cannot call 'github.com/wailsapp/wails/v2/pkg/runtime.BrowserOpenURL': An invalid context was passed. This method requires the specific context given in the lifecycle hooks:
+2024/03/09 18:03:48 cannot call 'github.com/wailsapp/wails/v2/pkg/runtime.BrowserOpenURL': An invalid context was passed. This method requires the specific context given in the lifecycle hooks:
 https://wails.io/docs/reference/runtime/intro
 exit status 1
 FAIL	demo	0.003s
@@ -313,5 +320,33 @@ Go Version: go1.22.0
 
 ---
 
-# <a id="heading-5"></a>Events
+# <a id="heading-5"></a>Clipboard
+
+---
+
+# <a id="heading-6"></a>Dialogs
+
+---
+
+# <a id="heading-7"></a>Events
+
+---
+
+# <a id="heading-8"></a>Logging
+
+---
+
+# <a id="heading-9"></a>Menus
+
+---
+
+# <a id="heading-10"></a>State Data
+
+---
+
+# <a id="heading-11"></a>Runtime
+
+---
+
+# <a id="heading-12"></a>Windows
 
