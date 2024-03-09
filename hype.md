@@ -103,3 +103,5 @@ If the tests are run in a Wails application, using one of the known build tags, 
 <figcaption>Testing the `BrowserOpenURL` method output in `production`.</figcaption>
 
 </figure>
+
+<include src="events.md"></include>
