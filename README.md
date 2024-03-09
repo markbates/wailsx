@@ -19,6 +19,7 @@ I love [Wails](https://wails.io) and have been using it to create some great app
 * [<level>1.1.2.2</level> Testing Invalid Wails API Calls](#heading-4)
 
 
+* [<level>1.2</level> Events](#heading-5)
 </toc>
 
 ## <a id="heading-1"></a>The API Interface
@@ -273,7 +274,7 @@ $ go test -v
 === CONT  Test_ErrNotAvailable
 --- PASS: Test_ErrNotAvailable (0.00s)
 PASS
-ok  	demo	0.004s
+ok  	demo	0.003s
 
 go: downloading github.com/stretchr/testify v1.9.0
 
@@ -295,7 +296,7 @@ $ go test -v -tags wails
 === RUN   Test_ErrNotAvailable
 === PAUSE Test_ErrNotAvailable
 === CONT  Test_ErrNotAvailable
-2024/03/09 17:42:29 cannot call 'github.com/wailsapp/wails/v2/pkg/runtime.BrowserOpenURL': An invalid context was passed. This method requires the specific context given in the lifecycle hooks:
+2024/03/09 17:52:48 cannot call 'github.com/wailsapp/wails/v2/pkg/runtime.BrowserOpenURL': An invalid context was passed. This method requires the specific context given in the lifecycle hooks:
 https://wails.io/docs/reference/runtime/intro
 exit status 1
 FAIL	demo	0.003s
@@ -309,4 +310,8 @@ Go Version: go1.22.0
 
 > *_Listing 1.9:_ Testing the `BrowserOpenURL` method output in `production`.*
 </figure>
+
+---
+
+# <a id="heading-5"></a>Events
 
