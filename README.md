@@ -296,7 +296,7 @@ $ go test -v -tags wails
 === RUN   Test_ErrNotAvailable
 === PAUSE Test_ErrNotAvailable
 === CONT  Test_ErrNotAvailable
-2024/03/09 17:52:48 cannot call 'github.com/wailsapp/wails/v2/pkg/runtime.BrowserOpenURL': An invalid context was passed. This method requires the specific context given in the lifecycle hooks:
+2024/03/09 17:53:56 cannot call 'github.com/wailsapp/wails/v2/pkg/runtime.BrowserOpenURL': An invalid context was passed. This method requires the specific context given in the lifecycle hooks:
 https://wails.io/docs/reference/runtime/intro
 exit status 1
 FAIL	demo	0.003s
