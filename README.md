@@ -259,7 +259,6 @@ When running the tests outside of a Wails application, the `BrowserOpenURL` meth
 PASS
 ok  	demo	0.003s
 
-go: downloading github.com/markbates/wailsx v0.0.0-20240308181724-83fae333e653
 go: downloading github.com/stretchr/testify v1.9.0
 
 --------------------------------------------------------------------------------
@@ -278,12 +277,11 @@ If the tests are run in a Wails application, using one of the known build tags, 
 === RUN   Test_ErrNotAvailable
 === PAUSE Test_ErrNotAvailable
 === CONT  Test_ErrNotAvailable
-2024/03/09 04:33:21 cannot call &#39;github.com/wailsapp/wails/v2/pkg/runtime.BrowserOpenURL&#39;: An invalid context was passed. This method requires the specific context given in the lifecycle hooks:
+2024/03/09 04:37:50 cannot call &#39;github.com/wailsapp/wails/v2/pkg/runtime.BrowserOpenURL&#39;: An invalid context was passed. This method requires the specific context given in the lifecycle hooks:
 https://wails.io/docs/reference/runtime/intro
 exit status 1
 FAIL	demo	0.003s
 
-go: downloading github.com/markbates/wailsx v0.0.0-20240308181724-83fae333e653
 go: downloading github.com/stretchr/testify v1.9.0
 
 --------------------------------------------------------------------------------
