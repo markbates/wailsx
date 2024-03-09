@@ -2,8 +2,10 @@ module demo
 
 go 1.22
 
+replace github.com/markbates/wailsx => ../../../
+
 require (
-	github.com/markbates/wailsx v0.0.0-20240308181724-83fae333e653
+	github.com/markbates/wailsx v0.0.0-00010101000000-000000000000
 	github.com/stretchr/testify v1.9.0
 )
 
