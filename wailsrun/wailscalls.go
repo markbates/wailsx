@@ -37,15 +37,15 @@ func EventsOffAll(ctx context.Context) error {
 	return ErrNotAvailable("EventsOffAll")
 }
 
-func EventsOn(ctx context.Context, eventName string, callback CallbackFn) (CancelFn, error) {
+func EventsOn(ctx context.Context, event string, callback CallbackFn) (CancelFn, error) {
 	return nil, ErrNotAvailable("EventsOn")
 }
 
-func EventsOnMultiple(ctx context.Context, eventName string, callback CallbackFn, counter int) (CancelFn, error) {
+func EventsOnMultiple(ctx context.Context, event string, callback CallbackFn, counter int) (CancelFn, error) {
 	return nil, ErrNotAvailable("EventsOnMultiple")
 }
 
-func EventsOnce(ctx context.Context, eventName string, callback CallbackFn) (CancelFn, error) {
+func EventsOnce(ctx context.Context, event string, callback CallbackFn) (CancelFn, error) {
 	return nil, ErrNotAvailable("EventsOnce")
 }
 

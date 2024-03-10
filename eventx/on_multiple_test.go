@@ -56,7 +56,7 @@ func Test_Manager_OnMultiple(t *testing.T) {
 			m := &Manager{}
 
 			if tc.fn != nil {
-				m.EventsOnMultipleFn = func(ctx context.Context, name string, callback wailsrun.CallbackFn, counter int) (wailsrun.CancelFn, error) {
+				m.EventsOnMultipleFn = func(ctx context.Context, name string, callback CallbackFn, counter int) (CancelFn, error) {
 					return nil, tc.fn()
 				}
 			}

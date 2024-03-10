@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/markbates/wailsx/statedata"
-	"github.com/markbates/wailsx/wailsrun"
 )
 
 var _ EventManagerDataProvider = &Manager{}
@@ -20,9 +19,9 @@ type Manager struct {
 	EventsEmitFn       func(ctx context.Context, name string, data ...any) error
 	EventsOffAllFn     func(ctx context.Context) error
 	EventsOffFn        func(ctx context.Context, name string, additional ...string) error
-	EventsOnFn         func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error)
-	EventsOnMultipleFn func(ctx context.Context, name string, callback wailsrun.CallbackFn, counter int) (wailsrun.CancelFn, error)
-	EventsOnceFn       func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error)
+	EventsOnFn         func(ctx context.Context, name string, callback CallbackFn) (CancelFn, error)
+	EventsOnMultipleFn func(ctx context.Context, name string, callback CallbackFn, counter int) (CancelFn, error)
+	EventsOnceFn       func(ctx context.Context, name string, callback CallbackFn) (CancelFn, error)
 
 	NowFn func() time.Time
 

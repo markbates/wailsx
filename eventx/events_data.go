@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/markbates/wailsx/statedata"
-	"github.com/markbates/wailsx/wailsrun"
 )
 
 var _ statedata.DataProvider[*EventsData] = &EventsData{}
@@ -91,7 +90,7 @@ func (ev *EventsData) CallbacksOff(events ...string) error {
 	return nil
 }
 
-func (ev *EventsData) AddCallback(event string, cb wailsrun.CallbackFn, max int) error {
+func (ev *EventsData) AddCallback(event string, cb CallbackFn, max int) error {
 	if err := ev.init(); err != nil {
 		return err
 	}

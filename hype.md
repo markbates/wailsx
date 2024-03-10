@@ -12,3 +12,4 @@ I love [Wails](https://wails.io) and have been using it to create some great app
 <include src="menux/menux.md"></include>
 <include src="statedata/statedata.md"></include>
 <include src="windowx/windowx.md"></include>
+<include src="api.md"></include>

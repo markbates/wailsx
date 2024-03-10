@@ -14,9 +14,9 @@ type API interface {
 	EventsEmit(ctx context.Context, event string, data ...any) error
 	EventsOff(ctx context.Context, event string, additional ...string) error
 	EventsOffAll(ctx context.Context) error
-	EventsOn(ctx context.Context, eventName string, callback CallbackFn) (CancelFn, error)
-	EventsOnMultiple(ctx context.Context, eventName string, callback CallbackFn, counter int) (CancelFn, error)
-	EventsOnce(ctx context.Context, eventName string, callback CallbackFn) (CancelFn, error)
+	EventsOn(ctx context.Context, event string, callback CallbackFn) (CancelFn, error)
+	EventsOnMultiple(ctx context.Context, event string, callback CallbackFn, counter int) (CancelFn, error)
+	EventsOnce(ctx context.Context, event string, callback CallbackFn) (CancelFn, error)
 	Hide(ctx context.Context) error
 	LogDebug(ctx context.Context, message string) error
 	LogDebugf(ctx context.Context, format string, args ...any) error
