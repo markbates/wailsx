@@ -6,86 +6,127 @@ I love [Wails](https://wails.io) and have been using it to create some great app
 <toc>
 
 * [<toc-level>1.1</toc-level> - Wailsx - A Testable, Idiomatic Wrapper for Wails](#heading-0)
-* [<toc-level>1.2</toc-level> - Runtime and API](#heading-1)
 
 
-* [<toc-level>1.2.1</toc-level> - The API Interface](#heading-2)
+* [<toc-level>1.1.1</toc-level> - Installation](#heading-1)
+
+* [<toc-level>1.2</toc-level> - Runtime and API](#heading-2)
 
 
-* [<toc-level>1.2.1.1</toc-level> - Error Handling](#heading-3)
-
-* [<toc-level>1.2.2</toc-level> - Protecting Wails API Calls](#heading-4)
+* [<toc-level>1.2.1</toc-level> - The API Interface](#heading-3)
 
 
-* [<toc-level>1.2.2.2</toc-level> - Testing Invalid Wails API Calls](#heading-5)
+* [<toc-level>1.2.1.1</toc-level> - Error Handling](#heading-4)
+
+* [<toc-level>1.2.2</toc-level> - Protecting Wails API Calls](#heading-5)
 
 
-* [<toc-level>1.3</toc-level> - Clipboard](#heading-6)
+* [<toc-level>1.2.2.2</toc-level> - Testing Invalid Wails API Calls](#heading-6)
 
 
-* [<toc-level>1.3.1</toc-level> - The `ClipboardManager` Interface](#heading-7)
-
-* [<toc-level>1.4</toc-level> - Dialogs](#heading-8)
+* [<toc-level>1.3</toc-level> - Clipboard](#heading-7)
 
 
-* [<toc-level>1.4.1</toc-level> - The `DialogManager` Interface](#heading-9)
+* [<toc-level>1.3.1</toc-level> - The `ClipboardManager` Interface](#heading-8)
 
-* [<toc-level>1.5</toc-level> - Events](#heading-10)
-
-
-* [<toc-level>1.5.1</toc-level> - The `EventManager` Interface](#heading-11)
-* [<toc-level>1.5.2</toc-level> - The `Manager` Type](#heading-12)
+* [<toc-level>1.4</toc-level> - Dialogs](#heading-9)
 
 
-* [<toc-level>1.5.2.1</toc-level> - Creating a New Manager](#heading-13)
+* [<toc-level>1.4.1</toc-level> - The `DialogManager` Interface](#heading-10)
 
-* [<toc-level>1.5.3</toc-level> - The `CallbackFn` Type](#heading-14)
-* [<toc-level>1.5.4</toc-level> - The `CancelFn` Type](#heading-15)
-
-* [<toc-level>1.6</toc-level> - Messages](#heading-16)
+* [<toc-level>1.5</toc-level> - Events](#heading-11)
 
 
-* [<toc-level>1.6.1</toc-level> - The `Messenger` Interface](#heading-17)
-* [<toc-level>1.6.2</toc-level> - The `ErrorMessenger` Interface](#heading-18)
-
-* [<toc-level>1.7</toc-level> - Logging](#heading-19)
+* [<toc-level>1.5.1</toc-level> - The `EventManager` Interface](#heading-12)
+* [<toc-level>1.5.2</toc-level> - The `Manager` Type](#heading-13)
 
 
-* [<toc-level>1.7.1</toc-level> - The `WailsLogger` Interface](#heading-20)
+* [<toc-level>1.5.2.1</toc-level> - Creating a New Manager](#heading-14)
 
-* [<toc-level>1.8</toc-level> - Menus](#heading-21)
+* [<toc-level>1.5.3</toc-level> - The `CallbackFn` Type](#heading-15)
+* [<toc-level>1.5.4</toc-level> - The `CancelFn` Type](#heading-16)
 
-
-* [<toc-level>1.8.1</toc-level> - The `MenuManager` Interface](#heading-22)
-
-* [<toc-level>1.9</toc-level> - State Data](#heading-23)
+* [<toc-level>1.6</toc-level> - Messages](#heading-17)
 
 
-* [<toc-level>1.9.1</toc-level> - The `DataProvider` Interface](#heading-24)
+* [<toc-level>1.6.1</toc-level> - The `Messenger` Interface](#heading-18)
+* [<toc-level>1.6.2</toc-level> - The `ErrorMessenger` Interface](#heading-19)
 
-* [<toc-level>1.10</toc-level> - Window Management](#heading-25)
-
-
-* [<toc-level>1.10.1</toc-level> - The `WindowManager` Interface](#heading-26)
-* [<toc-level>1.10.2</toc-level> - The `MaximiseManager` Interface](#heading-27)
-* [<toc-level>1.10.3</toc-level> - The `PositionManager` Interface](#heading-28)
-* [<toc-level>1.10.4</toc-level> - The `ReloadManager` Interface](#heading-29)
-* [<toc-level>1.10.5</toc-level> - The `ThemeManager` Interface](#heading-30)
-* [<toc-level>1.10.6</toc-level> - The `Toggler` Interface](#heading-31)
-
-* [<toc-level>1.11</toc-level> - Using the API](#heading-32)
+* [<toc-level>1.7</toc-level> - Logging](#heading-20)
 
 
-* [<toc-level>1.11.1</toc-level> - The `API` type](#heading-33)
-* [<toc-level>1.11.2</toc-level> - `Nil` API Calls](#heading-34)
+* [<toc-level>1.7.1</toc-level> - The `WailsLogger` Interface](#heading-21)
+
+* [<toc-level>1.8</toc-level> - Menus](#heading-22)
+
+
+* [<toc-level>1.8.1</toc-level> - The `MenuManager` Interface](#heading-23)
+
+* [<toc-level>1.9</toc-level> - State Data](#heading-24)
+
+
+* [<toc-level>1.9.1</toc-level> - The `DataProvider` Interface](#heading-25)
+* [<toc-level>1.9.2</toc-level> - The `Data` Interface](#heading-26)
+
+* [<toc-level>1.10</toc-level> - Window Management](#heading-27)
+
+
+* [<toc-level>1.10.1</toc-level> - The `WindowManager` Interface](#heading-28)
+* [<toc-level>1.10.2</toc-level> - The `MaximiseManager` Interface](#heading-29)
+* [<toc-level>1.10.3</toc-level> - The `PositionManager` Interface](#heading-30)
+* [<toc-level>1.10.4</toc-level> - The `ReloadManager` Interface](#heading-31)
+* [<toc-level>1.10.5</toc-level> - The `ThemeManager` Interface](#heading-32)
+* [<toc-level>1.10.6</toc-level> - The `Toggler` Interface](#heading-33)
+
+* [<toc-level>1.11</toc-level> - Using the API](#heading-34)
+
+
+* [<toc-level>1.11.1</toc-level> - The `API` type](#heading-35)
+* [<toc-level>1.11.2</toc-level> - `Nil` API Calls](#heading-36)
+* [<toc-level>1.11.3</toc-level> - `Nop` API Calls](#heading-37)
 
 </toc>
 
+## <a id="heading-1"></a><toc-level>1.1.1</toc-level> - Installation
+
+Wailsx is a Go module and can be installed with `go get`.
+
+<a id="figure-1-1"></a>
+
+
+```bash
+go get github.com/markbates/wailsx
+
+```
+
+> *_Figure 1.1:_ Installing `github.com/markbates/wailsx` with `go get`.*
+
+
+Once imported, you can use the `wailsx` package in your application.
+
+<a id="figure-1-2"></a>
+
+
+```shell
+$ go doc -short github.com/markbates/wailsx.NewAPI
+
+func NewAPI() *API
+    NewAPI returns a new API with all the functions, and interfaces, set to
+    their default implementations.
+
+--------------------------------------------------------------------------------
+Go Version: go1.22.0
+
+```
+
+> *_Figure 1.2:_ The [`wailsx.NewAPI`](https://pkg.go.dev/github.com/markbates/wailsx#NewAPI) function*
+
+
 ---
 
-# <a id="heading-1"></a><toc-level>1.2</toc-level> - Runtime and API
+# <a id="heading-2"></a><toc-level>1.2</toc-level> - Runtime and API
 
-## <a id="heading-2"></a><toc-level>1.2.1</toc-level> - The API Interface
+## <a id="heading-3"></a><toc-level>1.2.1</toc-level> - The API Interface
 
 The [`wailsx.API`](https://pkg.go.dev/github.com/markbates/wailsx#API) interface, [Listing 1.1](#listing-1-1) declares an idiomatic interface for the [`github.com/wailsapp/wails/v2/pkg/runtime`](https://pkg.go.dev/github.com/wailsapp/wails/v2/pkg/runtime) package.
 
@@ -173,9 +214,9 @@ Go Version: go1.22.0
 > *_Listing 1.1:_ The [`wailsx.API`](https://pkg.go.dev/github.com/markbates/wailsx#API) interface*
 
 
-### <a id="heading-3"></a><toc-level>1.2.1.1</toc-level> - Error Handling
+### <a id="heading-4"></a><toc-level>1.2.1.1</toc-level> - Error Handling
 
-In particular, the [`wailsx.API`](https://pkg.go.dev/github.com/markbates/wailsx#API) improves error handling by adding error returns to the methods that previously returned nothing. For example, the [`github.com/wailsapp/wails/v2/pkg/runtime.MenuSetApplicationMenu`](https://pkg.go.dev/github.com/wailsapp/wails/v2/pkg/runtime.MenuSetApplicationMenu), [Listing 1.2](#listing-1-2), method now returns an error, [Listing 1.3](#listing-1-3).
+In particular, the [`wailsx.API`](https://pkg.go.dev/github.com/markbates/wailsx#API) improves error handling by adding error returns to the methods that previously returned nothing. For example, the [`runtime.MenuSetApplicationMenu`](https://pkg.go.dev/github.com/wailsapp/wails/v2/pkg/runtime#MenuSetApplicationMenu), [Listing 1.2](#listing-1-2), method now returns an error, [Listing 1.3](#listing-1-3).
 
 <a id="listing-1-2"></a>
 
@@ -192,7 +233,7 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.2:_ The [`github.com/wailsapp/wails/v2/pkg/runtime.MenuSetApplicationMenu`](https://pkg.go.dev/github.com/wailsapp/wails/v2/pkg/runtime.MenuSetApplicationMenu) method*
+> *_Listing 1.2:_ The [`runtime.MenuSetApplicationMenu`](https://pkg.go.dev/github.com/wailsapp/wails/v2/pkg/runtime#MenuSetApplicationMenu) method*
 
 
 <a id="listing-1-3"></a>
@@ -212,10 +253,10 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.3:_ The [`github.com/markbates/wailsx/wailsrun.API.MenuSetApplicationMenu`](https://pkg.go.dev/github.com/markbates/wailsx/wailsrun.API.MenuSetApplicationMenu) method*
+> *_Listing 1.3:_ The [`wailsrun.API.MenuSetApplicationMenu`](https://pkg.go.dev/github.com/markbates/wailsx/wailsrun#API.MenuSetApplicationMenu) method*
 
 
-## <a id="heading-4"></a><toc-level>1.2.2</toc-level> - Protecting Wails API Calls
+## <a id="heading-5"></a><toc-level>1.2.2</toc-level> - Protecting Wails API Calls
 
 Wailsx uses Go build tags to protect the Wails API calls from being called in a production environment. The [`wailsrun.API`](https://pkg.go.dev/github.com/markbates/wailsx/wailsrun#API) interface, [Listing 1.1](#listing-1-1), is implemented in two different files, [Listing 1.4](#listing-1-4) and [Listing 1.5](#listing-1-5).
 
@@ -286,12 +327,12 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.6:_ The `ErrNotAvailable` error*
+> *_Listing 1.6:_ The [`wailsrun.ErrNotAvailable`](https://pkg.go.dev/github.com/markbates/wailsx/wailsrun#ErrNotAvailable) error*
 
 
-### <a id="heading-5"></a><toc-level>1.2.2.2</toc-level> - Testing Invalid Wails API Calls
+### <a id="heading-6"></a><toc-level>1.2.2.2</toc-level> - Testing Invalid Wails API Calls
 
-With the help of Go build tags, any direct calls made to the Wails API, _outside_ of a running Wails application, will return the [`github.com/markbates/wailsx/wailsrun.ErrNotAvailable`](https://pkg.go.dev/github.com/markbates/wailsx/wailsrun.ErrNotAvailable) error. This allows for testing of the Wails API calls in a non-Wails environment.
+With the help of Go build tags, any direct calls made to the Wails API, _outside_ of a running Wails application, will return the [`wailsrun.ErrNotAvailable`](https://pkg.go.dev/github.com/markbates/wailsx/wailsrun#ErrNotAvailable) error. This allows for testing of the Wails API calls in a non-Wails environment.
 
 In the test seen in [Listing 1.7](#listing-1-7) we are making a direct call to the Wails API and checking the error returned. The test passes when the error returned is `ErrNotAvailable`.
 
@@ -299,16 +340,6 @@ In the test seen in [Listing 1.7](#listing-1-7) we are making a direct call to t
 
 
 ```go
-package wailsrun_test
-
-import (
-	"context"
-	"testing"
-
-	"github.com/markbates/wailsx/wailsrun"
-	"github.com/stretchr/testify/require"
-)
-
 func Test_ErrNotAvailable(t *testing.T) {
 	t.Parallel()
 
@@ -323,13 +354,13 @@ func Test_ErrNotAvailable(t *testing.T) {
 	r.Equal(exp, err)
 }
 ```
-> *source: wailsrun/api_calls_test.go*
+> *source: wailsrun/api_calls_test.go:err-not-available*
 
 
-> *_Listing 1.7:_ Testing the `BrowserOpenURL` method*
+> *_Listing 1.7:_ Testing the [`wailsrun.ErrNotAvailable`](https://pkg.go.dev/github.com/markbates/wailsx/wailsrun#ErrNotAvailable) method*
 
 
-When running the tests outside of a Wails application, the `BrowserOpenURL` method will return the `ErrNotAvailable` error, [Listing 1.6](#listing-1-6).
+When running the tests outside of a Wails application, the [`wailsrun.ErrNotAvailable`](https://pkg.go.dev/github.com/markbates/wailsx/wailsrun#ErrNotAvailable) method will return the `ErrNotAvailable` error, [Listing 1.6](#listing-1-6).
 
 <a id="listing-1-8"></a>
 
@@ -339,17 +370,17 @@ $ go test -v -run Test_ErrNotAvailable
 
 testing: warning: no tests to run
 PASS
-ok  	github.com/markbates/wailsx	0.005s
+ok  	github.com/markbates/wailsx	0.003s
 
 --------------------------------------------------------------------------------
 Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.8:_ Testing the `BrowserOpenURL` method output.*
+> *_Listing 1.8:_ Testing the [`wailsrun.ErrNotAvailable`](https://pkg.go.dev/github.com/markbates/wailsx/wailsrun#ErrNotAvailable) method output.*
 
 
-If the tests are run in a Wails application, using one of the known build tags, the `BrowserOpenURL` method will call the actual Wails API method, [Listing 1.4](#listing-1-4). The result is a call to [`log.Fatal`](https://pkg.go.dev/log.Fatal) because we don't have a valid Wails context.
+If the tests are run in a Wails application, using one of the known build tags, the [`wailsrun.ErrNotAvailable`](https://pkg.go.dev/github.com/markbates/wailsx/wailsrun#ErrNotAvailable) method will call the actual Wails API method, [Listing 1.4](#listing-1-4). The result is a call to [`log.Fatal`](https://pkg.go.dev/log#Fatal) because we don't have a valid Wails context.
 
 <a id="listing-1-9"></a>
 
@@ -366,16 +397,16 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.9:_ Testing the `BrowserOpenURL` method output in `production`.*
+> *_Listing 1.9:_ Testing the [`wailsrun.ErrNotAvailable`](https://pkg.go.dev/github.com/markbates/wailsx/wailsrun#ErrNotAvailable) method output in `production`.*
 
 
 ---
 
-# <a id="heading-6"></a><toc-level>1.3</toc-level> - Clipboard
+# <a id="heading-7"></a><toc-level>1.3</toc-level> - Clipboard
 
-## <a id="heading-7"></a><toc-level>1.3.1</toc-level> - The <code>ClipboardManager</code> Interface
+## <a id="heading-8"></a><toc-level>1.3.1</toc-level> - The <code>ClipboardManager</code> Interface
 
-<a id="figure-1-1"></a>
+<a id="figure-1-3"></a>
 
 
 ```shell
@@ -393,14 +424,14 @@ Go Version: go1.22.0
 
 ```
 
-> *_Figure 1.1:_ The [`github.com/markbates/wailsx/clipx.ClipboardManager`](https://pkg.go.dev/github.com/markbates/wailsx/clipx.ClipboardManager) interface*
+> *_Figure 1.3:_ The [`clipx.ClipboardManager`](https://pkg.go.dev/github.com/markbates/wailsx/clipx#ClipboardManager) interface*
 
 
 ---
 
-# <a id="heading-8"></a><toc-level>1.4</toc-level> - Dialogs
+# <a id="heading-9"></a><toc-level>1.4</toc-level> - Dialogs
 
-## <a id="heading-9"></a><toc-level>1.4.1</toc-level> - The <code>DialogManager</code> Interface
+## <a id="heading-10"></a><toc-level>1.4.1</toc-level> - The <code>DialogManager</code> Interface
 
 <a id="listing-1-10"></a>
 
@@ -423,14 +454,14 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.10:_ The [`github.com/markbates/wailsx/dialogx.DialogManager`](https://pkg.go.dev/github.com/markbates/wailsx/dialogx.DialogManager) interface*
+> *_Listing 1.10:_ The [`dialogx.DialogManager`](https://pkg.go.dev/github.com/markbates/wailsx/dialogx#DialogManager) interface*
 
 
 ---
 
-# <a id="heading-10"></a><toc-level>1.5</toc-level> - Events
+# <a id="heading-11"></a><toc-level>1.5</toc-level> - Events
 
-## <a id="heading-11"></a><toc-level>1.5.1</toc-level> - The <code>EventManager</code> Interface
+## <a id="heading-12"></a><toc-level>1.5.1</toc-level> - The <code>EventManager</code> Interface
 
 <a id="listing-1-11"></a>
 
@@ -454,10 +485,10 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.11:_ The [`github.com/markbates/wailsx/eventx.EventManager`](https://pkg.go.dev/github.com/markbates/wailsx/eventx.EventManager) interface*
+> *_Listing 1.11:_ The [`eventx.EventManager`](https://pkg.go.dev/github.com/markbates/wailsx/eventx#EventManager) interface*
 
 
-## <a id="heading-12"></a><toc-level>1.5.2</toc-level> - The <code>Manager</code> Type
+## <a id="heading-13"></a><toc-level>1.5.2</toc-level> - The <code>Manager</code> Type
 
 <a id="listing-1-12"></a>
 
@@ -500,10 +531,10 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.12:_ The [`github.com/markbates/wailsx/eventx.Manager`](https://pkg.go.dev/github.com/markbates/wailsx/eventx.Manager) type*
+> *_Listing 1.12:_ The [`eventx.Manager`](https://pkg.go.dev/github.com/markbates/wailsx/eventx#Manager) type*
 
 
-### <a id="heading-13"></a><toc-level>1.5.2.1</toc-level> - Creating a New Manager
+### <a id="heading-14"></a><toc-level>1.5.2.1</toc-level> - Creating a New Manager
 
 <a id="listing-1-13"></a>
 
@@ -520,7 +551,7 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.13:_ The [`github.com/markbates/wailsx/eventx.NewManager`](https://pkg.go.dev/github.com/markbates/wailsx/eventx.NewManager) function*
+> *_Listing 1.13:_ The [`eventx.NewManager`](https://pkg.go.dev/github.com/markbates/wailsx/eventx#NewManager) function*
 
 
 <a id="listing-1-14"></a>
@@ -540,10 +571,10 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.14:_ The [`github.com/markbates/wailsx/eventx.NopManager`](https://pkg.go.dev/github.com/markbates/wailsx/eventx.NopManager) function*
+> *_Listing 1.14:_ The [`eventx.NopManager`](https://pkg.go.dev/github.com/markbates/wailsx/eventx#NopManager) function*
 
 
-## <a id="heading-14"></a><toc-level>1.5.3</toc-level> - The <code>CallbackFn</code> Type
+## <a id="heading-15"></a><toc-level>1.5.3</toc-level> - The <code>CallbackFn</code> Type
 
 <a id="listing-1-15"></a>
 
@@ -560,10 +591,10 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.15:_ The [`github.com/markbates/wailsx/eventx.CallbackFn`](https://pkg.go.dev/github.com/markbates/wailsx/eventx.CallbackFn) type*
+> *_Listing 1.15:_ The [`eventx.CallbackFn`](https://pkg.go.dev/github.com/markbates/wailsx/eventx#CallbackFn) type*
 
 
-## <a id="heading-15"></a><toc-level>1.5.4</toc-level> - The <code>CancelFn</code> Type
+## <a id="heading-16"></a><toc-level>1.5.4</toc-level> - The <code>CancelFn</code> Type
 
 <a id="listing-1-16"></a>
 
@@ -584,14 +615,14 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.16:_ The [`github.com/markbates/wailsx/eventx.CancelFn`](https://pkg.go.dev/github.com/markbates/wailsx/eventx.CancelFn) type*
+> *_Listing 1.16:_ The [`eventx.CancelFn`](https://pkg.go.dev/github.com/markbates/wailsx/eventx#CancelFn) type*
 
 
 ---
 
-# <a id="heading-16"></a><toc-level>1.6</toc-level> - Messages
+# <a id="heading-17"></a><toc-level>1.6</toc-level> - Messages
 
-## <a id="heading-17"></a><toc-level>1.6.1</toc-level> - The <code>Messenger</code> Interface
+## <a id="heading-18"></a><toc-level>1.6.1</toc-level> - The <code>Messenger</code> Interface
 
 <a id="listing-1-17"></a>
 
@@ -615,10 +646,10 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.17:_ The [`github.com/markbates/wailsx/eventx/msgx.Messenger`](https://pkg.go.dev/github.com/markbates/wailsx/eventx/msgx.Messenger) interface*
+> *_Listing 1.17:_ The [`msgx.Messenger`](https://pkg.go.dev/github.com/markbates/wailsx/eventx/msgx#Messenger) interface*
 
 
-## <a id="heading-18"></a><toc-level>1.6.2</toc-level> - The <code>ErrorMessenger</code> Interface
+## <a id="heading-19"></a><toc-level>1.6.2</toc-level> - The <code>ErrorMessenger</code> Interface
 
 <a id="listing-1-18"></a>
 
@@ -638,14 +669,14 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.18:_ The [`github.com/markbates/wailsx/eventx/msgx.ErrorMessenger`](https://pkg.go.dev/github.com/markbates/wailsx/eventx/msgx.ErrorMessenger) interface*
+> *_Listing 1.18:_ The [`msgx.ErrorMessenger`](https://pkg.go.dev/github.com/markbates/wailsx/eventx/msgx#ErrorMessenger) interface*
 
 
 ---
 
-# <a id="heading-19"></a><toc-level>1.7</toc-level> - Logging
+# <a id="heading-20"></a><toc-level>1.7</toc-level> - Logging
 
-## <a id="heading-20"></a><toc-level>1.7.1</toc-level> - The <code>WailsLogger</code> Interface
+## <a id="heading-21"></a><toc-level>1.7.1</toc-level> - The <code>WailsLogger</code> Interface
 
 <a id="listing-1-19"></a>
 
@@ -678,14 +709,14 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.19:_ The [`github.com/markbates/wailsx/logx.WailsLogger`](https://pkg.go.dev/github.com/markbates/wailsx/logx.WailsLogger) interface*
+> *_Listing 1.19:_ The [`logx.WailsLogger`](https://pkg.go.dev/github.com/markbates/wailsx/logx#WailsLogger) interface*
 
 
 ---
 
-# <a id="heading-21"></a><toc-level>1.8</toc-level> - Menus
+# <a id="heading-22"></a><toc-level>1.8</toc-level> - Menus
 
-## <a id="heading-22"></a><toc-level>1.8.1</toc-level> - The <code>MenuManager</code> Interface
+## <a id="heading-23"></a><toc-level>1.8.1</toc-level> - The <code>MenuManager</code> Interface
 
 <a id="listing-1-20"></a>
 
@@ -705,14 +736,14 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.20:_ The [`github.com/markbates/wailsx/menux.MenuManager`](https://pkg.go.dev/github.com/markbates/wailsx/menux.MenuManager) interface*
+> *_Listing 1.20:_ The [`menux.MenuManager`](https://pkg.go.dev/github.com/markbates/wailsx/menux#MenuManager) interface*
 
 
 ---
 
-# <a id="heading-23"></a><toc-level>1.9</toc-level> - State Data
+# <a id="heading-24"></a><toc-level>1.9</toc-level> - State Data
 
-## <a id="heading-24"></a><toc-level>1.9.1</toc-level> - The <code>DataProvider</code> Interface
+## <a id="heading-25"></a><toc-level>1.9.1</toc-level> - The <code>DataProvider</code> Interface
 
 <a id="listing-1-21"></a>
 
@@ -731,16 +762,42 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.21:_ The [`github.com/markbates/wailsx/statedata.DataProvider`](https://pkg.go.dev/github.com/markbates/wailsx/statedata.DataProvider) interface*
+> *_Listing 1.21:_ The [`statedata.DataProvider`](https://pkg.go.dev/github.com/markbates/wailsx/statedata#DataProvider) interface*
+
+
+## <a id="heading-26"></a><toc-level>1.9.2</toc-level> - The <code>Data</code> Interface
+
+<a id="listing-1-22"></a>
+
+
+```shell
+$ go doc github.com/markbates/wailsx/statedata.Data
+
+package statedata // import "github.com/markbates/wailsx/statedata"
+
+type Data[T any] struct {
+	Name string `json:"name,omitempty"` // name of the data
+	Data T      `json:"data,omitempty"` // data for the state
+}
+
+func (sd Data[T]) PluginName() string
+func (sd Data[T]) StateData(ctx context.Context) (Data[T], error)
+
+--------------------------------------------------------------------------------
+Go Version: go1.22.0
+
+```
+
+> *_Listing 1.22:_ The [`statedata.Data`](https://pkg.go.dev/github.com/markbates/wailsx/statedata#Data) interface*
 
 
 ---
 
-# <a id="heading-25"></a><toc-level>1.10</toc-level> - Window Management
+# <a id="heading-27"></a><toc-level>1.10</toc-level> - Window Management
 
-## <a id="heading-26"></a><toc-level>1.10.1</toc-level> - The <code>WindowManager</code> Interface
+## <a id="heading-28"></a><toc-level>1.10.1</toc-level> - The <code>WindowManager</code> Interface
 
-<a id="listing-1-22"></a>
+<a id="listing-1-23"></a>
 
 
 ```shell
@@ -767,12 +824,12 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.22:_ The [`github.com/markbates/wailsx/windowx.WindowManager`](https://pkg.go.dev/github.com/markbates/wailsx/windowx.WindowManager) interface*
+> *_Listing 1.23:_ The [`windowx.WindowManager`](https://pkg.go.dev/github.com/markbates/wailsx/windowx#WindowManager) interface*
 
 
-## <a id="heading-27"></a><toc-level>1.10.2</toc-level> - The <code>MaximiseManager</code> Interface
+## <a id="heading-29"></a><toc-level>1.10.2</toc-level> - The <code>MaximiseManager</code> Interface
 
-<a id="listing-1-23"></a>
+<a id="listing-1-24"></a>
 
 
 ```shell
@@ -799,12 +856,12 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.23:_ The [`github.com/markbates/wailsx/windowx.MaximiseManager`](https://pkg.go.dev/github.com/markbates/wailsx/windowx.MaximiseManager) interface*
+> *_Listing 1.24:_ The [`windowx.MaximiseManager`](https://pkg.go.dev/github.com/markbates/wailsx/windowx#MaximiseManager) interface*
 
 
-## <a id="heading-28"></a><toc-level>1.10.3</toc-level> - The <code>PositionManager</code> Interface
+## <a id="heading-30"></a><toc-level>1.10.3</toc-level> - The <code>PositionManager</code> Interface
 
-<a id="listing-1-24"></a>
+<a id="listing-1-25"></a>
 
 
 ```shell
@@ -827,12 +884,12 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.24:_ The [`github.com/markbates/wailsx/windowx.PositionManager`](https://pkg.go.dev/github.com/markbates/wailsx/windowx.PositionManager) interface*
+> *_Listing 1.25:_ The [`windowx.PositionManager`](https://pkg.go.dev/github.com/markbates/wailsx/windowx#PositionManager) interface*
 
 
-## <a id="heading-29"></a><toc-level>1.10.4</toc-level> - The <code>ReloadManager</code> Interface
+## <a id="heading-31"></a><toc-level>1.10.4</toc-level> - The <code>ReloadManager</code> Interface
 
-<a id="listing-1-25"></a>
+<a id="listing-1-26"></a>
 
 
 ```shell
@@ -850,12 +907,12 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.25:_ The [`github.com/markbates/wailsx/windowx.ReloadManager`](https://pkg.go.dev/github.com/markbates/wailsx/windowx.ReloadManager) interface*
+> *_Listing 1.26:_ The [`windowx.ReloadManager`](https://pkg.go.dev/github.com/markbates/wailsx/windowx#ReloadManager) interface*
 
 
-## <a id="heading-30"></a><toc-level>1.10.5</toc-level> - The <code>ThemeManager</code> Interface
+## <a id="heading-32"></a><toc-level>1.10.5</toc-level> - The <code>ThemeManager</code> Interface
 
-<a id="listing-1-26"></a>
+<a id="listing-1-27"></a>
 
 
 ```shell
@@ -875,12 +932,12 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.26:_ The [`github.com/markbates/wailsx/windowx.ThemeManager`](https://pkg.go.dev/github.com/markbates/wailsx/windowx.ThemeManager) interface*
+> *_Listing 1.27:_ The [`windowx.ThemeManager`](https://pkg.go.dev/github.com/markbates/wailsx/windowx#ThemeManager) interface*
 
 
-## <a id="heading-31"></a><toc-level>1.10.6</toc-level> - The <code>Toggler</code> Interface
+## <a id="heading-33"></a><toc-level>1.10.6</toc-level> - The <code>Toggler</code> Interface
 
-<a id="listing-1-27"></a>
+<a id="listing-1-28"></a>
 
 
 ```shell
@@ -900,16 +957,20 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.27:_ The [`github.com/markbates/wailsx/windowx.Toggler`](https://pkg.go.dev/github.com/markbates/wailsx/windowx.Toggler) interface*
+> *_Listing 1.28:_ The [`windowx.Toggler`](https://pkg.go.dev/github.com/markbates/wailsx/windowx#Toggler) interface*
 
 
 ---
 
-# <a id="heading-32"></a><toc-level>1.11</toc-level> - Using the API
+# <a id="heading-34"></a><toc-level>1.11</toc-level> - Using the API
 
-## <a id="heading-33"></a><toc-level>1.11.1</toc-level> - The <code>API</code> type
+While the [`github.com/markbates/wailsx/wailsrun`](https://pkg.go.dev/github.com/markbates/wailsx/wailsrun) package can be used directly, it is recommended to use the [`github.com/markbates/wailsx.API`](https://pkg.go.dev/github.com/markbates/wailsx.API) type to create a testable, idiomatic wrapper around the Wails API.
 
-<a id="figure-1-2"></a>
+## <a id="heading-35"></a><toc-level>1.11.1</toc-level> - The <code>API</code> type
+
+The [`wailsx.API`](https://pkg.go.dev/github.com/markbates/wailsx#API) type is a wrapper around the [`github.com/markbates/wailsx/wailsrun`](https://pkg.go.dev/github.com/markbates/wailsx/wailsrun) package. By default, if the [`wailsx.API`](https://pkg.go.dev/github.com/markbates/wailsx#API) type is `nil`, or `zero` (i.e. `&API{}`), all methods will be will be mapped directly to the `wailsrun` package. This allows you to use the [`wailsx.API`](https://pkg.go.dev/github.com/markbates/wailsx#API) type in your application without having to worry about the [`wailsx.API`](https://pkg.go.dev/github.com/markbates/wailsx#API) being `nil`.
+
+<a id="figure-1-4"></a>
 
 
 ```shell
@@ -1001,12 +1062,32 @@ Go Version: go1.22.0
 
 ```
 
-> *_Figure 1.2:_ The `github.com/markbates/wailsx.API` type*
+> *_Figure 1.4:_ The [`wailsx.API`](https://pkg.go.dev/github.com/markbates/wailsx#API) type*
 
 
-## <a id="heading-34"></a><toc-level>1.11.2</toc-level> - <code>Nil</code> API Calls
+The [`wailsx.NewAPI`](https://pkg.go.dev/github.com/markbates/wailsx#NewAPI) function can be used to create a new [`wailsx.API`](https://pkg.go.dev/github.com/markbates/wailsx#API) type. This function will populate the [`wailsx.API`](https://pkg.go.dev/github.com/markbates/wailsx#API) type with implementations of its embedded interfaces. For example, using [`eventx.NewManager`](https://pkg.go.dev/github.com/markbates/wailsx/eventx#NewManager) to create a new [`eventx.Manager`](https://pkg.go.dev/github.com/markbates/wailsx/eventx#Manager) that will fill the needed [`eventx.EventManager`](https://pkg.go.dev/github.com/markbates/wailsx/eventx#EventManager) in the [`wailsx.API`](https://pkg.go.dev/github.com/markbates/wailsx#API) type.
 
-<a id="figure-1-3"></a>
+<a id="figure-1-5"></a>
+
+
+```shell
+$ go doc -short github.com/markbates/wailsx.NewAPI
+
+func NewAPI() *API
+    NewAPI returns a new API with all the functions, and interfaces, set to
+    their default implementations.
+
+--------------------------------------------------------------------------------
+Go Version: go1.22.0
+
+```
+
+> *_Figure 1.5:_ The [`wailsx.NewAPI`](https://pkg.go.dev/github.com/markbates/wailsx#NewAPI) function*
+
+
+## <a id="heading-36"></a><toc-level>1.11.2</toc-level> - <code>Nil</code> API Calls
+
+<a id="figure-1-6"></a>
 
 
 ```go
@@ -1028,10 +1109,10 @@ func Test_Nil_API_Call(t *testing.T) {
 > *source: doc_test.go:nil-api*
 
 
-> *_Figure 1.3:_ Calling methods on a `nil` `API`.*
+> *_Figure 1.6:_ Calling methods on a `nil` [`wailsx.API`](https://pkg.go.dev/github.com/markbates/wailsx#API).*
 
 
-<a id="figure-1-4"></a>
+<a id="figure-1-7"></a>
 
 
 ```shell
@@ -1042,17 +1123,17 @@ $ go test -v -run Test_Nil_API_Call
 === CONT  Test_Nil_API_Call
 --- PASS: Test_Nil_API_Call (0.00s)
 PASS
-ok  	github.com/markbates/wailsx	0.004s
+ok  	github.com/markbates/wailsx	0.005s
 
 --------------------------------------------------------------------------------
 Go Version: go1.22.0
 
 ```
 
-> *_Figure 1.4:_ Running the test for calling methods on a `nil` `API`.*
+> *_Figure 1.7:_ Running the test for calling methods on a `nil` [`wailsx.API`](https://pkg.go.dev/github.com/markbates/wailsx#API).*
 
 
-<a id="figure-1-5"></a>
+<a id="figure-1-8"></a>
 
 
 ```shell
@@ -1061,7 +1142,7 @@ $ go test -v -run Test_Nil_API_Call -tags wails
 === RUN   Test_Nil_API_Call
 === PAUSE Test_Nil_API_Call
 === CONT  Test_Nil_API_Call
-2024/03/10 19:52:36 cannot call 'github.com/wailsapp/wails/v2/pkg/runtime.Show': An invalid context was passed. This method requires the specific context given in the lifecycle hooks:
+2024/03/10 20:40:35 cannot call 'github.com/wailsapp/wails/v2/pkg/runtime.Show': An invalid context was passed. This method requires the specific context given in the lifecycle hooks:
 https://wails.io/docs/reference/runtime/intro
 exit status 1
 FAIL	github.com/markbates/wailsx	0.004s
@@ -1071,6 +1152,48 @@ Go Version: go1.22.0
 
 ```
 
-> *_Figure 1.5:_ Running the test for calling methods on a `nil` `API` in production mode.*
+> *_Figure 1.8:_ Running the test for calling methods on a `nil` [`wailsx.API`](https://pkg.go.dev/github.com/markbates/wailsx#API) in production mode.*
+
+
+## <a id="heading-37"></a><toc-level>1.11.3</toc-level> - <code>Nop</code> API Calls
+
+<a id="figure-1-9"></a>
+
+
+```shell
+$ go doc -short github.com/markbates/wailsx.NopAPI
+
+func NopAPI() *API
+    NopAPI returns a new API with all the functions, and interfaces, set to
+    no-ops. This is useful for testing.
+
+--------------------------------------------------------------------------------
+Go Version: go1.22.0
+
+```
+
+> *_Figure 1.9:_ The [`wailsx.NopAPI`](https://pkg.go.dev/github.com/markbates/wailsx#NopAPI) function*
+
+
+<a id="figure-1-10"></a>
+
+
+```go
+func Test_Nop_API_Call(t *testing.T) {
+	t.Parallel()
+	r := require.New(t)
+
+	api := NopAPI()
+
+	ctx := context.Background()
+
+	err := api.Show(ctx)
+	r.NoError(err)
+}
+```
+> *source: doc_test.go:nop-api*
+
+
+> *_Figure 1.10:_ Calling methods on a `nop` [`wailsx.API`](https://pkg.go.dev/github.com/markbates/wailsx#API).*
 
 
