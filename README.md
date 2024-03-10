@@ -339,7 +339,7 @@ $ go test -v -run Test_ErrNotAvailable
 
 testing: warning: no tests to run
 PASS
-ok  	github.com/markbates/wailsx	0.004s
+ok  	github.com/markbates/wailsx	0.005s
 
 --------------------------------------------------------------------------------
 Go Version: go1.22.0
@@ -359,7 +359,7 @@ $ go test -v -run Test_ErrNotAvailable -tags wails
 
 testing: warning: no tests to run
 PASS
-ok  	github.com/markbates/wailsx	0.003s
+ok  	github.com/markbates/wailsx	0.004s
 
 --------------------------------------------------------------------------------
 Go Version: go1.22.0
@@ -1061,10 +1061,10 @@ $ go test -v -run Test_Nil_API_Call -tags wails
 === RUN   Test_Nil_API_Call
 === PAUSE Test_Nil_API_Call
 === CONT  Test_Nil_API_Call
-2024/03/10 19:50:37 cannot call 'github.com/wailsapp/wails/v2/pkg/runtime.Show': An invalid context was passed. This method requires the specific context given in the lifecycle hooks:
+2024/03/10 19:52:36 cannot call 'github.com/wailsapp/wails/v2/pkg/runtime.Show': An invalid context was passed. This method requires the specific context given in the lifecycle hooks:
 https://wails.io/docs/reference/runtime/intro
 exit status 1
-FAIL	github.com/markbates/wailsx	0.005s
+FAIL	github.com/markbates/wailsx	0.004s
 
 --------------------------------------------------------------------------------
 Go Version: go1.22.0
