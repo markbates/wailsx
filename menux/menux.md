@@ -6,6 +6,6 @@
 
 <go doc="github.com/markbates/wailsx/menux.MenuManager"></go>
 
-<figcaption>The <godoc>github.com/markbates/wailsx/menux.MenuManager</godoc> interface</figcaption>
+<figcaption>The <godoc>github.com/markbates/wailsx/menux#MenuManager</godoc> interface</figcaption>
 
 </figure>

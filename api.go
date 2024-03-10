@@ -18,6 +18,7 @@ import (
 
 var _ wailsrun.API = &API{}
 
+// NewAPI returns a new API with all the functions, and interfaces, set to their default implementations.
 func NewAPI() *API {
 	return &API{
 		ClipboardManager: &clipx.Manager{},
@@ -29,6 +30,7 @@ func NewAPI() *API {
 	}
 }
 
+// NopAPI returns a new API with all the functions, and interfaces, set to no-ops. This is useful for testing.
 func NopAPI() *API {
 	return &API{
 		ClipboardManager: clipx.NopManager(),

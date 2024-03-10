@@ -6,7 +6,7 @@
 
 <go doc="github.com/markbates/wailsx/eventx.EventManager"></go>
 
-<figcaption>The <godoc>github.com/markbates/wailsx/eventx.EventManager</godoc> interface</figcaption>
+<figcaption>The <godoc>github.com/markbates/wailsx/eventx#EventManager</godoc> interface</figcaption>
 
 </figure>
 
@@ -16,7 +16,7 @@
 
 <go doc="github.com/markbates/wailsx/eventx.Manager"></go>
 
-<figcaption>The <godoc>github.com/markbates/wailsx/eventx.Manager</godoc> type</figcaption>
+<figcaption>The <godoc>github.com/markbates/wailsx/eventx#Manager</godoc> type</figcaption>
 
 </figure>
 
@@ -26,7 +26,7 @@
 
 <go doc="github.com/markbates/wailsx/eventx.NewManager"></go>
 
-<figcaption>The <godoc>github.com/markbates/wailsx/eventx.NewManager</godoc> function</figcaption>
+<figcaption>The <godoc>github.com/markbates/wailsx/eventx#NewManager</godoc> function</figcaption>
 
 </figure>
 
@@ -34,7 +34,7 @@
 
 <go doc="github.com/markbates/wailsx/eventx.NopManager"></go>
 
-<figcaption>The <godoc>github.com/markbates/wailsx/eventx.NopManager</godoc> function</figcaption>
+<figcaption>The <godoc>github.com/markbates/wailsx/eventx#NopManager</godoc> function</figcaption>
 
 </figure>
 
@@ -44,7 +44,7 @@
 
 <go doc="github.com/markbates/wailsx/wailsrun.CallbackFn"></go>
 
-<figcaption>The <godoc>github.com/markbates/wailsx/eventx.CallbackFn</godoc> type</figcaption>
+<figcaption>The <godoc>github.com/markbates/wailsx/eventx#CallbackFn</godoc> type</figcaption>
 
 </figure>
 
@@ -54,7 +54,7 @@
 
 <go doc="github.com/markbates/wailsx/wailsrun.CancelFn"></go>
 
-<figcaption>The <godoc>github.com/markbates/wailsx/eventx.CancelFn</godoc> type</figcaption>
+<figcaption>The <godoc>github.com/markbates/wailsx/eventx#CancelFn</godoc> type</figcaption>
 
 </figure>
 

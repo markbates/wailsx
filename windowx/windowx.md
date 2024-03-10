@@ -6,7 +6,7 @@
 
 <go doc="github.com/markbates/wailsx/windowx.WindowManager"></go>
 
-<figcaption>The <godoc>github.com/markbates/wailsx/windowx.WindowManager</godoc> interface</figcaption>
+<figcaption>The <godoc>github.com/markbates/wailsx/windowx#WindowManager</godoc> interface</figcaption>
 
 </figure>
 
@@ -16,7 +16,7 @@
 
 <go doc="github.com/markbates/wailsx/windowx.MaximiseManager"></go>
 
-<figcaption>The <godoc>github.com/markbates/wailsx/windowx.MaximiseManager</godoc> interface</figcaption>
+<figcaption>The <godoc>github.com/markbates/wailsx/windowx#MaximiseManager</godoc> interface</figcaption>
 
 </figure>
 
@@ -26,7 +26,7 @@
 
 <go doc="github.com/markbates/wailsx/windowx.PositionManager"></go>
 
-<figcaption>The <godoc>github.com/markbates/wailsx/windowx.PositionManager</godoc> interface</figcaption>
+<figcaption>The <godoc>github.com/markbates/wailsx/windowx#PositionManager</godoc> interface</figcaption>
 
 </figure>
 
@@ -36,7 +36,7 @@
 
 <go doc="github.com/markbates/wailsx/windowx.ReloadManager"></go>
 
-<figcaption>The <godoc>github.com/markbates/wailsx/windowx.ReloadManager</godoc> interface</figcaption>
+<figcaption>The <godoc>github.com/markbates/wailsx/windowx#ReloadManager</godoc> interface</figcaption>
 
 </figure>
 
@@ -46,7 +46,7 @@
 
 <go doc="github.com/markbates/wailsx/windowx.ThemeManager"></go>
 
-<figcaption>The <godoc>github.com/markbates/wailsx/windowx.ThemeManager</godoc> interface</figcaption>
+<figcaption>The <godoc>github.com/markbates/wailsx/windowx#ThemeManager</godoc> interface</figcaption>
 
 </figure>
 
@@ -56,6 +56,6 @@
 
 <go doc="github.com/markbates/wailsx/windowx.Toggler"></go>
 
-<figcaption>The <godoc>github.com/markbates/wailsx/windowx.Toggler</godoc> interface</figcaption>
+<figcaption>The <godoc>github.com/markbates/wailsx/windowx#Toggler</godoc> interface</figcaption>
 
 </figure>

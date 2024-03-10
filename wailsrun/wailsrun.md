@@ -14,13 +14,13 @@ The <godoc>github.com/markbates/wailsx#API</godoc> interface, <ref>api-int</ref>
 
 ### Error Handling
 
-In particular, the <godoc>github.com/markbates/wailsx#API</godoc> improves error handling by adding error returns to the methods that previously returned nothing. For example, the <godoc>github.com/wailsapp/wails/v2/pkg/runtime.MenuSetApplicationMenu</godoc>, <ref id="runtime-menuset"></ref>, method now returns an error, <ref id="wailsx-menuset"></ref>.
+In particular, the <godoc>github.com/markbates/wailsx#API</godoc> improves error handling by adding error returns to the methods that previously returned nothing. For example, the <godoc>github.com/wailsapp/wails/v2/pkg/runtime#MenuSetApplicationMenu</godoc>, <ref id="runtime-menuset"></ref>, method now returns an error, <ref id="wailsx-menuset"></ref>.
 
 <figure id="runtime-menuset" type="listing">
 
 <go doc="github.com/wailsapp/wails/v2/pkg/runtime.MenuSetApplicationMenu"></go>
 
-<figcaption>The <godoc>github.com/wailsapp/wails/v2/pkg/runtime.MenuSetApplicationMenu</godoc> method</figcaption>
+<figcaption>The <godoc>github.com/wailsapp/wails/v2/pkg/runtime#MenuSetApplicationMenu</godoc> method</figcaption>
 
 </figure>
 
@@ -28,7 +28,7 @@ In particular, the <godoc>github.com/markbates/wailsx#API</godoc> improves error
 
 <go doc="github.com/markbates/wailsx/wailsrun.API.MenuSetApplicationMenu"></go>
 
-<figcaption>The <godoc>github.com/markbates/wailsx/wailsrun.API.MenuSetApplicationMenu</godoc> method</figcaption>
+<figcaption>The <godoc>github.com/markbates/wailsx/wailsrun#API.MenuSetApplicationMenu</godoc> method</figcaption>
 
 </figure>
 
@@ -62,40 +62,40 @@ In these environments all of the Wails API calls will return the `ErrNotAvailabl
 
 <go doc="github.com/markbates/wailsx/wailsrun.ErrNotAvailable"></go>
 
-<figcaption>The `ErrNotAvailable` error</figcaption>
+<figcaption>The <godoc>github.com/markbates/wailsx/wailsrun#ErrNotAvailable</godoc> error</figcaption>
 
 </figure>
 
 ### Testing Invalid Wails API Calls
 
-With the help of Go build tags, any direct calls made to the Wails API, _outside_ of a running Wails application, will return the <godoc>github.com/markbates/wailsx/wailsrun.ErrNotAvailable</godoc> error. This allows for testing of the Wails API calls in a non-Wails environment.
+With the help of Go build tags, any direct calls made to the Wails API, _outside_ of a running Wails application, will return the <godoc>github.com/markbates/wailsx/wailsrun#ErrNotAvailable</godoc> error. This allows for testing of the Wails API calls in a non-Wails environment.
 
 In the test seen in <ref>test-api</ref> we are making a direct call to the Wails API and checking the error returned. The test passes when the error returned is `ErrNotAvailable`.
 
 <figure id="test-api" type="listing">
 
-<code src="api_calls_test.go"></code>
+<code src="api_calls_test.go" snippet="err-not-available"></code>
 
-<figcaption>Testing the `BrowserOpenURL` method</figcaption>
+<figcaption>Testing the <godoc>github.com/markbates/wailsx/wailsrun#ErrNotAvailable</godoc> method</figcaption>
 
 </figure>
 
-When running the tests outside of a Wails application, the `BrowserOpenURL` method will return the `ErrNotAvailable` error, <ref>err-not-implemented</ref>.
+When running the tests outside of a Wails application, the <godoc>github.com/markbates/wailsx/wailsrun#ErrNotAvailable</godoc> method will return the `ErrNotAvailable` error, <ref>err-not-implemented</ref>.
 
 <figure id="err-not-implemented" type="listing">
 
 <go test="-v -run Test_ErrNotAvailable"></go>
 
-<figcaption>Testing the `BrowserOpenURL` method output.</figcaption>
+<figcaption>Testing the <godoc>github.com/markbates/wailsx/wailsrun#ErrNotAvailable</godoc> method output.</figcaption>
 
 </figure>
 
-If the tests are run in a Wails application, using one of the known build tags, the `BrowserOpenURL` method will call the actual Wails API method, <ref>prod-calls</ref>. The result is a call to <godoc>log.Fatal</godoc> because we don't have a valid Wails context.
+If the tests are run in a Wails application, using one of the known build tags, the <godoc>github.com/markbates/wailsx/wailsrun#ErrNotAvailable</godoc> method will call the actual Wails API method, <ref>prod-calls</ref>. The result is a call to <godoc>log#Fatal</godoc> because we don't have a valid Wails context.
 
 <figure id="log-fatal" type="listing">
 
 <go test="-v -run Test_ErrNotAvailable -tags wails" exit="1"></go>
 
-<figcaption>Testing the `BrowserOpenURL` method output in `production`.</figcaption>
+<figcaption>Testing the <godoc>github.com/markbates/wailsx/wailsrun#ErrNotAvailable</godoc> method output in `production`.</figcaption>
 
 </figure>

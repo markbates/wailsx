@@ -8,6 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// snippet: err-not-available
 func Test_ErrNotAvailable(t *testing.T) {
 	t.Parallel()
 
@@ -21,3 +22,5 @@ func Test_ErrNotAvailable(t *testing.T) {
 	exp := wailsrun.ErrNotAvailable("BrowserOpenURL")
 	r.Equal(exp, err)
 }
+
+// snippet: err-not-available

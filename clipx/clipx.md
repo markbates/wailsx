@@ -6,6 +6,6 @@
 
 <go doc="github.com/markbates/wailsx/clipx.ClipboardManager"></go>
 
-<figcaption>The <godoc>github.com/markbates/wailsx/clipx.ClipboardManager</godoc> interface</figcaption>
+<figcaption>The <godoc>github.com/markbates/wailsx/clipx#ClipboardManager</godoc> interface</figcaption>
 
 </figure>

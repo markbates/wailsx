@@ -6,6 +6,6 @@
 
 <go doc="github.com/markbates/wailsx/logx.WailsLogger"></go>
 
-<figcaption>The <godoc>github.com/markbates/wailsx/logx.WailsLogger</godoc> interface</figcaption>
+<figcaption>The <godoc>github.com/markbates/wailsx/logx#WailsLogger</godoc> interface</figcaption>
 
 </figure>

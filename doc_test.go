@@ -25,3 +25,18 @@ func Test_Nil_API_Call(t *testing.T) {
 }
 
 // snippet: nil-api
+
+// snippet: nop-api
+func Test_Nop_API_Call(t *testing.T) {
+	t.Parallel()
+	r := require.New(t)
+
+	api := NopAPI()
+
+	ctx := context.Background()
+
+	err := api.Show(ctx)
+	r.NoError(err)
+}
+
+// snippet: nop-api

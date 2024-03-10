@@ -6,7 +6,7 @@
 
 <go doc="github.com/markbates/wailsx/eventx/msgx.Messenger"></go>
 
-<figcaption>The <godoc>github.com/markbates/wailsx/eventx/msgx.Messenger</godoc> interface</figcaption>
+<figcaption>The <godoc>github.com/markbates/wailsx/eventx/msgx#Messenger</godoc> interface</figcaption>
 
 </figure>
 
@@ -16,6 +16,6 @@
 
 <go doc="github.com/markbates/wailsx/eventx/msgx.ErrorMessenger"></go>
 
-<figcaption>The <godoc>github.com/markbates/wailsx/eventx/msgx.ErrorMessenger</godoc> interface</figcaption>
+<figcaption>The <godoc>github.com/markbates/wailsx/eventx/msgx#ErrorMessenger</godoc> interface</figcaption>
 
 </figure>
