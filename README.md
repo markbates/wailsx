@@ -34,37 +34,50 @@ I love [Wails](https://wails.io) and have been using it to create some great app
 
 
 * [<toc-level>1.5.1</toc-level> - The `EventManager` Interface](#heading-11)
-
-* [<toc-level>1.6</toc-level> - Messages](#heading-12)
-
-
-* [<toc-level>1.6.1</toc-level> - The `Messenger` Interface](#heading-13)
-* [<toc-level>1.6.2</toc-level> - The `ErrorMessenger` Interface](#heading-14)
-
-* [<toc-level>1.7</toc-level> - Logging](#heading-15)
+* [<toc-level>1.5.2</toc-level> - The `Manager` Type](#heading-12)
 
 
-* [<toc-level>1.7.1</toc-level> - The `WailsLogger` Interface](#heading-16)
+* [<toc-level>1.5.2.1</toc-level> - Creating a New Manager](#heading-13)
 
-* [<toc-level>1.8</toc-level> - Menus](#heading-17)
+* [<toc-level>1.5.3</toc-level> - The `CallbackFn` Type](#heading-14)
+* [<toc-level>1.5.4</toc-level> - The `CancelFn` Type](#heading-15)
 
-
-* [<toc-level>1.8.1</toc-level> - The `MenuManager` Interface](#heading-18)
-
-* [<toc-level>1.9</toc-level> - State Data](#heading-19)
+* [<toc-level>1.6</toc-level> - Messages](#heading-16)
 
 
-* [<toc-level>1.9.1</toc-level> - The `DataProvider` Interface](#heading-20)
+* [<toc-level>1.6.1</toc-level> - The `Messenger` Interface](#heading-17)
+* [<toc-level>1.6.2</toc-level> - The `ErrorMessenger` Interface](#heading-18)
 
-* [<toc-level>1.10</toc-level> - Window Management](#heading-21)
+* [<toc-level>1.7</toc-level> - Logging](#heading-19)
 
 
-* [<toc-level>1.10.1</toc-level> - The `WindowManager` Interface](#heading-22)
-* [<toc-level>1.10.2</toc-level> - The `MaximiseManager` Interface](#heading-23)
-* [<toc-level>1.10.3</toc-level> - The `PositionManager` Interface](#heading-24)
-* [<toc-level>1.10.4</toc-level> - The `ReloadManager` Interface](#heading-25)
-* [<toc-level>1.10.5</toc-level> - The `ThemeManager` Interface](#heading-26)
-* [<toc-level>1.10.6</toc-level> - The `Toggler` Interface](#heading-27)
+* [<toc-level>1.7.1</toc-level> - The `WailsLogger` Interface](#heading-20)
+
+* [<toc-level>1.8</toc-level> - Menus](#heading-21)
+
+
+* [<toc-level>1.8.1</toc-level> - The `MenuManager` Interface](#heading-22)
+
+* [<toc-level>1.9</toc-level> - State Data](#heading-23)
+
+
+* [<toc-level>1.9.1</toc-level> - The `DataProvider` Interface](#heading-24)
+
+* [<toc-level>1.10</toc-level> - Window Management](#heading-25)
+
+
+* [<toc-level>1.10.1</toc-level> - The `WindowManager` Interface](#heading-26)
+* [<toc-level>1.10.2</toc-level> - The `MaximiseManager` Interface](#heading-27)
+* [<toc-level>1.10.3</toc-level> - The `PositionManager` Interface](#heading-28)
+* [<toc-level>1.10.4</toc-level> - The `ReloadManager` Interface](#heading-29)
+* [<toc-level>1.10.5</toc-level> - The `ThemeManager` Interface](#heading-30)
+* [<toc-level>1.10.6</toc-level> - The `Toggler` Interface](#heading-31)
+
+* [<toc-level>1.11</toc-level> - Using the API](#heading-32)
+
+
+* [<toc-level>1.11.1</toc-level> - The `API` type](#heading-33)
+* [<toc-level>1.11.2</toc-level> - `Nil` API Calls](#heading-34)
 
 </toc>
 
@@ -91,9 +104,9 @@ type API interface {
 	EventsEmit(ctx context.Context, event string, data ...any) error
 	EventsOff(ctx context.Context, event string, additional ...string) error
 	EventsOffAll(ctx context.Context) error
-	EventsOn(ctx context.Context, eventName string, callback CallbackFn) (CancelFn, error)
-	EventsOnMultiple(ctx context.Context, eventName string, callback CallbackFn, counter int) (CancelFn, error)
-	EventsOnce(ctx context.Context, eventName string, callback CallbackFn) (CancelFn, error)
+	EventsOn(ctx context.Context, event string, callback CallbackFn) (CancelFn, error)
+	EventsOnMultiple(ctx context.Context, event string, callback CallbackFn, counter int) (CancelFn, error)
+	EventsOnce(ctx context.Context, event string, callback CallbackFn) (CancelFn, error)
 	Hide(ctx context.Context) error
 	LogDebug(ctx context.Context, message string) error
 	LogDebugf(ctx context.Context, format string, args ...any) error
@@ -326,7 +339,7 @@ $ go test -v -run Test_ErrNotAvailable
 
 testing: warning: no tests to run
 PASS
-ok  	github.com/markbates/wailsx	0.003s
+ok  	github.com/markbates/wailsx	0.004s
 
 --------------------------------------------------------------------------------
 Go Version: go1.22.0
@@ -431,9 +444,9 @@ type EventManager interface {
 	EventsEmit(ctx context.Context, event string, args ...any) (err error)
 	EventsOff(ctx context.Context, name string, additional ...string) error
 	EventsOffAll(ctx context.Context) error
-	EventsOn(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error)
-	EventsOnMultiple(ctx context.Context, name string, callback wailsrun.CallbackFn, counter int) (wailsrun.CancelFn, error)
-	EventsOnce(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error)
+	EventsOn(ctx context.Context, name string, callback CallbackFn) (CancelFn, error)
+	EventsOnMultiple(ctx context.Context, name string, callback CallbackFn, counter int) (CancelFn, error)
+	EventsOnce(ctx context.Context, name string, callback CallbackFn) (CancelFn, error)
 }
 
 --------------------------------------------------------------------------------
@@ -444,13 +457,143 @@ Go Version: go1.22.0
 > *_Listing 1.11:_ The [`github.com/markbates/wailsx/eventx.EventManager`](https://pkg.go.dev/github.com/markbates/wailsx/eventx.EventManager) interface*
 
 
----
-
-# <a id="heading-12"></a><toc-level>1.6</toc-level> - Messages
-
-## <a id="heading-13"></a><toc-level>1.6.1</toc-level> - The <code>Messenger</code> Interface
+## <a id="heading-12"></a><toc-level>1.5.2</toc-level> - The <code>Manager</code> Type
 
 <a id="listing-1-12"></a>
+
+
+```shell
+$ go doc github.com/markbates/wailsx/eventx.Manager
+
+package eventx // import "github.com/markbates/wailsx/eventx"
+
+type Manager struct {
+	DisableWildcardEmits bool
+	DisableStateData     bool
+
+	EventsEmitFn       func(ctx context.Context, name string, data ...any) error
+	EventsOffAllFn     func(ctx context.Context) error
+	EventsOffFn        func(ctx context.Context, name string, additional ...string) error
+	EventsOnFn         func(ctx context.Context, name string, callback CallbackFn) (CancelFn, error)
+	EventsOnMultipleFn func(ctx context.Context, name string, callback CallbackFn, counter int) (CancelFn, error)
+	EventsOnceFn       func(ctx context.Context, name string, callback CallbackFn) (CancelFn, error)
+
+	NowFn func() time.Time
+
+	// Has unexported fields.
+}
+
+func NewManager() *Manager
+func NopManager() *Manager
+func (em *Manager) EventsEmit(ctx context.Context, event string, args ...any) (err error)
+func (em *Manager) EventsOff(ctx context.Context, name string, additional ...string) error
+func (em *Manager) EventsOffAll(ctx context.Context) error
+func (em *Manager) EventsOn(ctx context.Context, name string, callback CallbackFn) (CancelFn, error)
+func (em *Manager) EventsOnMultiple(ctx context.Context, name string, callback CallbackFn, counter int) (CancelFn, error)
+func (em *Manager) EventsOnce(ctx context.Context, name string, callback CallbackFn) (CancelFn, error)
+func (em *Manager) MarshalJSON() ([]byte, error)
+func (em *Manager) Now() time.Time
+func (em *Manager) StateData(ctx context.Context) (statedata.Data[*EventsData], error)
+
+--------------------------------------------------------------------------------
+Go Version: go1.22.0
+
+```
+
+> *_Listing 1.12:_ The [`github.com/markbates/wailsx/eventx.Manager`](https://pkg.go.dev/github.com/markbates/wailsx/eventx.Manager) type*
+
+
+### <a id="heading-13"></a><toc-level>1.5.2.1</toc-level> - Creating a New Manager
+
+<a id="listing-1-13"></a>
+
+
+```shell
+$ go doc github.com/markbates/wailsx/eventx.NewManager
+
+package eventx // import "github.com/markbates/wailsx/eventx"
+
+func NewManager() *Manager
+
+--------------------------------------------------------------------------------
+Go Version: go1.22.0
+
+```
+
+> *_Listing 1.13:_ The [`github.com/markbates/wailsx/eventx.NewManager`](https://pkg.go.dev/github.com/markbates/wailsx/eventx.NewManager) function*
+
+
+<a id="listing-1-14"></a>
+
+
+```shell
+$ go doc github.com/markbates/wailsx/eventx.NopManager
+
+package eventx // import "github.com/markbates/wailsx/eventx"
+
+func NopManager() *Manager
+    NopManager returns a new Manager with all the functions set to no-ops This
+    is useful for testing. The NowFn is set to wailstest.NowTime
+
+--------------------------------------------------------------------------------
+Go Version: go1.22.0
+
+```
+
+> *_Listing 1.14:_ The [`github.com/markbates/wailsx/eventx.NopManager`](https://pkg.go.dev/github.com/markbates/wailsx/eventx.NopManager) function*
+
+
+## <a id="heading-14"></a><toc-level>1.5.3</toc-level> - The <code>CallbackFn</code> Type
+
+<a id="listing-1-15"></a>
+
+
+```shell
+$ go doc github.com/markbates/wailsx/wailsrun.CallbackFn
+
+package wailsrun // import "github.com/markbates/wailsx/wailsrun"
+
+type CallbackFn func(data ...any) error
+
+--------------------------------------------------------------------------------
+Go Version: go1.22.0
+
+```
+
+> *_Listing 1.15:_ The [`github.com/markbates/wailsx/eventx.CallbackFn`](https://pkg.go.dev/github.com/markbates/wailsx/eventx.CallbackFn) type*
+
+
+## <a id="heading-15"></a><toc-level>1.5.4</toc-level> - The <code>CancelFn</code> Type
+
+<a id="listing-1-16"></a>
+
+
+```shell
+$ go doc github.com/markbates/wailsx/wailsrun.CancelFn
+
+package wailsrun // import "github.com/markbates/wailsx/wailsrun"
+
+type CancelFn func() error
+
+func EventsOn(ctx context.Context, event string, callback CallbackFn) (CancelFn, error)
+func EventsOnMultiple(ctx context.Context, event string, callback CallbackFn, counter int) (CancelFn, error)
+func EventsOnce(ctx context.Context, event string, callback CallbackFn) (CancelFn, error)
+
+--------------------------------------------------------------------------------
+Go Version: go1.22.0
+
+```
+
+> *_Listing 1.16:_ The [`github.com/markbates/wailsx/eventx.CancelFn`](https://pkg.go.dev/github.com/markbates/wailsx/eventx.CancelFn) type*
+
+
+---
+
+# <a id="heading-16"></a><toc-level>1.6</toc-level> - Messages
+
+## <a id="heading-17"></a><toc-level>1.6.1</toc-level> - The <code>Messenger</code> Interface
+
+<a id="listing-1-17"></a>
 
 
 ```shell
@@ -472,12 +615,12 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.12:_ The [`github.com/markbates/wailsx/eventx/msgx.Messenger`](https://pkg.go.dev/github.com/markbates/wailsx/eventx/msgx.Messenger) interface*
+> *_Listing 1.17:_ The [`github.com/markbates/wailsx/eventx/msgx.Messenger`](https://pkg.go.dev/github.com/markbates/wailsx/eventx/msgx.Messenger) interface*
 
 
-## <a id="heading-14"></a><toc-level>1.6.2</toc-level> - The <code>ErrorMessenger</code> Interface
+## <a id="heading-18"></a><toc-level>1.6.2</toc-level> - The <code>ErrorMessenger</code> Interface
 
-<a id="listing-1-13"></a>
+<a id="listing-1-18"></a>
 
 
 ```shell
@@ -495,16 +638,16 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.13:_ The [`github.com/markbates/wailsx/eventx/msgx.ErrorMessenger`](https://pkg.go.dev/github.com/markbates/wailsx/eventx/msgx.ErrorMessenger) interface*
+> *_Listing 1.18:_ The [`github.com/markbates/wailsx/eventx/msgx.ErrorMessenger`](https://pkg.go.dev/github.com/markbates/wailsx/eventx/msgx.ErrorMessenger) interface*
 
 
 ---
 
-# <a id="heading-15"></a><toc-level>1.7</toc-level> - Logging
+# <a id="heading-19"></a><toc-level>1.7</toc-level> - Logging
 
-## <a id="heading-16"></a><toc-level>1.7.1</toc-level> - The <code>WailsLogger</code> Interface
+## <a id="heading-20"></a><toc-level>1.7.1</toc-level> - The <code>WailsLogger</code> Interface
 
-<a id="listing-1-14"></a>
+<a id="listing-1-19"></a>
 
 
 ```shell
@@ -535,16 +678,16 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.14:_ The [`github.com/markbates/wailsx/logx.WailsLogger`](https://pkg.go.dev/github.com/markbates/wailsx/logx.WailsLogger) interface*
+> *_Listing 1.19:_ The [`github.com/markbates/wailsx/logx.WailsLogger`](https://pkg.go.dev/github.com/markbates/wailsx/logx.WailsLogger) interface*
 
 
 ---
 
-# <a id="heading-17"></a><toc-level>1.8</toc-level> - Menus
+# <a id="heading-21"></a><toc-level>1.8</toc-level> - Menus
 
-## <a id="heading-18"></a><toc-level>1.8.1</toc-level> - The <code>MenuManager</code> Interface
+## <a id="heading-22"></a><toc-level>1.8.1</toc-level> - The <code>MenuManager</code> Interface
 
-<a id="listing-1-15"></a>
+<a id="listing-1-20"></a>
 
 
 ```shell
@@ -562,16 +705,16 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.15:_ The [`github.com/markbates/wailsx/menux.MenuManager`](https://pkg.go.dev/github.com/markbates/wailsx/menux.MenuManager) interface*
+> *_Listing 1.20:_ The [`github.com/markbates/wailsx/menux.MenuManager`](https://pkg.go.dev/github.com/markbates/wailsx/menux.MenuManager) interface*
 
 
 ---
 
-# <a id="heading-19"></a><toc-level>1.9</toc-level> - State Data
+# <a id="heading-23"></a><toc-level>1.9</toc-level> - State Data
 
-## <a id="heading-20"></a><toc-level>1.9.1</toc-level> - The <code>DataProvider</code> Interface
+## <a id="heading-24"></a><toc-level>1.9.1</toc-level> - The <code>DataProvider</code> Interface
 
-<a id="listing-1-16"></a>
+<a id="listing-1-21"></a>
 
 
 ```shell
@@ -588,16 +731,16 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.16:_ The [`github.com/markbates/wailsx/statedata.DataProvider`](https://pkg.go.dev/github.com/markbates/wailsx/statedata.DataProvider) interface*
+> *_Listing 1.21:_ The [`github.com/markbates/wailsx/statedata.DataProvider`](https://pkg.go.dev/github.com/markbates/wailsx/statedata.DataProvider) interface*
 
 
 ---
 
-# <a id="heading-21"></a><toc-level>1.10</toc-level> - Window Management
+# <a id="heading-25"></a><toc-level>1.10</toc-level> - Window Management
 
-## <a id="heading-22"></a><toc-level>1.10.1</toc-level> - The <code>WindowManager</code> Interface
+## <a id="heading-26"></a><toc-level>1.10.1</toc-level> - The <code>WindowManager</code> Interface
 
-<a id="listing-1-17"></a>
+<a id="listing-1-22"></a>
 
 
 ```shell
@@ -624,12 +767,12 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.17:_ The [`github.com/markbates/wailsx/windowx.WindowManager`](https://pkg.go.dev/github.com/markbates/wailsx/windowx.WindowManager) interface*
+> *_Listing 1.22:_ The [`github.com/markbates/wailsx/windowx.WindowManager`](https://pkg.go.dev/github.com/markbates/wailsx/windowx.WindowManager) interface*
 
 
-## <a id="heading-23"></a><toc-level>1.10.2</toc-level> - The <code>MaximiseManager</code> Interface
+## <a id="heading-27"></a><toc-level>1.10.2</toc-level> - The <code>MaximiseManager</code> Interface
 
-<a id="listing-1-18"></a>
+<a id="listing-1-23"></a>
 
 
 ```shell
@@ -656,12 +799,12 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.18:_ The [`github.com/markbates/wailsx/windowx.MaximiseManager`](https://pkg.go.dev/github.com/markbates/wailsx/windowx.MaximiseManager) interface*
+> *_Listing 1.23:_ The [`github.com/markbates/wailsx/windowx.MaximiseManager`](https://pkg.go.dev/github.com/markbates/wailsx/windowx.MaximiseManager) interface*
 
 
-## <a id="heading-24"></a><toc-level>1.10.3</toc-level> - The <code>PositionManager</code> Interface
+## <a id="heading-28"></a><toc-level>1.10.3</toc-level> - The <code>PositionManager</code> Interface
 
-<a id="listing-1-19"></a>
+<a id="listing-1-24"></a>
 
 
 ```shell
@@ -684,12 +827,12 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.19:_ The [`github.com/markbates/wailsx/windowx.PositionManager`](https://pkg.go.dev/github.com/markbates/wailsx/windowx.PositionManager) interface*
+> *_Listing 1.24:_ The [`github.com/markbates/wailsx/windowx.PositionManager`](https://pkg.go.dev/github.com/markbates/wailsx/windowx.PositionManager) interface*
 
 
-## <a id="heading-25"></a><toc-level>1.10.4</toc-level> - The <code>ReloadManager</code> Interface
+## <a id="heading-29"></a><toc-level>1.10.4</toc-level> - The <code>ReloadManager</code> Interface
 
-<a id="listing-1-20"></a>
+<a id="listing-1-25"></a>
 
 
 ```shell
@@ -707,12 +850,12 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.20:_ The [`github.com/markbates/wailsx/windowx.ReloadManager`](https://pkg.go.dev/github.com/markbates/wailsx/windowx.ReloadManager) interface*
+> *_Listing 1.25:_ The [`github.com/markbates/wailsx/windowx.ReloadManager`](https://pkg.go.dev/github.com/markbates/wailsx/windowx.ReloadManager) interface*
 
 
-## <a id="heading-26"></a><toc-level>1.10.5</toc-level> - The <code>ThemeManager</code> Interface
+## <a id="heading-30"></a><toc-level>1.10.5</toc-level> - The <code>ThemeManager</code> Interface
 
-<a id="listing-1-21"></a>
+<a id="listing-1-26"></a>
 
 
 ```shell
@@ -732,12 +875,12 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.21:_ The [`github.com/markbates/wailsx/windowx.ThemeManager`](https://pkg.go.dev/github.com/markbates/wailsx/windowx.ThemeManager) interface*
+> *_Listing 1.26:_ The [`github.com/markbates/wailsx/windowx.ThemeManager`](https://pkg.go.dev/github.com/markbates/wailsx/windowx.ThemeManager) interface*
 
 
-## <a id="heading-27"></a><toc-level>1.10.6</toc-level> - The <code>Toggler</code> Interface
+## <a id="heading-31"></a><toc-level>1.10.6</toc-level> - The <code>Toggler</code> Interface
 
-<a id="listing-1-22"></a>
+<a id="listing-1-27"></a>
 
 
 ```shell
@@ -757,6 +900,177 @@ Go Version: go1.22.0
 
 ```
 
-> *_Listing 1.22:_ The [`github.com/markbates/wailsx/windowx.Toggler`](https://pkg.go.dev/github.com/markbates/wailsx/windowx.Toggler) interface*
+> *_Listing 1.27:_ The [`github.com/markbates/wailsx/windowx.Toggler`](https://pkg.go.dev/github.com/markbates/wailsx/windowx.Toggler) interface*
+
+
+---
+
+# <a id="heading-32"></a><toc-level>1.11</toc-level> - Using the API
+
+## <a id="heading-33"></a><toc-level>1.11.1</toc-level> - The <code>API</code> type
+
+<a id="figure-1-2"></a>
+
+
+```shell
+$ go doc -short github.com/markbates/wailsx.API
+
+type API struct {
+	clipx.ClipboardManager
+	dialogx.DialogManager
+	eventx.EventManager
+	logx.WailsLogger
+	menux.MenuManager
+	windowx.WindowManager
+
+	BrowserOpenURLFn func(ctx context.Context, url string) error
+	QuitFn           func(ctx context.Context) error
+}
+
+func NewAPI() *API
+func NopAPI() *API
+func (api *API) BrowserOpenURL(ctx context.Context, url string) error
+func (api *API) ClipboardGetText(ctx context.Context) (string, error)
+func (api *API) ClipboardSetText(ctx context.Context, text string) error
+func (api *API) EventsEmit(ctx context.Context, event string, data ...any) error
+func (api *API) EventsOff(ctx context.Context, event string, additional ...string) error
+func (api *API) EventsOffAll(ctx context.Context) error
+func (api *API) EventsOn(ctx context.Context, event string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error)
+func (api *API) EventsOnMultiple(ctx context.Context, event string, callback wailsrun.CallbackFn, counter int) (wailsrun.CancelFn, error)
+func (api *API) EventsOnce(ctx context.Context, event string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error)
+func (api *API) Hide(ctx context.Context) error
+func (api *API) LogDebug(ctx context.Context, message string) error
+func (api *API) LogDebugf(ctx context.Context, format string, args ...any) error
+func (api *API) LogError(ctx context.Context, message string) error
+func (api *API) LogErrorf(ctx context.Context, format string, args ...any) error
+func (api *API) LogFatal(ctx context.Context, message string) error
+func (api *API) LogFatalf(ctx context.Context, format string, args ...any) error
+func (api *API) LogInfo(ctx context.Context, message string) error
+func (api *API) LogInfof(ctx context.Context, format string, args ...any) error
+func (api *API) LogPrint(ctx context.Context, message string) error
+func (api *API) LogPrintf(ctx context.Context, format string, args ...any) error
+func (api *API) LogSetLogLevel(ctx context.Context, level logger.LogLevel) error
+func (api *API) LogTrace(ctx context.Context, message string) error
+func (api *API) LogTracef(ctx context.Context, format string, args ...any) error
+func (api *API) LogWarning(ctx context.Context, message string) error
+func (api *API) LogWarningf(ctx context.Context, format string, args ...any) error
+func (api *API) MenuSetApplicationMenu(ctx context.Context, menu *menu.Menu) error
+func (api *API) MenuUpdateApplicationMenu(ctx context.Context) error
+func (api *API) MessageDialog(ctx context.Context, opts wailsrun.MessageDialogOptions) (string, error)
+func (api *API) OpenDirectoryDialog(ctx context.Context, opts wailsrun.OpenDialogOptions) (string, error)
+func (api *API) OpenFileDialog(ctx context.Context, opts wailsrun.OpenDialogOptions) (string, error)
+func (api *API) OpenMultipleFilesDialog(ctx context.Context, opts wailsrun.OpenDialogOptions) ([]string, error)
+func (api *API) Quit(ctx context.Context) error
+func (api *API) SaveFileDialog(ctx context.Context, opts wailsrun.SaveDialogOptions) (string, error)
+func (api *API) ScreenGetAll(ctx context.Context) ([]wailsrun.Screen, error)
+func (api *API) Show(ctx context.Context) error
+func (api *API) StateData(ctx context.Context) (statedata.Data[*APIData], error)
+func (api *API) WindowCenter(ctx context.Context) error
+func (api *API) WindowExecJS(ctx context.Context, js string) error
+func (api *API) WindowFullscreen(ctx context.Context) error
+func (api *API) WindowGetPosition(ctx context.Context) (int, int, error)
+func (api *API) WindowGetSize(ctx context.Context) (int, int, error)
+func (api *API) WindowHide(ctx context.Context) error
+func (api *API) WindowIsFullscreen(ctx context.Context) (bool, error)
+func (api *API) WindowIsMaximised(ctx context.Context) (bool, error)
+func (api *API) WindowIsMinimised(ctx context.Context) (bool, error)
+func (api *API) WindowIsNormal(ctx context.Context) (bool, error)
+func (api *API) WindowMaximise(ctx context.Context) error
+func (api *API) WindowMinimise(ctx context.Context) error
+func (api *API) WindowPrint(ctx context.Context) error
+func (api *API) WindowReload(ctx context.Context) error
+func (api *API) WindowReloadApp(ctx context.Context) error
+func (api *API) WindowSetAlwaysOnTop(ctx context.Context, b bool) error
+func (api *API) WindowSetBackgroundColour(ctx context.Context, R, G, B, A uint8) error
+func (api *API) WindowSetDarkTheme(ctx context.Context) error
+func (api *API) WindowSetLightTheme(ctx context.Context) error
+func (api *API) WindowSetMaxSize(ctx context.Context, width int, height int) error
+func (api *API) WindowSetMinSize(ctx context.Context, width int, height int) error
+func (api *API) WindowSetPosition(ctx context.Context, x int, y int) error
+func (api *API) WindowSetSize(ctx context.Context, width int, height int) error
+func (api *API) WindowSetSystemDefaultTheme(ctx context.Context) error
+func (api *API) WindowSetTitle(ctx context.Context, title string) error
+func (api *API) WindowShow(ctx context.Context) error
+func (api *API) WindowToggleMaximise(ctx context.Context) error
+func (api *API) WindowUnfullscreen(ctx context.Context) error
+func (api *API) WindowUnmaximise(ctx context.Context) error
+func (api *API) WindowUnminimise(ctx context.Context) error
+
+--------------------------------------------------------------------------------
+Go Version: go1.22.0
+
+```
+
+> *_Figure 1.2:_ The `github.com/markbates/wailsx.API` type*
+
+
+## <a id="heading-34"></a><toc-level>1.11.2</toc-level> - <code>Nil</code> API Calls
+
+<a id="figure-1-3"></a>
+
+
+```go
+func Test_Nil_API_Call(t *testing.T) {
+	t.Parallel()
+	r := require.New(t)
+
+	var api *API
+
+	ctx := context.Background()
+
+	err := api.Show(ctx)
+	r.Error(err)
+
+	exp := wailsrun.ErrNotAvailable("Show")
+	r.Equal(exp, err)
+}
+```
+> *source: doc_test.go:nil-api*
+
+
+> *_Figure 1.3:_ Calling methods on a `nil` `API`.*
+
+
+<a id="figure-1-4"></a>
+
+
+```shell
+$ go test -v -run Test_Nil_API_Call
+
+=== RUN   Test_Nil_API_Call
+=== PAUSE Test_Nil_API_Call
+=== CONT  Test_Nil_API_Call
+--- PASS: Test_Nil_API_Call (0.00s)
+PASS
+ok  	github.com/markbates/wailsx	0.004s
+
+--------------------------------------------------------------------------------
+Go Version: go1.22.0
+
+```
+
+> *_Figure 1.4:_ Running the test for calling methods on a `nil` `API`.*
+
+
+<a id="figure-1-5"></a>
+
+
+```shell
+$ go test -v -run Test_Nil_API_Call -tags wails
+
+=== RUN   Test_Nil_API_Call
+=== PAUSE Test_Nil_API_Call
+=== CONT  Test_Nil_API_Call
+2024/03/10 19:50:37 cannot call 'github.com/wailsapp/wails/v2/pkg/runtime.Show': An invalid context was passed. This method requires the specific context given in the lifecycle hooks:
+https://wails.io/docs/reference/runtime/intro
+exit status 1
+FAIL	github.com/markbates/wailsx	0.005s
+
+--------------------------------------------------------------------------------
+Go Version: go1.22.0
+
+```
+
+> *_Figure 1.5:_ Running the test for calling methods on a `nil` `API` in production mode.*
 
 
