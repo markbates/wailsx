@@ -370,10 +370,10 @@ $ go test -v -run Test_ErrNotAvailable
 
 testing: warning: no tests to run
 PASS
-ok  	github.com/markbates/wailsx	0.003s
+ok  	github.com/markbates/wailsx	0.004s
 
-go: downloading github.com/wailsapp/wails/v2 v2.8.0
 go: downloading github.com/markbates/safe v1.1.0
+go: downloading github.com/wailsapp/wails/v2 v2.8.0
 go: downloading github.com/stretchr/testify v1.9.0
 go: downloading github.com/davecgh/go-spew v1.1.1
 go: downloading github.com/pmezard/go-difflib v1.0.0
@@ -399,7 +399,7 @@ $ go test -v -run Test_ErrNotAvailable -tags wails
 
 testing: warning: no tests to run
 PASS
-ok  	github.com/markbates/wailsx	0.004s
+ok  	github.com/markbates/wailsx	0.005s
 
 go: downloading github.com/markbates/safe v1.1.0
 go: downloading github.com/wailsapp/wails/v2 v2.8.0
@@ -1143,7 +1143,7 @@ $ go test -v -run Test_Nil_API_Call
 === CONT  Test_Nil_API_Call
 --- PASS: Test_Nil_API_Call (0.00s)
 PASS
-ok  	github.com/markbates/wailsx	0.004s
+ok  	github.com/markbates/wailsx	0.005s
 
 go: downloading github.com/markbates/safe v1.1.0
 go: downloading github.com/wailsapp/wails/v2 v2.8.0
@@ -1151,8 +1151,8 @@ go: downloading github.com/stretchr/testify v1.9.0
 go: downloading github.com/davecgh/go-spew v1.1.1
 go: downloading github.com/pmezard/go-difflib v1.0.0
 go: downloading gopkg.in/yaml.v3 v3.0.1
-go: downloading github.com/leaanthony/slicer v1.6.0
 go: downloading github.com/leaanthony/u v1.1.1
+go: downloading github.com/leaanthony/slicer v1.6.0
 
 --------------------------------------------------------------------------------
 Go Version: go1.22.0
@@ -1171,10 +1171,10 @@ $ go test -v -run Test_Nil_API_Call -tags wails
 === RUN   Test_Nil_API_Call
 === PAUSE Test_Nil_API_Call
 === CONT  Test_Nil_API_Call
-2024/03/13 03:49:45 cannot call 'github.com/wailsapp/wails/v2/pkg/runtime.Show': An invalid context was passed. This method requires the specific context given in the lifecycle hooks:
+2024/03/13 19:59:49 cannot call 'github.com/wailsapp/wails/v2/pkg/runtime.Show': An invalid context was passed. This method requires the specific context given in the lifecycle hooks:
 https://wails.io/docs/reference/runtime/intro
 exit status 1
-FAIL	github.com/markbates/wailsx	0.004s
+FAIL	github.com/markbates/wailsx	0.008s
 
 go: downloading github.com/markbates/safe v1.1.0
 go: downloading github.com/wailsapp/wails/v2 v2.8.0
