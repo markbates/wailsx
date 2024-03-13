@@ -8,6 +8,20 @@ import (
 	"github.com/markbates/wailsx/eventx"
 )
 
+func NewAppSaveTimer(app *App, d time.Duration) (SaveTimer, error) {
+	if app == nil {
+		return SaveTimer{}, fmt.Errorf("app is nil")
+	}
+
+	return SaveTimer{
+		Duration: d,
+		Manager:  app.EventManager,
+		DataFn: func(ctx context.Context) (any, error) {
+			return app.StateData(ctx)
+		},
+	}, nil
+}
+
 type SaveTimer struct {
 	Duration      time.Duration                          `json:"duration,omitempty"`       // save duration, if zero, save once and exit
 	DisableEvents bool                                   `json:"disable_events,omitempty"` // disable save events

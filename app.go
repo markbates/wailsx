@@ -18,13 +18,19 @@ func NewApp(name string, plugins ...plugins.Plugin) (*App, error) {
 		return nil, fmt.Errorf("name is required")
 	}
 
-	st := &App{
+	app := &App{
 		Name:    name,
 		API:     NewAPI(),
 		Plugins: plugins,
 	}
 
-	return st, nil
+	af := &AppFilesaver{
+		App: app,
+	}
+
+	app.SaveFn = af.Save
+
+	return app, nil
 }
 
 func NopApp(name string, plugins ...plugins.Plugin) (*App, error) {
