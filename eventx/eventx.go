@@ -12,6 +12,9 @@ const (
 	EventManagerStateDataName = "events"
 )
 
+type CallbackFn = wailsrun.CallbackFn
+type CancelFn = wailsrun.CancelFn
+
 func NewManager() *Manager {
 	return &Manager{
 		NowFn: time.Now,
@@ -32,13 +35,13 @@ func NopManager() *Manager {
 		EventsOffFn: func(ctx context.Context, name string, additional ...string) error {
 			return nil
 		},
-		EventsOnFn: func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
+		EventsOnFn: func(ctx context.Context, name string, callback CallbackFn) (CancelFn, error) {
 			return func() error { return nil }, nil
 		},
-		EventsOnMultipleFn: func(ctx context.Context, name string, callback wailsrun.CallbackFn, counter int) (wailsrun.CancelFn, error) {
+		EventsOnMultipleFn: func(ctx context.Context, name string, callback CallbackFn, counter int) (CancelFn, error) {
 			return func() error { return nil }, nil
 		},
-		EventsOnceFn: func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
+		EventsOnceFn: func(ctx context.Context, name string, callback CallbackFn) (CancelFn, error) {
 			return func() error { return nil }, nil
 		},
 	}

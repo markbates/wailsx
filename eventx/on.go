@@ -7,12 +7,12 @@ import (
 	"github.com/markbates/wailsx/wailsrun"
 )
 
-func (em *Manager) EventsOn(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
+func (em *Manager) EventsOn(ctx context.Context, name string, callback CallbackFn) (CancelFn, error) {
 	if em == nil {
 		return wailsrun.EventsOn(ctx, name, callback)
 	}
 
-	var fn wailsrun.CancelFn
+	var fn CancelFn
 	err := safe.Run(func() error {
 		if em.EventsOnFn == nil {
 			em.EventsOnFn = wailsrun.EventsOn

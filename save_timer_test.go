@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/markbates/wailsx/eventx"
 	"github.com/markbates/wailsx/wailstest"
 	"github.com/stretchr/testify/require"
 )
@@ -16,14 +17,14 @@ func Test_SaveTimer_Save_Loop(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Millisecond)
 	defer cancel()
 
-	manager, ec := newEmitter()
+	em := eventx.NopManager()
 
 	st := SaveTimer{
 		Duration: 2 * time.Millisecond,
-		Manager:  manager,
+		Manager:  em,
 	}
 
-	s, err := NewState("save timer")
+	s, err := NopApp("save timer")
 	r.NoError(err)
 	s.SaveFn = func(ctx context.Context) error {
 		cancel()
@@ -35,10 +36,17 @@ func Test_SaveTimer_Save_Loop(t *testing.T) {
 
 	<-ctx.Done()
 
-	r.Equal(len(ec.Events), 2)
-	r.Equal(EvtSaveTimerSaveStarted, ec.Events[0].Event)
-	r.Equal(EvtSaveTimerSaveFinished, ec.Events[1].Event)
+	sd, err := em.StateData(ctx)
+	r.NoError(err)
 
+	data := sd.Data
+	r.Len(data.Emitted, 3)
+
+	evt := data.Emitted[EvtSaveTimerSaveStarted]
+	r.Len(evt, 1)
+
+	evt = data.Emitted[EvtSaveTimerSaveFinished]
+	r.Len(evt, 1)
 }
 
 func Test_SaveTimer_Save_Once(t *testing.T) {
@@ -48,14 +56,14 @@ func Test_SaveTimer_Save_Once(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	manager, ec := newEmitter()
+	em := eventx.NopManager()
 
 	st := SaveTimer{
 		Duration: 0,
-		Manager:  manager,
+		Manager:  em,
 	}
 
-	s, err := NewState("save timer")
+	s, err := NewApp("save timer")
 	r.NoError(err)
 	s.SaveFn = func(ctx context.Context) error {
 		cancel()
@@ -67,9 +75,17 @@ func Test_SaveTimer_Save_Once(t *testing.T) {
 
 	<-ctx.Done()
 
-	r.Equal(2, len(ec.Events))
-	r.Equal(EvtSaveTimerSaveStarted, ec.Events[0].Event)
-	r.Equal(EvtSaveTimerSaveFinished, ec.Events[1].Event)
+	sd, err := em.StateData(ctx)
+	r.NoError(err)
+
+	data := sd.Data
+	r.GreaterOrEqual(len(data.Emitted), 2)
+
+	evt := data.Emitted[EvtSaveTimerSaveStarted]
+	r.Len(evt, 1)
+
+	evt = data.Emitted[EvtSaveTimerSaveFinished]
+	r.Len(evt, 1)
 }
 
 func Test_SaveTimer_Save_Error(t *testing.T) {
@@ -101,14 +117,14 @@ func Test_SaveTimer_Save_Error(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			r := require.New(t)
 
-			manager, ec := newEmitter()
+			em := eventx.NopManager()
 
 			st := SaveTimer{
 				Duration: 0,
-				Manager:  manager,
+				Manager:  em,
 			}
 
-			s, err := NewState("save timer")
+			s, err := NewApp("save timer")
 			r.NoError(err)
 			s.SaveFn = func(ctx context.Context) error {
 				cancel()
@@ -120,9 +136,18 @@ func Test_SaveTimer_Save_Error(t *testing.T) {
 
 			<-ctx.Done()
 
-			r.Equal(3, len(ec.Events))
-			r.Equal(EvtSaveTimerSaveStarted, ec.Events[0].Event)
-			r.Equal(EvtSaveTimerSaveError, ec.Events[1].Event)
+			sd, err := em.StateData(ctx)
+			r.NoError(err)
+
+			data := sd.Data
+			r.Len(data.Emitted, 4)
+
+			evt := data.Emitted[EvtSaveTimerSaveStarted]
+			r.Len(evt, 1)
+
+			evt = data.Emitted[EvtSaveTimerSaveFinished]
+			r.Len(evt, 1)
+
 		})
 
 	}

@@ -13,7 +13,7 @@ func (em *Manager) EventsEmit(ctx context.Context, event string, args ...any) (e
 		return wailsrun.EventsEmit(ctx, event, args...)
 	}
 
-	if err := em.init(ctx); err != nil {
+	if err := em.init(); err != nil {
 		return err
 	}
 

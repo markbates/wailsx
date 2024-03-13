@@ -48,28 +48,28 @@ func (api *API) EventsOffAll(ctx context.Context) error {
 	return api.EventManager.EventsOffAll(ctx)
 }
 
-func (api *API) EventsOn(ctx context.Context, eventName string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
+func (api *API) EventsOn(ctx context.Context, event string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
 	if api == nil {
-		return wailsrun.EventsOn(ctx, eventName, callback)
+		return wailsrun.EventsOn(ctx, event, callback)
 	}
 
-	return api.EventManager.EventsOn(ctx, eventName, callback)
+	return api.EventManager.EventsOn(ctx, event, callback)
 }
 
-func (api *API) EventsOnMultiple(ctx context.Context, eventName string, callback wailsrun.CallbackFn, counter int) (wailsrun.CancelFn, error) {
+func (api *API) EventsOnMultiple(ctx context.Context, event string, callback wailsrun.CallbackFn, counter int) (wailsrun.CancelFn, error) {
 	if api == nil {
-		return wailsrun.EventsOnMultiple(ctx, eventName, callback, counter)
+		return wailsrun.EventsOnMultiple(ctx, event, callback, counter)
 	}
 
-	return api.EventManager.EventsOnMultiple(ctx, eventName, callback, counter)
+	return api.EventManager.EventsOnMultiple(ctx, event, callback, counter)
 }
 
-func (api *API) EventsOnce(ctx context.Context, eventName string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
+func (api *API) EventsOnce(ctx context.Context, event string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
 	if api == nil {
-		return wailsrun.EventsOnce(ctx, eventName, callback)
+		return wailsrun.EventsOnce(ctx, event, callback)
 	}
 
-	return api.EventManager.EventsOnce(ctx, eventName, callback)
+	return api.EventManager.EventsOnce(ctx, event, callback)
 }
 
 func (api *API) Hide(ctx context.Context) error {

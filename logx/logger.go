@@ -20,6 +20,10 @@ type Logger struct {
 	mu    sync.Mutex
 }
 
+func NopLogger() *Logger {
+	return NewLogger(io.Discard, wailsrun.INFO)
+}
+
 func NewLogger(w io.Writer, level wailsrun.LogLevel) *Logger {
 	var ll slog.Level
 

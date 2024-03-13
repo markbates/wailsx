@@ -7,11 +7,17 @@ import (
 	"sync"
 	"time"
 
+	"github.com/markbates/plugins"
 	"github.com/markbates/wailsx/statedata"
-	"github.com/markbates/wailsx/wailsrun"
 )
 
+type EventManagerNeeder interface {
+	WithEventManager(em *Manager)
+}
+
 var _ EventManagerDataProvider = &Manager{}
+
+var _ plugins.Needer = &Manager{}
 
 type Manager struct {
 	DisableWildcardEmits bool
@@ -20,14 +26,32 @@ type Manager struct {
 	EventsEmitFn       func(ctx context.Context, name string, data ...any) error
 	EventsOffAllFn     func(ctx context.Context) error
 	EventsOffFn        func(ctx context.Context, name string, additional ...string) error
-	EventsOnFn         func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error)
-	EventsOnMultipleFn func(ctx context.Context, name string, callback wailsrun.CallbackFn, counter int) (wailsrun.CancelFn, error)
-	EventsOnceFn       func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error)
+	EventsOnFn         func(ctx context.Context, name string, callback CallbackFn) (CancelFn, error)
+	EventsOnMultipleFn func(ctx context.Context, name string, callback CallbackFn, counter int) (CancelFn, error)
+	EventsOnceFn       func(ctx context.Context, name string, callback CallbackFn) (CancelFn, error)
 
 	NowFn func() time.Time
 
 	mu   sync.RWMutex
 	data EventsData
+}
+
+func (em *Manager) WithPlugins(fn plugins.FeederFn) error {
+	if em == nil {
+		return fmt.Errorf("error manager is nil")
+	}
+
+	if fn == nil {
+		return fmt.Errorf("error fn is nil")
+	}
+
+	for _, p := range fn() {
+		if e, ok := p.(EventManagerNeeder); ok {
+			e.WithEventManager(em)
+		}
+	}
+
+	return nil
 }
 
 func (em *Manager) StateData(ctx context.Context) (statedata.Data[*EventsData], error) {
@@ -51,10 +75,10 @@ func (em *Manager) MarshalJSON() ([]byte, error) {
 		return nil, fmt.Errorf("error manager is nil")
 	}
 
-	return json.Marshal(em.data)
+	return json.Marshal(&em.data)
 }
 
-func (em *Manager) init(ctx context.Context) error {
+func (em *Manager) init() error {
 	if em == nil {
 		return fmt.Errorf("error manager is nil")
 	}
@@ -62,4 +86,8 @@ func (em *Manager) init(ctx context.Context) error {
 	em.data.DisableStateData = em.DisableStateData
 
 	return nil
+}
+
+func (em *Manager) PluginName() string {
+	return fmt.Sprintf("%T", em)
 }

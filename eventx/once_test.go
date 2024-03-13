@@ -18,25 +18,25 @@ func Test_Manager_Once(t *testing.T) {
 
 	tcs := []struct {
 		name string
-		fn   func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error)
+		fn   func(ctx context.Context, name string, callback CallbackFn) (CancelFn, error)
 		err  error
 	}{
 		{
 			name: "with function",
-			fn: func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
+			fn: func(ctx context.Context, name string, callback CallbackFn) (CancelFn, error) {
 				return nil, nil
 			},
 		},
 		{
 			name: "with error",
-			fn: func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
+			fn: func(ctx context.Context, name string, callback CallbackFn) (CancelFn, error) {
 				return nil, wailstest.ErrTest
 			},
 			err: wailstest.ErrTest,
 		},
 		{
 			name: "with panic",
-			fn: func(ctx context.Context, name string, callback wailsrun.CallbackFn) (wailsrun.CancelFn, error) {
+			fn: func(ctx context.Context, name string, callback CallbackFn) (CancelFn, error) {
 				panic(wailstest.ErrTest)
 			},
 			err: wailstest.ErrTest,
