@@ -4,7 +4,6 @@ import (
 	"context"
 	"testing"
 
-	"github.com/markbates/wailsx/wailstest"
 	"github.com/stretchr/testify/require"
 )
 
@@ -21,7 +20,7 @@ func Test_App_Shutdown(t *testing.T) {
 	r.NoError(err)
 
 	var called bool
-	app.Plugins = append(app.Plugins, wailstest.Shutdowner(func(ctx context.Context) error {
+	app.Plugins = append(app.Plugins, ShutdownerFn(func(ctx context.Context) error {
 		called = true
 		return nil
 	}))
