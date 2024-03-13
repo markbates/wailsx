@@ -115,7 +115,7 @@ func NewAPI() *API
     their default implementations.
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -207,7 +207,7 @@ type API interface {
 }
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -229,7 +229,7 @@ package runtime // import "github.com/wailsapp/wails/v2/pkg/runtime"
 func MenuSetApplicationMenu(ctx context.Context, menu *menu.Menu)
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -249,7 +249,7 @@ type API interface {
 }
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -323,7 +323,7 @@ type ErrNotAvailable string
 func (e ErrNotAvailable) Error() string
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -370,10 +370,10 @@ $ go test -v -run Test_ErrNotAvailable
 
 testing: warning: no tests to run
 PASS
-ok  	github.com/markbates/wailsx	0.003s
+ok  	github.com/markbates/wailsx	0.006s
 
-go: downloading github.com/wailsapp/wails/v2 v2.8.0
 go: downloading github.com/markbates/safe v1.1.0
+go: downloading github.com/wailsapp/wails/v2 v2.8.0
 go: downloading github.com/stretchr/testify v1.9.0
 go: downloading github.com/davecgh/go-spew v1.1.1
 go: downloading github.com/pmezard/go-difflib v1.0.0
@@ -382,7 +382,7 @@ go: downloading github.com/leaanthony/slicer v1.6.0
 go: downloading github.com/leaanthony/u v1.1.1
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -399,7 +399,7 @@ $ go test -v -run Test_ErrNotAvailable -tags wails
 
 testing: warning: no tests to run
 PASS
-ok  	github.com/markbates/wailsx	0.004s
+ok  	github.com/markbates/wailsx	0.003s
 
 go: downloading github.com/markbates/safe v1.1.0
 go: downloading github.com/wailsapp/wails/v2 v2.8.0
@@ -407,11 +407,11 @@ go: downloading github.com/stretchr/testify v1.9.0
 go: downloading github.com/davecgh/go-spew v1.1.1
 go: downloading github.com/pmezard/go-difflib v1.0.0
 go: downloading gopkg.in/yaml.v3 v3.0.1
-go: downloading github.com/leaanthony/u v1.1.1
 go: downloading github.com/leaanthony/slicer v1.6.0
+go: downloading github.com/leaanthony/u v1.1.1
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -438,7 +438,7 @@ type ClipboardManager interface {
 }
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -468,7 +468,7 @@ type DialogManager interface {
 }
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -499,7 +499,7 @@ type EventManager interface {
 }
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -547,7 +547,7 @@ func (em *Manager) StateData(ctx context.Context) (statedata.Data[*EventsData], 
 func (em *Manager) WithPlugins(fn plugins.FeederFn) error
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -567,7 +567,7 @@ package eventx // import "github.com/markbates/wailsx/eventx"
 func NewManager() *Manager
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -587,7 +587,7 @@ func NopManager() *Manager
     is useful for testing. The NowFn is set to wailstest.NowTime
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -607,7 +607,7 @@ package wailsrun // import "github.com/markbates/wailsx/wailsrun"
 type CallbackFn func(data ...any) error
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -631,7 +631,7 @@ func EventsOnMultiple(ctx context.Context, event string, callback CallbackFn, co
 func EventsOnce(ctx context.Context, event string, callback CallbackFn) (CancelFn, error)
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -662,7 +662,7 @@ type Messenger interface {
 func NewMessage(event string, now time.Time, arg any) Messenger
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -685,7 +685,7 @@ type ErrorMessenger interface {
 }
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -725,7 +725,7 @@ type WailsLogger interface {
 }
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -752,7 +752,7 @@ type MenuManager interface {
 }
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -778,7 +778,7 @@ type DataProvider[T any] interface {
 }
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -804,7 +804,7 @@ func (sd Data[T]) PluginName() string
 func (sd Data[T]) StateData(ctx context.Context) (Data[T], error)
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -840,7 +840,7 @@ type WindowManager interface {
 }
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -872,7 +872,7 @@ type MaximiseManager interface {
 }
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -900,7 +900,7 @@ type PositionManager interface {
 }
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -923,7 +923,7 @@ type ReloadManager interface {
 }
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -948,7 +948,7 @@ type ThemeManager interface {
 }
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -973,7 +973,7 @@ type Toggler interface {
 }
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -1078,7 +1078,7 @@ func (api *API) WindowUnmaximise(ctx context.Context) error
 func (api *API) WindowUnminimise(ctx context.Context) error
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -1098,7 +1098,7 @@ func NewAPI() *API
     their default implementations.
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -1143,7 +1143,7 @@ $ go test -v -run Test_Nil_API_Call
 === CONT  Test_Nil_API_Call
 --- PASS: Test_Nil_API_Call (0.00s)
 PASS
-ok  	github.com/markbates/wailsx	0.004s
+ok  	github.com/markbates/wailsx	0.005s
 
 go: downloading github.com/markbates/safe v1.1.0
 go: downloading github.com/wailsapp/wails/v2 v2.8.0
@@ -1155,7 +1155,7 @@ go: downloading github.com/leaanthony/slicer v1.6.0
 go: downloading github.com/leaanthony/u v1.1.1
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -1171,10 +1171,10 @@ $ go test -v -run Test_Nil_API_Call -tags wails
 === RUN   Test_Nil_API_Call
 === PAUSE Test_Nil_API_Call
 === CONT  Test_Nil_API_Call
-2024/03/13 03:49:45 cannot call 'github.com/wailsapp/wails/v2/pkg/runtime.Show': An invalid context was passed. This method requires the specific context given in the lifecycle hooks:
+2024/03/13 03:52:45 cannot call 'github.com/wailsapp/wails/v2/pkg/runtime.Show': An invalid context was passed. This method requires the specific context given in the lifecycle hooks:
 https://wails.io/docs/reference/runtime/intro
 exit status 1
-FAIL	github.com/markbates/wailsx	0.004s
+FAIL	github.com/markbates/wailsx	0.007s
 
 go: downloading github.com/markbates/safe v1.1.0
 go: downloading github.com/wailsapp/wails/v2 v2.8.0
@@ -1186,7 +1186,7 @@ go: downloading github.com/leaanthony/slicer v1.6.0
 go: downloading github.com/leaanthony/u v1.1.1
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
@@ -1206,7 +1206,7 @@ func NopAPI() *API
     no-ops. This is useful for testing.
 
 --------------------------------------------------------------------------------
-Go Version: go1.22.0
+Go Version: go1.22.1
 
 ```
 
