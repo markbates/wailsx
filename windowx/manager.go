@@ -17,11 +17,11 @@ type Manager struct {
 	ThemeManager
 	Toggler
 
-	ScreenGetAllFn         func(ctx context.Context) ([]Screen, error)
-	WindowExecJSFn         func(ctx context.Context, js string) error
-	WindowPrintFn          func(ctx context.Context) error
-	WindowSetAlwaysOnTopFn func(ctx context.Context, b bool) error
-	WindowSetTitleFn       func(ctx context.Context, title string) error
+	ScreenGetAllFn         func(ctx context.Context) ([]Screen, error)   `json:"-"`
+	WindowExecJSFn         func(ctx context.Context, js string) error    `json:"-"`
+	WindowPrintFn          func(ctx context.Context) error               `json:"-"`
+	WindowSetAlwaysOnTopFn func(ctx context.Context, b bool) error       `json:"-"`
+	WindowSetTitleFn       func(ctx context.Context, title string) error `json:"-"`
 }
 
 func NewManager() *Manager {

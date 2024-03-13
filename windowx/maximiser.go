@@ -26,17 +26,17 @@ func NopMaximiser() *Maximiser {
 }
 
 type Maximiser struct {
-	WindowFullscreenFn     func(ctx context.Context) error
-	WindowIsFullscreenFn   func(ctx context.Context) (bool, error)
-	WindowIsMaximisedFn    func(ctx context.Context) (bool, error)
-	WindowIsMinimisedFn    func(ctx context.Context) (bool, error)
-	WindowIsNormalFn       func(ctx context.Context) (bool, error)
-	WindowMaximiseFn       func(ctx context.Context) error
-	WindowMinimiseFn       func(ctx context.Context) error
-	WindowToggleMaximiseFn func(ctx context.Context) error
-	WindowUnfullscreenFn   func(ctx context.Context) error
-	WindowUnmaximiseFn     func(ctx context.Context) error
-	WindowUnminimiseFn     func(ctx context.Context) error
+	WindowFullscreenFn     func(ctx context.Context) error         `json:"-"`
+	WindowIsFullscreenFn   func(ctx context.Context) (bool, error) `json:"-"`
+	WindowIsMaximisedFn    func(ctx context.Context) (bool, error) `json:"-"`
+	WindowIsMinimisedFn    func(ctx context.Context) (bool, error) `json:"-"`
+	WindowIsNormalFn       func(ctx context.Context) (bool, error) `json:"-"`
+	WindowMaximiseFn       func(ctx context.Context) error         `json:"-"`
+	WindowMinimiseFn       func(ctx context.Context) error         `json:"-"`
+	WindowToggleMaximiseFn func(ctx context.Context) error         `json:"-"`
+	WindowUnfullscreenFn   func(ctx context.Context) error         `json:"-"`
+	WindowUnmaximiseFn     func(ctx context.Context) error         `json:"-"`
+	WindowUnminimiseFn     func(ctx context.Context) error         `json:"-"`
 
 	data MaximiserData
 }
@@ -99,7 +99,11 @@ func (mm *Maximiser) WindowIsMaximised(ctx context.Context) (bool, error) {
 		return err
 	})
 
-	return b, err
+	if err != nil {
+		return false, err
+	}
+
+	return b, nil
 }
 
 func (mm *Maximiser) WindowIsMinimised(ctx context.Context) (bool, error) {

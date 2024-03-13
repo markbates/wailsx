@@ -19,10 +19,10 @@ func NopToggle() Toggle {
 }
 
 type Toggle struct {
-	HideFn       func(ctx context.Context) error
-	ShowFn       func(ctx context.Context) error
-	WindowHideFn func(ctx context.Context) error
-	WindowShowFn func(ctx context.Context) error
+	HideFn       func(ctx context.Context) error `json:"-"`
+	ShowFn       func(ctx context.Context) error `json:"-"`
+	WindowHideFn func(ctx context.Context) error `json:"-"`
+	WindowShowFn func(ctx context.Context) error `json:"-"`
 }
 
 func (t Toggle) Hide(ctx context.Context) error {

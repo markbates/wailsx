@@ -21,10 +21,10 @@ func NopThemer() *Themer {
 }
 
 type Themer struct {
-	WindowSetBackgroundColourFn   func(ctx context.Context, R, G, B, A uint8) error
-	WindowSetDarkThemeFn          func(ctx context.Context) error
-	WindowSetLightThemeFn         func(ctx context.Context) error
-	WindowSetSystemDefaultThemeFn func(ctx context.Context) error
+	WindowSetBackgroundColourFn   func(ctx context.Context, R, G, B, A uint8) error `json:"-"`
+	WindowSetDarkThemeFn          func(ctx context.Context) error                   `json:"-"`
+	WindowSetLightThemeFn         func(ctx context.Context) error                   `json:"-"`
+	WindowSetSystemDefaultThemeFn func(ctx context.Context) error                   `json:"-"`
 
 	data ThemeData
 }

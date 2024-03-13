@@ -20,10 +20,13 @@ var _ wailsrun.API = &API{}
 
 // NewAPI returns a new API with all the functions, and interfaces, set to their default implementations.
 func NewAPI() *API {
+	em := eventx.NewManager()
+	em.DisableStateData = true
+
 	return &API{
 		ClipboardManager: &clipx.Manager{},
 		DialogManager:    dialogx.Manager{},
-		EventManager:     eventx.NewManager(),
+		EventManager:     em,
 		MenuManager:      menux.Manager{},
 		WailsLogger:      logx.NewLogger(os.Stdout, wailsrun.INFO),
 		WindowManager:    windowx.NewManager(),
@@ -56,8 +59,8 @@ type API struct {
 	menux.MenuManager
 	windowx.WindowManager
 
-	BrowserOpenURLFn func(ctx context.Context, url string) error
-	QuitFn           func(ctx context.Context) error
+	BrowserOpenURLFn func(ctx context.Context, url string) error `json:"-"`
+	QuitFn           func(ctx context.Context) error             `json:"-"`
 }
 
 func (api *API) StateData(ctx context.Context) (statedata.Data[*APIData], error) {

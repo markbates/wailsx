@@ -61,28 +61,28 @@ func NopApp(name string, plugins ...plugins.Plugin) (*App, error) {
 type App struct {
 	*API
 
-	Name    string          // application name
-	Plugins plugins.Plugins // plugins for the application
+	Name    string          `json:"name,omitempty"`    // application name
+	Plugins plugins.Plugins `json:"plugins,omitempty"` // plugins for the application
 
 	// save function, if nil, save to file in ~/.config/<name>/wailsx.json
 	// will call Saver plugins
-	SaveFn func(ctx context.Context) error
+	SaveFn func(ctx context.Context) error `json:"-"`
 
 	// startup function, if nil, load from file in ~/.config/<name>/wailsx.json
 	// will call Startuper plugins
-	StartupFn func(ctx context.Context) error
+	StartupFn func(ctx context.Context) error `json:"-"`
 
 	// shutdown function, if nil, call Save
 	// will call Shutdowner plugins
-	ShutdownFn func(ctx context.Context) error
+	ShutdownFn func(ctx context.Context) error `json:"-"`
 
 	// dom ready function, if nil, do nothing
 	// will call DomReadyer plugins
-	DomReadyFn func(ctx context.Context) error
+	DomReadyFn func(ctx context.Context) error `json:"-"`
 
 	// before close function, if nil, do nothing
 	// will call BeforeCloser plugins
-	BeforeCloseFn func(ctx context.Context) error
+	BeforeCloseFn func(ctx context.Context) error `json:"-"`
 
 	mu sync.RWMutex
 }
@@ -112,6 +112,7 @@ func (app *App) StateData(ctx context.Context) (statedata.Data[AppData], error) 
 	}
 
 	data := AppData{
+		AppName: app.Name,
 		API:     api.Data,
 		Plugins: map[string]any{},
 	}

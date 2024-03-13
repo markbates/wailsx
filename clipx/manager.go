@@ -30,10 +30,10 @@ func NopManager() *Manager {
 }
 
 type Manager struct {
-	Content string
+	Content string `json:"content,omitempty"`
 
-	ClipboardGetTextFn func(ctx context.Context) (string, error)
-	ClipboardSetTextFn func(ctx context.Context, text string) error
+	ClipboardGetTextFn func(ctx context.Context) (string, error)    `json:"-"`
+	ClipboardSetTextFn func(ctx context.Context, text string) error `json:"-"`
 
 	mu sync.RWMutex
 }

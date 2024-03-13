@@ -17,8 +17,8 @@ func NopReloader() Reloader {
 }
 
 type Reloader struct {
-	WindowReloadAppFn func(ctx context.Context) error
-	WindowReloadFn    func(ctx context.Context) error
+	WindowReloadAppFn func(ctx context.Context) error `json:"-"`
+	WindowReloadFn    func(ctx context.Context) error `json:"-"`
 }
 
 func (r Reloader) WindowReload(ctx context.Context) error {

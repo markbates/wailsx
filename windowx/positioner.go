@@ -22,13 +22,13 @@ func NopPositioner() *Positioner {
 }
 
 type Positioner struct {
-	WindowCenterFn      func(ctx context.Context) error
-	WindowGetPositionFn func(ctx context.Context) (int, int, error)
-	WindowGetSizeFn     func(ctx context.Context) (int, int, error)
-	WindowSetMaxSizeFn  func(ctx context.Context, width int, height int) error
-	WindowSetMinSizeFn  func(ctx context.Context, width int, height int) error
-	WindowSetPositionFn func(ctx context.Context, x int, y int) error
-	WindowSetSizeFn     func(ctx context.Context, width int, height int) error
+	WindowCenterFn      func(ctx context.Context) error                        `json:"-"`
+	WindowGetPositionFn func(ctx context.Context) (int, int, error)            `json:"-"`
+	WindowGetSizeFn     func(ctx context.Context) (int, int, error)            `json:"-"`
+	WindowSetMaxSizeFn  func(ctx context.Context, width int, height int) error `json:"-"`
+	WindowSetMinSizeFn  func(ctx context.Context, width int, height int) error `json:"-"`
+	WindowSetPositionFn func(ctx context.Context, x int, y int) error          `json:"-"`
+	WindowSetSizeFn     func(ctx context.Context, width int, height int) error `json:"-"`
 
 	data PositionData
 }

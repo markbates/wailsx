@@ -9,9 +9,10 @@ import (
 )
 
 type SaveTimer struct {
-	Duration      time.Duration       // save duration, if zero, save once and exit
-	DisableEvents bool                // disable save events
-	Manager       eventx.EventManager // emit save events
+	Duration      time.Duration                          `json:"duration,omitempty"`       // save duration, if zero, save once and exit
+	DisableEvents bool                                   `json:"disable_events,omitempty"` // disable save events
+	Manager       eventx.EventManager                    `json:"manager,omitempty"`        // emit save events
+	DataFn        func(ctx context.Context) (any, error) `json:"-"`                        // data to emit with save events
 }
 
 func (st SaveTimer) Save(ctx context.Context, s Saver) error {
@@ -48,12 +49,20 @@ func (st SaveTimer) emit(ctx context.Context, ev string, data any) error {
 }
 
 func (st SaveTimer) save(ctx context.Context, s Saver) (err error) {
-	err = st.emit(ctx, EvtSaveTimerSaveStarted, nil)
+	var data any
+	if st.DataFn != nil {
+		data, err = st.DataFn(ctx)
+		if err != nil {
+			return err
+		}
+	}
+
+	err = st.emit(ctx, EvtSaveTimerSaveStarted, data)
 	if err != nil {
 		return err
 	}
 
-	defer st.emit(ctx, EvtSaveTimerSaveFinished, nil)
+	defer st.emit(ctx, EvtSaveTimerSaveFinished, data)
 	defer func() {
 		if err != nil {
 			st.emit(ctx, EvtSaveTimerSaveError, err)

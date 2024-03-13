@@ -14,7 +14,7 @@ import (
 var _ WailsLogger = &Logger{}
 
 type Logger struct {
-	*slog.Logger
+	*slog.Logger `json:"-"`
 
 	level wailsrun.LogLevel
 	mu    sync.Mutex

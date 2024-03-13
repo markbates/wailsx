@@ -20,11 +20,11 @@ func NopManager() Manager {
 }
 
 type Manager struct {
-	MessageDialogFn           func(ctx context.Context, opts MessageDialogOptions) (string, error)
-	OpenDirectoryDialogFn     func(ctx context.Context, opts OpenDialogOptions) (string, error)
-	OpenFileDialogFn          func(ctx context.Context, opts OpenDialogOptions) (string, error)
-	OpenMultipleFilesDialogFn func(ctx context.Context, opts OpenDialogOptions) ([]string, error)
-	SaveFileDialogFn          func(ctx context.Context, opts SaveDialogOptions) (string, error)
+	MessageDialogFn           func(ctx context.Context, opts MessageDialogOptions) (string, error) `json:"-"`
+	OpenDirectoryDialogFn     func(ctx context.Context, opts OpenDialogOptions) (string, error)    `json:"-"`
+	OpenFileDialogFn          func(ctx context.Context, opts OpenDialogOptions) (string, error)    `json:"-"`
+	OpenMultipleFilesDialogFn func(ctx context.Context, opts OpenDialogOptions) ([]string, error)  `json:"-"`
+	SaveFileDialogFn          func(ctx context.Context, opts SaveDialogOptions) (string, error)    `json:"-"`
 }
 
 func (dm Manager) MessageDialog(ctx context.Context, opts MessageDialogOptions) (fp string, err error) {

@@ -11,8 +11,8 @@ import (
 var _ MenuManager = Manager{}
 
 type Manager struct {
-	MenuSetApplicationMenuFn    func(ctx context.Context, menu *menu.Menu) error
-	MenuUpdateApplicationMenuFn func(ctx context.Context) error
+	MenuSetApplicationMenuFn    func(ctx context.Context, menu *menu.Menu) error `json:"-"`
+	MenuUpdateApplicationMenuFn func(ctx context.Context) error                  `json:"-"`
 }
 
 func (m Manager) MenuSetApplicationMenu(ctx context.Context, me *menu.Menu) error {

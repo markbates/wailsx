@@ -3,6 +3,7 @@ module github.com/markbates/wailsx
 go 1.22
 
 require (
+	github.com/gobuffalo/flect v1.0.2
 	github.com/markbates/plugins v1.1.0
 	github.com/markbates/safe v1.1.0
 	github.com/stretchr/testify v1.9.0

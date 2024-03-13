@@ -138,7 +138,7 @@ func Test_App_StateData(t *testing.T) {
 	act := string(b)
 	// fmt.Println(act)
 
-	exp := `{"name":"app","data":{"api":{"events":{},"window":{"maximiser":{},"positioner":{},"themer":{"background_colour":{}}}},"plugins":{"wailsx.intProvider: 42":{"name":"int-data","data":42},"wailsx.stringProvider: hello":{"name":"string-data","data":"hello"}}}}`
+	exp := `{"name":"app","data":{"app_name":"test","api":{"events":{},"window":{"maximiser":{},"positioner":{},"themer":{"background_colour":{}}}},"plugins":{"wailsx.intProvider: 42":{"name":"int-data","data":42},"wailsx.stringProvider: hello":{"name":"string-data","data":"hello"}}}}`
 
 	r.Equal(exp, act)
 
@@ -177,7 +177,7 @@ func Test_App_StateData(t *testing.T) {
 
 	act = string(b)
 	// fmt.Println(act)
-	exp = `{"name":"app","data":{"api":{"events":{"callbacks":{"event:test":{"called":1,"max_calls":0,"off":false}},"emitted":{"*":[{"name":"*","data":[{"data":"my data","event":"event:test","text":"my data","time":"2024-01-01T00:00:00Z"}],"emitted_at":"2024-01-01T00:00:00Z"}],"event:test":[{"name":"event:test","data":[{"data":"my data","event":"event:test","text":"my data","time":"2024-01-01T00:00:00Z"}],"emitted_at":"2024-01-01T00:00:00Z"}]},"caught":{"event:test":[{"name":"event:test","data":[{"data":"my data","event":"event:test","text":"my data","time":"2024-01-01T00:00:00Z"}],"emitted_at":"2024-01-01T00:00:00Z"}]}},"window":{"maximiser":{"is_maximised":true},"positioner":{"x":10,"y":20,"w":100,"h":200},"themer":{"background_colour":{"r":1,"g":2,"b":3,"a":4},"is_system_theme":true}}},"plugins":{"wailsx.intProvider: 42":{"name":"int-data","data":42},"wailsx.stringProvider: hello":{"name":"string-data","data":"hello"}}}}`
+	exp = `{"name":"app","data":{"app_name":"test","api":{"events":{"callbacks":{"event:test":{"called":1,"max_calls":0,"off":false}},"emitted":{"*":[{"name":"*","data":[{"data":"my data","event":"event:test","text":"my data","time":"2024-01-01T00:00:00Z"}],"emitted_at":"2024-01-01T00:00:00Z"}],"event:test":[{"name":"event:test","data":[{"data":"my data","event":"event:test","text":"my data","time":"2024-01-01T00:00:00Z"}],"emitted_at":"2024-01-01T00:00:00Z"}]},"caught":{"event:test":[{"name":"event:test","data":[{"data":"my data","event":"event:test","text":"my data","time":"2024-01-01T00:00:00Z"}],"emitted_at":"2024-01-01T00:00:00Z"}]}},"window":{"maximiser":{"is_maximised":true},"positioner":{"x":10,"y":20,"w":100,"h":200},"themer":{"background_colour":{"r":1,"g":2,"b":3,"a":4},"is_system_theme":true}}},"plugins":{"wailsx.intProvider: 42":{"name":"int-data","data":42},"wailsx.stringProvider: hello":{"name":"string-data","data":"hello"}}}}`
 
 	r.Equal(exp, act)
 }

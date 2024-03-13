@@ -9,7 +9,7 @@ import (
 var _ AppStateDataProvider = AppData{}
 
 type AppData struct {
-	Name    string         `json:"name,omitempty"` // application name
+	AppName string         `json:"app_name,omitempty"` // application name
 	API     *APIData       `json:"api,omitempty"`
 	Plugins map[string]any `json:"plugins,omitempty"`
 }

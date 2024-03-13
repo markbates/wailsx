@@ -2,10 +2,12 @@ package wailsx
 
 import (
 	"context"
+	"fmt"
 	"testing"
 	"time"
 
 	"github.com/markbates/wailsx/eventx"
+	"github.com/markbates/wailsx/statedata"
 	"github.com/markbates/wailsx/wailstest"
 	"github.com/stretchr/testify/require"
 )
@@ -17,11 +19,17 @@ func Test_SaveTimer_Save_Loop(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Millisecond)
 	defer cancel()
 
+	app, err := NopApp("test save timer")
+	r.NoError(err)
+
 	em := eventx.NopManager()
 
 	st := SaveTimer{
 		Duration: 2 * time.Millisecond,
 		Manager:  em,
+		DataFn: func(ctx context.Context) (any, error) {
+			return app.StateData(ctx)
+		},
 	}
 
 	s, err := NopApp("save timer")
@@ -42,11 +50,23 @@ func Test_SaveTimer_Save_Loop(t *testing.T) {
 	data := sd.Data
 	r.Len(data.Emitted, 3)
 
-	evt := data.Emitted[EvtSaveTimerSaveStarted]
-	r.Len(evt, 1)
+	evnts := data.Emitted[EvtSaveTimerSaveStarted]
+	r.Len(evnts, 1)
 
-	evt = data.Emitted[EvtSaveTimerSaveFinished]
-	r.Len(evt, 1)
+	evt := evnts[0]
+	r.NotNil(evt)
+	r.NotNil(evt.Data)
+
+	msgs := evt.Data
+	r.Len(msgs, 1)
+
+	msg := msgs[0]
+	r.NotNil(msg)
+	_, ok := msg.MsgData().(statedata.Data[AppData])
+	r.True(ok, fmt.Sprintf("%T", msg.MsgData()))
+
+	evnts = data.Emitted[EvtSaveTimerSaveFinished]
+	r.Len(evnts, 1)
 }
 
 func Test_SaveTimer_Save_Once(t *testing.T) {
