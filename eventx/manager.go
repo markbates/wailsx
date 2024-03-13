@@ -75,10 +75,10 @@ func (em *Manager) MarshalJSON() ([]byte, error) {
 		return nil, fmt.Errorf("error manager is nil")
 	}
 
-	return json.Marshal(em.data)
+	return json.Marshal(&em.data)
 }
 
-func (em *Manager) init(ctx context.Context) error {
+func (em *Manager) init() error {
 	if em == nil {
 		return fmt.Errorf("error manager is nil")
 	}
