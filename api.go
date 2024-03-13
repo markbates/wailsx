@@ -37,7 +37,7 @@ func NopAPI() *API {
 		DialogManager:    dialogx.NopManager(),
 		EventManager:     eventx.NopManager(),
 		MenuManager:      menux.NopManager(),
-		WailsLogger:      logx.NewLogger(os.Stdout, wailsrun.INFO),
+		WailsLogger:      logx.NopLogger(),
 		WindowManager:    windowx.NopManager(),
 		BrowserOpenURLFn: func(ctx context.Context, url string) error {
 			return nil

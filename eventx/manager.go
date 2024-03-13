@@ -7,10 +7,17 @@ import (
 	"sync"
 	"time"
 
+	"github.com/markbates/plugins"
 	"github.com/markbates/wailsx/statedata"
 )
 
+type EventManagerNeeder interface {
+	WithEventManager(em *Manager)
+}
+
 var _ EventManagerDataProvider = &Manager{}
+
+var _ plugins.Needer = &Manager{}
 
 type Manager struct {
 	DisableWildcardEmits bool
@@ -27,6 +34,24 @@ type Manager struct {
 
 	mu   sync.RWMutex
 	data EventsData
+}
+
+func (em *Manager) WithPlugins(fn plugins.FeederFn) error {
+	if em == nil {
+		return fmt.Errorf("error manager is nil")
+	}
+
+	if fn == nil {
+		return fmt.Errorf("error fn is nil")
+	}
+
+	for _, p := range fn() {
+		if e, ok := p.(EventManagerNeeder); ok {
+			e.WithEventManager(em)
+		}
+	}
+
+	return nil
 }
 
 func (em *Manager) StateData(ctx context.Context) (statedata.Data[*EventsData], error) {
@@ -61,4 +86,8 @@ func (em *Manager) init(ctx context.Context) error {
 	em.data.DisableStateData = em.DisableStateData
 
 	return nil
+}
+
+func (em *Manager) PluginName() string {
+	return fmt.Sprintf("%T", em)
 }

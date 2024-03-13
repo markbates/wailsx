@@ -13,9 +13,9 @@ var _ statedata.DataProvider[*EventsData] = &EventsData{}
 
 type EventsData struct {
 	DisableStateData bool                        `json:"-"`
-	Callbacks        map[string]*CallbackCounter `json:"callbacks"`
-	Emitted          map[string][]Event          `json:"emitted"` // emitted events
-	Caught           map[string][]Event          `json:"caught"`  // caught events
+	Callbacks        map[string]*CallbackCounter `json:"callbacks,omitempty"`
+	Emitted          map[string][]Event          `json:"emitted,omitempty"` // emitted events
+	Caught           map[string][]Event          `json:"caught,omitempty"`  // caught events
 
 	mu sync.Mutex
 }
