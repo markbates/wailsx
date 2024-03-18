@@ -8,6 +8,7 @@ import (
 )
 
 var _ MaximiseManagerDataProvider = &Maximiser{}
+var _ RestorableMaximiseManager = &Maximiser{}
 
 func NopMaximiser() *Maximiser {
 	return &Maximiser{
@@ -263,4 +264,8 @@ func (mm *Maximiser) WindowToggleMaximise(ctx context.Context) error {
 
 		return mm.data.ToggleMaximised()
 	})
+}
+
+func (mm *Maximiser) MaximiseRestore(ctx context.Context, data *MaximiserData) error {
+	return nil
 }

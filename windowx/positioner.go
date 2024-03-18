@@ -8,6 +8,7 @@ import (
 )
 
 var _ PositionManager = &Positioner{}
+var _ InitialPositioner = &Positioner{}
 
 func NopPositioner() *Positioner {
 	return &Positioner{
@@ -30,7 +31,25 @@ type Positioner struct {
 	WindowSetPositionFn func(ctx context.Context, x int, y int) error          `json:"-"`
 	WindowSetSizeFn     func(ctx context.Context, width int, height int) error `json:"-"`
 
+	// default values for the window
+	DefX int `json:"def_x"`
+	DefY int `json:"def_y"`
+
 	data PositionData
+}
+
+func (pm *Positioner) InitPosX() int {
+	if pm == nil {
+		return 0
+	}
+	return pm.DefX
+}
+
+func (pm *Positioner) InitPosY() int {
+	if pm == nil {
+		return 0
+	}
+	return pm.DefY
 }
 
 func (pm *Positioner) WindowCenter(ctx context.Context) error {

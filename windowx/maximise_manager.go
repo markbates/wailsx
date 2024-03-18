@@ -24,3 +24,8 @@ type MaximiseManagerDataProvider interface {
 	MaximiseManager
 	StateData(ctx context.Context) (statedata.Data[*MaximiserData], error)
 }
+
+type RestorableMaximiseManager interface {
+	MaximiseManager
+	MaximiseRestore(ctx context.Context, data *MaximiserData) error
+}

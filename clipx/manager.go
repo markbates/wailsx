@@ -10,6 +10,7 @@ import (
 )
 
 var _ ClipboardManagerDataProvider = &Manager{}
+var _ RestorableClipboardManager = &Manager{}
 
 func NopManager() *Manager {
 	m := &Manager{}
@@ -100,4 +101,8 @@ func (m *Manager) StateData(ctx context.Context) (statedata.Data[string], error)
 
 	sd.Data = m.Content
 	return sd, nil
+}
+
+func (m *Manager) RestoreClipboard(ctx context.Context, data string) error {
+	return m.ClipboardSetText(ctx, data)
 }

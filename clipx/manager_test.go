@@ -183,3 +183,35 @@ func Test_Nil_Manager(t *testing.T) {
 	exp = wailsrun.ErrNotAvailable("ClipboardSetText")
 	r.Equal(exp, err)
 }
+
+func Test_Manager_RestoreClipboard(t *testing.T) {
+	t.Parallel()
+	r := require.New(t)
+
+	ctx := context.Background()
+
+	const exp = "hello"
+
+	var m *Manager
+	err := m.RestoreClipboard(ctx, exp)
+	r.Error(err)
+
+	exr := wailsrun.ErrNotAvailable("ClipboardSetText")
+	r.Equal(exr, err)
+
+	m = &Manager{}
+	err = m.RestoreClipboard(ctx, exp)
+	r.Error(err)
+
+	r.Equal(exr, err)
+
+	var act string
+	m.ClipboardSetTextFn = func(ctx context.Context, text string) error {
+		act = text
+		return nil
+	}
+
+	err = m.RestoreClipboard(ctx, exp)
+	r.NoError(err)
+	r.Equal(exp, act)
+}
