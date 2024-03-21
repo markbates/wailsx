@@ -54,6 +54,6 @@ func Test_EventsData_DisableStateData(t *testing.T) {
 
 	sd, err := ev.StateData(context.Background())
 	r.NoError(err)
-	r.Nil(sd.Data)
+	r.Nil(sd)
 
 }

@@ -295,18 +295,18 @@ func Test_Manager_StateData(t *testing.T) {
 	sd, err = wm.StateData(ctx)
 	r.NoError(err)
 
-	r.Nil(sd.Data.MaximiserData)
-	r.Nil(sd.Data.PositionData)
-	r.Nil(sd.Data.ThemeData)
+	r.Nil(sd.MaximiserData)
+	r.Nil(sd.PositionData)
+	r.Nil(sd.ThemeData)
 
 	wm = NopManager()
 
 	sd, err = wm.StateData(ctx)
 	r.NoError(err)
 
-	r.NotNil(sd.Data.MaximiserData)
-	r.NotNil(sd.Data.PositionData)
-	r.NotNil(sd.Data.ThemeData)
+	r.NotNil(sd.MaximiserData)
+	r.NotNil(sd.PositionData)
+	r.NotNil(sd.ThemeData)
 
 }
 

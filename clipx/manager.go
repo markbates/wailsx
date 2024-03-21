@@ -11,6 +11,7 @@ import (
 
 var _ ClipboardManagerDataProvider = &Manager{}
 var _ RestorableClipboardManager = &Manager{}
+var _ statedata.DataProvider[string] = &Manager{}
 
 func NopManager() *Manager {
 	m := &Manager{}
@@ -87,18 +88,15 @@ func (m *Manager) ClipboardSetText(ctx context.Context, text string) error {
 	})
 }
 
-func (m *Manager) StateData(ctx context.Context) (statedata.Data[string], error) {
-	sd := statedata.Data[string]{}
-
+func (m *Manager) StateData(ctx context.Context) (string, error) {
 	if m == nil {
-		return sd, nil
+		return "", nil
 	}
 
 	m.mu.RLock()
 	defer m.mu.RUnlock()
 
-	sd.Data = m.Content
-	return sd, nil
+	return m.Content, nil
 }
 
 func (m *Manager) RestoreClipboard(ctx context.Context, data string) error {

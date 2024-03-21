@@ -9,7 +9,6 @@ import (
 	"testing"
 
 	"github.com/markbates/wailsx/eventx"
-	"github.com/markbates/wailsx/statedata"
 	"github.com/markbates/wailsx/windowx"
 	"github.com/stretchr/testify/require"
 )
@@ -28,12 +27,8 @@ func (i intProvider) PluginName() string {
 	return fmt.Sprintf("%T: %d", i, int(i))
 }
 
-func (i intProvider) StateData(ctx context.Context) (statedata.Data[any], error) {
-	sd := statedata.Data[any]{
-		Data: int(i),
-	}
-
-	return sd, nil
+func (i intProvider) StateData(ctx context.Context) (any, error) {
+	return int(i), nil
 }
 
 type stringProvider string
@@ -42,12 +37,8 @@ func (s stringProvider) PluginName() string {
 	return fmt.Sprintf("%T: %s", s, string(s))
 }
 
-func (s stringProvider) StateData(ctx context.Context) (statedata.Data[any], error) {
-	sd := statedata.Data[any]{
-		Data: string(s),
-	}
-
-	return sd, nil
+func (s stringProvider) StateData(ctx context.Context) (any, error) {
+	return string(s), nil
 }
 
 func Test_NewApp(t *testing.T) {
@@ -128,7 +119,7 @@ func Test_App_StateData(t *testing.T) {
 	sd, err := app.StateData(ctx)
 	r.NoError(err)
 
-	api := sd.Data.API
+	api := sd.API
 	r.NotNil(api)
 
 	r.NotNil(api.Events)
@@ -210,7 +201,7 @@ func Test_App_RestoreAPP(t *testing.T) {
 	ctx := context.Background()
 
 	var app *App
-	err := app.RestoreAPP(ctx, AppData{})
+	err := app.RestoreAPP(ctx, &AppData{})
 	r.Error(err)
 
 	app, err = NopApp("test")
@@ -227,10 +218,10 @@ func Test_App_RestoreAPP(t *testing.T) {
 	}
 	app.WindowManager = wm
 
-	err = app.RestoreAPP(ctx, AppData{})
+	err = app.RestoreAPP(ctx, &AppData{})
 	r.NoError(err)
 
-	data := AppData{
+	data := &AppData{
 		AppName: "My App",
 		API: &APIData{
 			Events: &eventx.EventsData{
@@ -268,12 +259,12 @@ func (r *restoreablePlugin) PluginName() string {
 	return fmt.Sprintf("%T", r)
 }
 
-func (r *restoreablePlugin) StateData(ctx context.Context) (statedata.Data[any], error) {
-	sd := statedata.Data[any]{
-		Data: r.Data,
+func (r *restoreablePlugin) StateData(ctx context.Context) (any, error) {
+	if r == nil {
+		return nil, fmt.Errorf("plugin is nil")
 	}
 
-	return sd, nil
+	return r.Data, nil
 }
 
 func (r *restoreablePlugin) RestorePlugin(ctx context.Context, data any) error {
@@ -296,7 +287,7 @@ func Test_App_RestoreAPP_Plugins(t *testing.T) {
 	r.NoError(err)
 	r.Equal("My App", app.Name)
 
-	data := AppData{
+	data := &AppData{
 		AppName: "My App",
 		Plugins: map[string]any{
 			rp.PluginName(): 42,

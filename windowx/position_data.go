@@ -21,7 +21,7 @@ type PositionData struct {
 	MinW       int  `json:"min_w,omitempty"`
 	MinH       int  `json:"min_h,omitempty"`
 
-	mu sync.Mutex
+	mu sync.RWMutex
 }
 
 func (pd *PositionData) SetCentered() error {
@@ -108,8 +108,25 @@ func (pd *PositionData) PluginName() string {
 	return fmt.Sprintf("%T", pd)
 }
 
-func (pd *PositionData) StateData(ctx context.Context) (statedata.Data[*PositionData], error) {
-	return statedata.Data[*PositionData]{
-		Data: pd,
-	}, nil
+func (pd *PositionData) StateData(ctx context.Context) (*PositionData, error) {
+	if pd == nil {
+		return pd, fmt.Errorf("positioner data is nil")
+	}
+
+	pd.mu.RLock()
+	defer pd.mu.RUnlock()
+
+	sd := &PositionData{
+		IsCentered: pd.IsCentered,
+		X:          pd.X,
+		Y:          pd.Y,
+		W:          pd.W,
+		H:          pd.H,
+		MaxW:       pd.MaxW,
+		MaxH:       pd.MaxH,
+		MinW:       pd.MinW,
+		MinH:       pd.MinH,
+	}
+
+	return sd, nil
 }

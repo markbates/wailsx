@@ -9,6 +9,8 @@ type Saver interface {
 	Save(ctx context.Context) error
 }
 
+var _ Saver = SaverFn(nil)
+
 type SaverFn func(ctx context.Context) error
 
 func (f SaverFn) Save(ctx context.Context) error {

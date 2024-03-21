@@ -2,8 +2,6 @@ package windowx
 
 import (
 	"context"
-
-	"github.com/markbates/wailsx/statedata"
 )
 
 type ThemeManager interface {
@@ -15,7 +13,7 @@ type ThemeManager interface {
 
 type ThemeManagerDataProvider interface {
 	ThemeManager
-	StateData(ctx context.Context) (statedata.Data[*ThemeData], error)
+	StateData(ctx context.Context) (*ThemeData, error)
 }
 
 type RestorableThemeManager interface {

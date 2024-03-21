@@ -3,9 +3,9 @@ package windowx
 import (
 	"context"
 	"fmt"
+	"sync"
 
 	"github.com/markbates/safe"
-	"github.com/markbates/wailsx/statedata"
 	"github.com/markbates/wailsx/wailsrun"
 )
 
@@ -28,6 +28,7 @@ type Themer struct {
 	WindowSetSystemDefaultThemeFn func(ctx context.Context) error                   `json:"-"`
 
 	data ThemeData
+	mu   sync.RWMutex
 }
 
 func (th *Themer) WindowSetDarkTheme(ctx context.Context) error {
@@ -106,10 +107,11 @@ func (th *Themer) WindowSetBackgroundColour(ctx context.Context, R uint8, G uint
 	})
 }
 
-func (th *Themer) StateData(ctx context.Context) (statedata.Data[*ThemeData], error) {
+func (th *Themer) StateData(ctx context.Context) (*ThemeData, error) {
 	if th == nil {
-		return statedata.Data[*ThemeData]{}, fmt.Errorf("themer is nil")
+		return nil, fmt.Errorf("themer is nil")
 	}
+
 	return th.data.StateData(ctx)
 }
 

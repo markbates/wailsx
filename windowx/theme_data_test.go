@@ -91,5 +91,5 @@ func Test_ThemeData_StateData(t *testing.T) {
 	sd, err := th.StateData(ctx)
 	r.NoError(err)
 
-	r.Equal(th, sd.Data)
+	r.Equal(th, sd)
 }

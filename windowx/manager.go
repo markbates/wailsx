@@ -9,8 +9,9 @@ import (
 	"github.com/markbates/wailsx/wailsrun"
 )
 
-var _ WindowManagerDataProvider = &Manager{}
 var _ RestorableWindowManager = &Manager{}
+var _ WindowManagerDataProvider = &Manager{}
+var _ statedata.DataProvider[*WindowData] = &Manager{}
 
 type Manager struct {
 	MaximiseManager
@@ -115,11 +116,9 @@ func (wm Manager) WindowSetTitle(ctx context.Context, title string) error {
 	})
 }
 
-func (wm *Manager) StateData(ctx context.Context) (statedata.Data[*WindowData], error) {
-	sd := statedata.Data[*WindowData]{}
-
+func (wm *Manager) StateData(ctx context.Context) (*WindowData, error) {
 	if wm == nil {
-		return sd, nil
+		return nil, nil
 	}
 
 	data := &WindowData{}
@@ -127,30 +126,29 @@ func (wm *Manager) StateData(ctx context.Context) (statedata.Data[*WindowData], 
 	if x, ok := wm.MaximiseManager.(MaximiseManagerDataProvider); ok {
 		md, err := x.StateData(ctx)
 		if err != nil {
-			return sd, err
+			return nil, err
 		}
-		data.MaximiserData = md.Data
+
+		data.MaximiserData = md
 	}
 
 	if x, ok := wm.PositionManager.(PositionManagerDataProvider); ok {
 		pd, err := x.StateData(ctx)
 		if err != nil {
-			return sd, err
+			return nil, err
 		}
-		data.PositionData = pd.Data
+		data.PositionData = pd
 	}
 
 	if x, ok := wm.ThemeManager.(ThemeManagerDataProvider); ok {
 		td, err := x.StateData(ctx)
 		if err != nil {
-			return sd, err
+			return nil, err
 		}
-		data.ThemeData = td.Data
+		data.ThemeData = td
 	}
 
-	sd.Data = data
-
-	return sd, nil
+	return data, nil
 }
 
 func (wm *Manager) RestoreWindows(ctx context.Context, data *WindowData) error {

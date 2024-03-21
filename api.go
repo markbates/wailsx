@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"sync"
 
 	"github.com/markbates/safe"
 	"github.com/markbates/wailsx/clipx"
@@ -11,7 +12,6 @@ import (
 	"github.com/markbates/wailsx/eventx"
 	"github.com/markbates/wailsx/logx"
 	"github.com/markbates/wailsx/menux"
-	"github.com/markbates/wailsx/statedata"
 	"github.com/markbates/wailsx/wailsrun"
 	"github.com/markbates/wailsx/windowx"
 )
@@ -61,42 +61,43 @@ type API struct {
 
 	BrowserOpenURLFn func(ctx context.Context, url string) error `json:"-"`
 	QuitFn           func(ctx context.Context) error             `json:"-"`
+
+	mu sync.RWMutex
 }
 
-func (api *API) StateData(ctx context.Context) (statedata.Data[*APIData], error) {
-	sd := statedata.Data[*APIData]{}
-
+func (api *API) StateData(ctx context.Context) (*APIData, error) {
 	if api == nil {
-		return sd, fmt.Errorf("api is nil")
+		return nil, fmt.Errorf("api is nil")
 	}
+
+	api.mu.RLock()
+	defer api.mu.RUnlock()
 
 	data := &APIData{}
 
 	if x, ok := api.WindowManager.(windowx.StateDataProvider); ok {
 		wd, err := x.StateData(ctx)
 		if err != nil {
-			return sd, err
+			return nil, err
 		}
 
-		if wd.Data != nil {
-			data.Window = wd.Data
+		if wd != nil {
+			data.Window = wd
 		}
 	}
 
 	if x, ok := api.EventManager.(eventx.StateDataProvider); ok {
 		ed, err := x.StateData(ctx)
 		if err != nil {
-			return sd, err
+			return nil, err
 		}
 
-		if ed.Data != nil {
-			data.Events = ed.Data
+		if ed != nil {
+			data.Events = ed
 		}
 	}
 
-	sd.Data = data
-
-	return sd, nil
+	return data, nil
 }
 
 func (api *API) BrowserOpenURL(ctx context.Context, url string) error {

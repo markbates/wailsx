@@ -10,12 +10,14 @@ import (
 
 type PluginDataProvider interface {
 	plugins.Plugin
-	StateData(ctx context.Context) (statedata.Data[any], error)
+	statedata.DataProvider[any]
 }
 
-type PluginDataProviderFn func(ctx context.Context) (statedata.Data[any], error)
+var _ PluginDataProvider = PluginDataProviderFn(nil)
 
-func (f PluginDataProviderFn) StateData(ctx context.Context) (statedata.Data[any], error) {
+type PluginDataProviderFn func(ctx context.Context) (any, error)
+
+func (f PluginDataProviderFn) StateData(ctx context.Context) (any, error) {
 	return f(ctx)
 }
 

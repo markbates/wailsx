@@ -3,6 +3,7 @@ package windowx
 import (
 	"context"
 	"fmt"
+	"sync"
 
 	"github.com/markbates/safe"
 	"github.com/markbates/wailsx/wailsrun"
@@ -41,6 +42,8 @@ type Maximiser struct {
 	WindowUnminimiseFn     func(ctx context.Context) error         `json:"-"`
 
 	data MaximiserData
+
+	mu sync.RWMutex
 }
 
 func (mm *Maximiser) WindowFullscreen(ctx context.Context) error {
@@ -286,4 +289,13 @@ func (mm *Maximiser) RestoreMaximiser(ctx context.Context, data *MaximiserData) 
 	}
 
 	return nil
+}
+
+func (mm *Maximiser) StateData(ctx context.Context) (*MaximiserData, error) {
+	if mm == nil {
+		return nil, fmt.Errorf("maximiser manager is nil")
+	}
+	mm.mu.RLock()
+	defer mm.mu.RUnlock()
+	return mm.data.StateData(ctx)
 }

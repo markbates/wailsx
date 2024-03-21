@@ -70,10 +70,9 @@ func Test_Manager_StateData_JSON(t *testing.T) {
 		},
 	}
 
-	sd, err := em.StateData(ctx)
+	data, err := em.StateData(ctx)
 	r.NoError(err)
 
-	data := sd.Data
 	r.Len(data.Emitted, 1)
 	r.Len(data.Caught, 1)
 
@@ -119,7 +118,7 @@ func Test_Manager_DisableStateData(t *testing.T) {
 
 	sd, err := em.StateData(ctx)
 	r.NoError(err)
-	r.Nil(sd.Data)
+	r.Nil(sd)
 }
 
 func Test_Nil_Manager(t *testing.T) {

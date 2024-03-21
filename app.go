@@ -6,7 +6,6 @@ import (
 	"sync"
 
 	"github.com/markbates/plugins"
-	"github.com/markbates/wailsx/statedata"
 	"github.com/markbates/wailsx/wailsrun"
 )
 
@@ -100,11 +99,9 @@ func (app *App) PluginName() string {
 	return fmt.Sprintf("%T: %s", app, app.Name)
 }
 
-func (app *App) StateData(ctx context.Context) (statedata.Data[AppData], error) {
-	sd := statedata.Data[AppData]{}
-
+func (app *App) StateData(ctx context.Context) (*AppData, error) {
 	if app == nil {
-		return sd, fmt.Errorf("app is nil")
+		return nil, fmt.Errorf("app is nil")
 	}
 
 	app.mu.RLock()
@@ -112,12 +109,12 @@ func (app *App) StateData(ctx context.Context) (statedata.Data[AppData], error) 
 
 	api, err := app.API.StateData(ctx)
 	if err != nil {
-		return sd, err
+		return nil, err
 	}
 
-	data := AppData{
+	data := &AppData{
 		AppName: app.Name,
-		API:     api.Data,
+		API:     api,
 		Plugins: map[string]any{},
 	}
 
@@ -129,18 +126,16 @@ func (app *App) StateData(ctx context.Context) (statedata.Data[AppData], error) 
 
 		pd, err := sdp.StateData(ctx)
 		if err != nil {
-			return sd, err
+			return nil, err
 		}
 
 		data.Plugins[p.PluginName()] = pd
 	}
 
-	sd.Data = data
-
-	return sd, nil
+	return data, nil
 }
 
-func (app *App) RestoreAPP(ctx context.Context, data AppData) error {
+func (app *App) RestoreAPP(ctx context.Context, data *AppData) error {
 	if app == nil {
 		return fmt.Errorf("app is nil")
 	}

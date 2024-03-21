@@ -2,8 +2,6 @@ package windowx
 
 import (
 	"context"
-
-	"github.com/markbates/wailsx/statedata"
 )
 
 type MaximiseManager interface {
@@ -22,7 +20,7 @@ type MaximiseManager interface {
 
 type MaximiseManagerDataProvider interface {
 	MaximiseManager
-	StateData(ctx context.Context) (statedata.Data[*MaximiserData], error)
+	StateData(ctx context.Context) (*MaximiserData, error)
 }
 
 type RestorableMaximiseManager interface {

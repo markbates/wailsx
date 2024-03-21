@@ -2,8 +2,6 @@ package clipx
 
 import (
 	"context"
-
-	"github.com/markbates/wailsx/statedata"
 )
 
 type ClipboardManager interface {
@@ -13,7 +11,7 @@ type ClipboardManager interface {
 
 type ClipboardManagerDataProvider interface {
 	ClipboardManager
-	StateData(ctx context.Context) (statedata.Data[string], error)
+	StateData(ctx context.Context) (string, error)
 }
 
 type RestorableClipboardManager interface {

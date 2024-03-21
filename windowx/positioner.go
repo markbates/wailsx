@@ -3,6 +3,7 @@ package windowx
 import (
 	"context"
 	"fmt"
+	"sync"
 
 	"github.com/markbates/safe"
 	"github.com/markbates/wailsx/wailsrun"
@@ -40,6 +41,8 @@ type Positioner struct {
 	DefH int `json:"def_h"`
 
 	data PositionData
+
+	mu sync.RWMutex
 }
 
 func (pm *Positioner) InitPosX() int {
@@ -281,4 +284,14 @@ func (pm *Positioner) RestorePosition(ctx context.Context, data *PositionData) e
 	}
 
 	return nil
+}
+
+func (pm *Positioner) StateData(ctx context.Context) (*PositionData, error) {
+	if pm == nil {
+		return nil, fmt.Errorf("positioner manager is nil")
+	}
+
+	pm.mu.RLock()
+	defer pm.mu.RUnlock()
+	return pm.data.StateData(ctx)
 }

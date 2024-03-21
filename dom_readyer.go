@@ -9,6 +9,8 @@ type DomReadyer interface {
 	DomReady(ctx context.Context) error
 }
 
+var _ DomReadyer = DomReadyerFn(nil)
+
 type DomReadyerFn func(ctx context.Context) error
 
 func (f DomReadyerFn) DomReady(ctx context.Context) error {

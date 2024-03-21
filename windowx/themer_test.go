@@ -227,7 +227,7 @@ func Test_Themer_StateData(t *testing.T) {
 	sd, err := th.StateData(ctx)
 	r.NoError(err)
 
-	bg := sd.Data.BackgroundColour
+	bg := sd.BackgroundColour
 	r.Equal(1, int(bg.R))
 	r.Equal(2, int(bg.G))
 	r.Equal(3, int(bg.B))
@@ -238,21 +238,21 @@ func Test_Themer_StateData(t *testing.T) {
 	sd, err = th.StateData(ctx)
 	r.NoError(err)
 
-	r.Equal(THEME_DARK, sd.Data.Theme)
+	r.Equal(THEME_DARK, sd.Theme)
 
 	r.NoError(th.WindowSetLightTheme(ctx))
 
 	sd, err = th.StateData(ctx)
 	r.NoError(err)
 
-	r.Equal(THEME_LIGHT, sd.Data.Theme)
+	r.Equal(THEME_LIGHT, sd.Theme)
 
 	r.NoError(th.WindowSetSystemDefaultTheme(ctx))
 
 	sd, err = th.StateData(ctx)
 	r.NoError(err)
 
-	r.Equal(THEME_SYSTEM, sd.Data.Theme)
+	r.Equal(THEME_SYSTEM, sd.Theme)
 }
 
 func Test_Nil_Themer(t *testing.T) {

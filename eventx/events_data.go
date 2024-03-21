@@ -19,7 +19,7 @@ type EventsData struct {
 	Emitted   map[string][]Event          `json:"emitted,omitempty"` // emitted events
 	Caught    map[string][]Event          `json:"caught,omitempty"`  // caught events
 
-	mu sync.Mutex
+	mu sync.RWMutex
 }
 
 func (ev *EventsData) EmitEvent(event string, now time.Time, data ...any) error {
@@ -108,17 +108,24 @@ func (ev *EventsData) AddCallback(event string, cb CallbackFn, max int) error {
 	return nil
 }
 
-func (ev *EventsData) StateData(ctx context.Context) (statedata.Data[*EventsData], error) {
-	sd := statedata.Data[*EventsData]{
-		Data: ev,
+func (ev *EventsData) StateData(ctx context.Context) (*EventsData, error) {
+	if err := ev.init(); err != nil {
+		return nil, err
 	}
 
-	if err := ev.init(); err != nil {
-		return sd, err
-	}
+	ev.mu.RLock()
+	defer ev.mu.RUnlock()
 
 	if ev.DisableStateData {
-		sd.Data = nil
+		return nil, nil
+	}
+
+	sd := &EventsData{
+		DisableStateData:     ev.DisableStateData,
+		DisableWildcardEmits: ev.DisableWildcardEmits,
+		Callbacks:            ev.Callbacks,
+		Emitted:              ev.Emitted,
+		Caught:               ev.Caught,
 	}
 
 	return sd, nil

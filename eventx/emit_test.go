@@ -71,7 +71,7 @@ func Test_Manager_Emit(t *testing.T) {
 			sd, err := em.StateData(ctx)
 			r.NoError(err)
 
-			ed := sd.Data
+			ed := sd
 			r.Len(ed.Emitted, 2)
 			r.Len(ed.Caught, 0)
 		})
@@ -162,10 +162,9 @@ func Test_Manager_Emit_Args(t *testing.T) {
 			err := em.EventsEmit(ctx, event, tc.args...)
 			r.NoError(err)
 
-			sd, err := em.StateData(ctx)
+			ed, err := em.StateData(ctx)
 			r.NoError(err)
 
-			ed := sd.Data
 			r.Len(ed.Emitted, 1)
 			r.Len(ed.Emitted[event], 1)
 

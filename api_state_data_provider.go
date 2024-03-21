@@ -3,17 +3,15 @@ package wailsx
 import (
 	"context"
 	"fmt"
-
-	"github.com/markbates/wailsx/statedata"
 )
 
 type APIStateDataProvider interface {
-	StateData(ctx context.Context) (statedata.Data[*APIData], error)
+	StateData(ctx context.Context) (*APIData, error)
 }
 
-type APIStateDataProviderFn func(ctx context.Context) (statedata.Data[*APIData], error)
+type APIStateDataProviderFn func(ctx context.Context) (*APIData, error)
 
-func (f APIStateDataProviderFn) StateData(ctx context.Context) (statedata.Data[*APIData], error) {
+func (f APIStateDataProviderFn) StateData(ctx context.Context) (*APIData, error) {
 	return f(ctx)
 }
 

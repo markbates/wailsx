@@ -9,6 +9,8 @@ type BeforeCloser interface {
 	BeforeClose(ctx context.Context) error
 }
 
+var _ BeforeCloser = BeforeCloserFn(nil)
+
 type BeforeCloserFn func(ctx context.Context) error
 
 func (f BeforeCloserFn) BeforeClose(ctx context.Context) error {

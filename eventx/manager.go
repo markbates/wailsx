@@ -18,6 +18,7 @@ type EventManagerNeeder interface {
 var _ EventManagerDataProvider = &Manager{}
 var _ RestorableEventManager = &Manager{}
 var _ plugins.Needer = &Manager{}
+var _ statedata.DataProvider[*EventsData] = &Manager{}
 
 type Manager struct {
 	DisableWildcardEmits bool
@@ -54,9 +55,9 @@ func (em *Manager) WithPlugins(fn plugins.FeederFn) error {
 	return nil
 }
 
-func (em *Manager) StateData(ctx context.Context) (statedata.Data[*EventsData], error) {
+func (em *Manager) StateData(ctx context.Context) (*EventsData, error) {
 	if em == nil {
-		return statedata.Data[*EventsData]{}, fmt.Errorf("error manager is nil")
+		return nil, fmt.Errorf("error manager is nil")
 	}
 
 	return em.data.StateData(ctx)

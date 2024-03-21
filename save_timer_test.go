@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/markbates/wailsx/eventx"
-	"github.com/markbates/wailsx/statedata"
 	"github.com/markbates/wailsx/wailstest"
 	"github.com/stretchr/testify/require"
 )
@@ -45,10 +44,9 @@ func Test_SaveTimer_Save_Loop(t *testing.T) {
 
 	<-ctx.Done()
 
-	sd, err := em.StateData(ctx)
+	data, err := em.StateData(ctx)
 	r.NoError(err)
 
-	data := sd.Data
 	r.Len(data.Emitted, 3)
 
 	evnts := data.Emitted[EvtSaveTimerSaveStarted]
@@ -63,7 +61,7 @@ func Test_SaveTimer_Save_Loop(t *testing.T) {
 
 	msg := msgs[0]
 	r.NotNil(msg)
-	_, ok := msg.MsgData().(statedata.Data[AppData])
+	_, ok := msg.MsgData().(*AppData)
 	r.True(ok, fmt.Sprintf("%T", msg.MsgData()))
 
 	evnts = data.Emitted[EvtSaveTimerSaveFinished]
@@ -97,10 +95,9 @@ func Test_SaveTimer_Save_Once(t *testing.T) {
 
 	<-ctx.Done()
 
-	sd, err := em.StateData(ctx)
+	data, err := em.StateData(ctx)
 	r.NoError(err)
 
-	data := sd.Data
 	r.GreaterOrEqual(len(data.Emitted), 2)
 
 	evt := data.Emitted[EvtSaveTimerSaveStarted]
@@ -159,10 +156,9 @@ func Test_SaveTimer_Save_Error(t *testing.T) {
 
 			<-ctx.Done()
 
-			sd, err := em.StateData(ctx)
+			data, err := em.StateData(ctx)
 			r.NoError(err)
 
-			data := sd.Data
 			r.Len(data.Emitted, 4)
 
 			evt := data.Emitted[EvtSaveTimerSaveStarted]

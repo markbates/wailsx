@@ -123,7 +123,7 @@ func Test_MaximiserData_StateData(t *testing.T) {
 	sd, err := md.StateData(ctx)
 	r.NoError(err)
 
-	r.Equal(md, sd.Data)
+	r.Equal(md, sd)
 }
 
 func Test_Maximiser_PluginName(t *testing.T) {

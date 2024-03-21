@@ -132,13 +132,16 @@ func (md *MaximiserData) ToggleMaximised() error {
 	return nil
 }
 
-func (md *MaximiserData) StateData(ctx context.Context) (statedata.Data[*MaximiserData], error) {
-	sd := statedata.Data[*MaximiserData]{
-		Data: md,
+func (md *MaximiserData) StateData(ctx context.Context) (*MaximiserData, error) {
+	if md == nil {
+		return md, fmt.Errorf("maximiser data is nil")
 	}
 
-	if md == nil {
-		return sd, fmt.Errorf("maximiser data is nil")
+	md.mu.RLock()
+	defer md.mu.RUnlock()
+
+	sd := &MaximiserData{
+		Layout: md.Layout,
 	}
 
 	return sd, nil

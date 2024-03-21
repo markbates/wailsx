@@ -4,8 +4,6 @@ import (
 	"context"
 	"fmt"
 	"sync"
-
-	"github.com/markbates/wailsx/statedata"
 )
 
 const (
@@ -80,8 +78,18 @@ func (th *ThemeData) PluginName() string {
 	return fmt.Sprintf("%T", th)
 }
 
-func (th *ThemeData) StateData(ctx context.Context) (statedata.Data[*ThemeData], error) {
-	return statedata.Data[*ThemeData]{
-		Data: th,
-	}, nil
+func (th *ThemeData) StateData(ctx context.Context) (*ThemeData, error) {
+	if th == nil {
+		return th, fmt.Errorf("themer is nil")
+	}
+
+	th.mu.RLock()
+	defer th.mu.RUnlock()
+
+	sd := &ThemeData{
+		BackgroundColour: th.BackgroundColour,
+		Theme:            th.Theme,
+	}
+
+	return sd, nil
 }

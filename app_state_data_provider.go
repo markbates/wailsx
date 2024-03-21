@@ -5,17 +5,16 @@ import (
 	"fmt"
 
 	"github.com/markbates/plugins"
-	"github.com/markbates/wailsx/statedata"
 )
 
 type AppStateDataProvider interface {
 	plugins.Plugin
-	StateData(ctx context.Context) (statedata.Data[AppData], error)
+	StateData(ctx context.Context) (*AppData, error)
 }
 
-type AppStateDataProviderFn func(ctx context.Context) (statedata.Data[AppData], error)
+type AppStateDataProviderFn func(ctx context.Context) (*AppData, error)
 
-func (f AppStateDataProviderFn) StateData(ctx context.Context) (statedata.Data[AppData], error) {
+func (f AppStateDataProviderFn) StateData(ctx context.Context) (*AppData, error) {
 	return f(ctx)
 }
 

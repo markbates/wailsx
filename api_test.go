@@ -178,15 +178,15 @@ func Test_API_StateData(t *testing.T) {
 	err = api.EventsEmit(ctx, event, 42)
 	r.NoError(err)
 
-	sd, err := api.StateData(ctx)
+	data, err := api.StateData(ctx)
 	r.NoError(err)
 
-	r.NotNil(sd.Data)
+	r.NotNil(data)
 
-	ed := sd.Data.Events
+	ed := data.Events
 	r.NotNil(ed)
 
-	wd := sd.Data.Window
+	wd := data.Window
 	r.NotNil(wd)
 
 	r.Equal(h, wd.H)
@@ -198,7 +198,7 @@ func Test_API_StateData(t *testing.T) {
 	r.Equal(x, wd.X)
 	r.Equal(y, wd.Y)
 
-	b, err := json.Marshal(sd)
+	b, err := json.Marshal(data)
 	r.NoError(err)
 
 	act := string(b)

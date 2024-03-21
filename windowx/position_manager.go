@@ -2,8 +2,6 @@ package windowx
 
 import (
 	"context"
-
-	"github.com/markbates/wailsx/statedata"
 )
 
 type PositionManager interface {
@@ -18,7 +16,7 @@ type PositionManager interface {
 
 type PositionManagerDataProvider interface {
 	PositionManager
-	StateData(ctx context.Context) (statedata.Data[*PositionData], error)
+	StateData(ctx context.Context) (*PositionData, error)
 }
 
 type RestorablePositionManager interface {
