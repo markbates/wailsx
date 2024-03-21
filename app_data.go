@@ -3,21 +3,21 @@ package wailsx
 import (
 	"context"
 	"fmt"
-	"sync"
 )
 
-// var _ statedata.StateDataProvider[*AppData] = &AppData{}
 var _ AppStateDataProvider = &AppData{}
 
 type AppData struct {
 	AppName string         `json:"app_name,omitempty"` // application name
 	API     *APIData       `json:"api,omitempty"`
 	Plugins map[string]any `json:"plugins,omitempty"`
-
-	mu sync.RWMutex
 }
 
 func (ad *AppData) StateData(ctx context.Context) (*AppData, error) {
+	if ad == nil {
+		return nil, fmt.Errorf("app data is nil")
+	}
+
 	return ad, nil
 }
 

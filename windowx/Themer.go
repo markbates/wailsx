@@ -3,7 +3,6 @@ package windowx
 import (
 	"context"
 	"fmt"
-	"sync"
 
 	"github.com/markbates/safe"
 	"github.com/markbates/wailsx/wailsrun"
@@ -28,7 +27,6 @@ type Themer struct {
 	WindowSetSystemDefaultThemeFn func(ctx context.Context) error                   `json:"-"`
 
 	data ThemeData
-	mu   sync.RWMutex
 }
 
 func (th *Themer) WindowSetDarkTheme(ctx context.Context) error {

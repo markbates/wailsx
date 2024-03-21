@@ -287,12 +287,12 @@ func Test_Manager_StateData(t *testing.T) {
 
 	var wm *Manager
 
-	sd, err := wm.StateData(ctx)
+	_, err := wm.StateData(ctx)
 	r.NoError(err)
 
 	wm = &Manager{}
 
-	sd, err = wm.StateData(ctx)
+	sd, err := wm.StateData(ctx)
 	r.NoError(err)
 
 	r.Nil(sd.MaximiserData)
