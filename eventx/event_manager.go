@@ -17,3 +17,8 @@ type EventManagerDataProvider interface {
 	EventManager
 	StateDataProvider
 }
+
+type RestorableEventManager interface {
+	EventManager
+	RestoreEvents(ctx context.Context, data *EventsData) error
+}

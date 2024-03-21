@@ -14,15 +14,15 @@ func Test_Data(t *testing.T) {
 
 	ctx := context.Background()
 
-	ds := Data[string]{Name: "test", Data: "test"}
-	r.Equal("statedata.Data[string]: test", ds.PluginName())
+	ds := Data[string]{Data: "test"}
+	r.Equal("statedata.Data[string]", ds.PluginName())
 
 	sds, err := ds.StateData(ctx)
 	r.NoError(err)
 	r.Equal(ds, sds)
 
-	di := Data[int]{Name: "test", Data: 1}
-	r.Equal("statedata.Data[int]: test", di.PluginName())
+	di := Data[int]{Data: 1}
+	r.Equal("statedata.Data[int]", di.PluginName())
 
 	sdi, err := di.StateData(ctx)
 	r.NoError(err)

@@ -17,3 +17,8 @@ type ThemeManagerDataProvider interface {
 	ThemeManager
 	StateData(ctx context.Context) (statedata.Data[*ThemeData], error)
 }
+
+type RestorableThemeManager interface {
+	ThemeManager
+	RestoreTheme(ctx context.Context, data *ThemeData) error
+}

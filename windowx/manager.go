@@ -2,6 +2,7 @@ package windowx
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/markbates/safe"
 	"github.com/markbates/wailsx/statedata"
@@ -9,6 +10,7 @@ import (
 )
 
 var _ WindowManagerDataProvider = &Manager{}
+var _ RestorableWindowManager = &Manager{}
 
 type Manager struct {
 	MaximiseManager
@@ -114,9 +116,7 @@ func (wm Manager) WindowSetTitle(ctx context.Context, title string) error {
 }
 
 func (wm *Manager) StateData(ctx context.Context) (statedata.Data[*WindowData], error) {
-	sd := statedata.Data[*WindowData]{
-		Name: ManagerStateDataName,
-	}
+	sd := statedata.Data[*WindowData]{}
 
 	if wm == nil {
 		return sd, nil
@@ -151,4 +151,59 @@ func (wm *Manager) StateData(ctx context.Context) (statedata.Data[*WindowData], 
 	sd.Data = data
 
 	return sd, nil
+}
+
+func (wm *Manager) RestoreWindows(ctx context.Context, data *WindowData) error {
+	if wm == nil {
+		return fmt.Errorf("manager is nil")
+	}
+
+	if data == nil {
+		return fmt.Errorf("data is nil")
+	}
+
+	md := data.MaximiserData
+	pd := data.PositionData
+	td := data.ThemeData
+
+	if md != nil {
+		if err := wm.restoreMaximiser(ctx, md); err != nil {
+			return err
+		}
+	}
+
+	if pd != nil {
+		if err := wm.restorePosition(ctx, pd); err != nil {
+			return err
+		}
+	}
+
+	if td != nil {
+		if err := wm.restoreTheme(ctx, td); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (wm *Manager) restoreMaximiser(ctx context.Context, data *MaximiserData) error {
+	if x, ok := wm.MaximiseManager.(RestorableMaximiseManager); ok {
+		return x.RestoreMaximiser(ctx, data)
+	}
+	return nil
+}
+
+func (wm *Manager) restorePosition(ctx context.Context, data *PositionData) error {
+	if x, ok := wm.PositionManager.(RestorablePositionManager); ok {
+		return x.RestorePosition(ctx, data)
+	}
+	return nil
+}
+
+func (wm *Manager) restoreTheme(ctx context.Context, data *ThemeData) error {
+	if x, ok := wm.ThemeManager.(RestorableThemeManager); ok {
+		return x.RestoreTheme(ctx, data)
+	}
+	return nil
 }

@@ -13,6 +13,7 @@ import (
 )
 
 func Test_SaveTimer_Save_Loop(t *testing.T) {
+
 	t.Parallel()
 	r := require.New(t)
 
@@ -70,6 +71,7 @@ func Test_SaveTimer_Save_Loop(t *testing.T) {
 }
 
 func Test_SaveTimer_Save_Once(t *testing.T) {
+
 	t.Parallel()
 	r := require.New(t)
 
@@ -109,6 +111,7 @@ func Test_SaveTimer_Save_Once(t *testing.T) {
 }
 
 func Test_SaveTimer_Save_Error(t *testing.T) {
+
 	t.Parallel()
 
 	ctx, cancel := context.WithCancel(context.Background())

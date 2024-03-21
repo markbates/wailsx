@@ -2,6 +2,7 @@ package windowx
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/markbates/safe"
 	"github.com/markbates/wailsx/wailsrun"
@@ -266,6 +267,23 @@ func (mm *Maximiser) WindowToggleMaximise(ctx context.Context) error {
 	})
 }
 
-func (mm *Maximiser) MaximiseRestore(ctx context.Context, data *MaximiserData) error {
+func (mm *Maximiser) RestoreMaximiser(ctx context.Context, data *MaximiserData) error {
+	if mm == nil {
+		return fmt.Errorf("maximiser is nil")
+	}
+
+	if data == nil {
+		return fmt.Errorf("maximiser data is nil")
+	}
+
+	switch data.Layout {
+	case WINDOW_MAXIMISED:
+		return mm.WindowMaximise(ctx)
+	case WINDOW_MINIMISED:
+		return mm.WindowMinimise(ctx)
+	case WINDOW_FULLSCREEN:
+		return mm.WindowFullscreen(ctx)
+	}
+
 	return nil
 }

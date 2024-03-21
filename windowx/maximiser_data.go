@@ -10,11 +10,15 @@ import (
 
 var _ statedata.DataProvider[*MaximiserData] = &MaximiserData{}
 
+const (
+	WINDOW_FULLSCREEN = "fullscreen"
+	WINDOW_MAXIMISED  = "maximised"
+	WINDOW_MINIMISED  = "minimised"
+	WINDOW_NORMAL     = ""
+)
+
 type MaximiserData struct {
-	IsFullscreen bool `json:"is_fullscreen,omitempty"`
-	IsMaximised  bool `json:"is_maximised,omitempty"`
-	IsMinimised  bool `json:"is_minimised,omitempty"`
-	IsNormal     bool `json:"is_normal,omitempty"`
+	Layout string `json:"layout,omitempty"`
 
 	mu sync.RWMutex
 }
@@ -27,10 +31,7 @@ func (md *MaximiserData) SetFullscreen() error {
 	md.mu.Lock()
 	defer md.mu.Unlock()
 
-	md.IsFullscreen = true
-	md.IsMaximised = false
-	md.IsMinimised = false
-	md.IsNormal = false
+	md.Layout = WINDOW_FULLSCREEN
 
 	return nil
 }
@@ -43,10 +44,7 @@ func (md *MaximiserData) SetMaximised() error {
 	md.mu.Lock()
 	defer md.mu.Unlock()
 
-	md.IsFullscreen = false
-	md.IsMaximised = true
-	md.IsMinimised = false
-	md.IsNormal = false
+	md.Layout = WINDOW_MAXIMISED
 
 	return nil
 }
@@ -59,10 +57,7 @@ func (md *MaximiserData) SetMinimised() error {
 	md.mu.Lock()
 	defer md.mu.Unlock()
 
-	md.IsFullscreen = false
-	md.IsMaximised = false
-	md.IsMinimised = true
-	md.IsNormal = false
+	md.Layout = WINDOW_MINIMISED
 
 	return nil
 }
@@ -75,10 +70,7 @@ func (md *MaximiserData) SetNormal() error {
 	md.mu.Lock()
 	defer md.mu.Unlock()
 
-	md.IsFullscreen = false
-	md.IsMaximised = false
-	md.IsMinimised = false
-	md.IsNormal = true
+	md.Layout = WINDOW_NORMAL
 
 	return nil
 }
@@ -91,10 +83,7 @@ func (md *MaximiserData) SetUnfullscreen() error {
 	md.mu.Lock()
 	defer md.mu.Unlock()
 
-	md.IsFullscreen = false
-	md.IsMaximised = false
-	md.IsMinimised = false
-	md.IsNormal = true
+	md.Layout = WINDOW_NORMAL
 
 	return nil
 }
@@ -107,10 +96,7 @@ func (md *MaximiserData) SetUnmaximised() error {
 	md.mu.Lock()
 	defer md.mu.Unlock()
 
-	md.IsFullscreen = false
-	md.IsMaximised = false
-	md.IsMinimised = false
-	md.IsNormal = true
+	md.Layout = WINDOW_NORMAL
 
 	return nil
 }
@@ -123,10 +109,7 @@ func (md *MaximiserData) SetUnminimised() error {
 	md.mu.Lock()
 	defer md.mu.Unlock()
 
-	md.IsFullscreen = false
-	md.IsMaximised = false
-	md.IsMinimised = false
-	md.IsNormal = true
+	md.Layout = WINDOW_NORMAL
 
 	return nil
 }
@@ -139,19 +122,18 @@ func (md *MaximiserData) ToggleMaximised() error {
 	md.mu.Lock()
 	defer md.mu.Unlock()
 
-	md.IsFullscreen = false
-	md.IsMaximised = !md.IsMaximised
-	if md.IsMaximised {
-		md.IsMinimised = false
+	if md.Layout == WINDOW_MAXIMISED {
+		md.Layout = WINDOW_NORMAL
+		return nil
 	}
-	md.IsNormal = !md.IsMaximised
+
+	md.Layout = WINDOW_MAXIMISED
 
 	return nil
 }
 
 func (md *MaximiserData) StateData(ctx context.Context) (statedata.Data[*MaximiserData], error) {
 	sd := statedata.Data[*MaximiserData]{
-		Name: MaximiserStateDataName,
 		Data: md,
 	}
 

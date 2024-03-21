@@ -16,11 +16,7 @@ func Test_MaximiserData_Fullscreen(t *testing.T) {
 
 	md = &MaximiserData{}
 	r.NoError(md.SetFullscreen())
-
-	r.True(md.IsFullscreen)
-	r.False(md.IsMaximised)
-	r.False(md.IsMinimised)
-	r.False(md.IsNormal)
+	r.Equal(WINDOW_FULLSCREEN, md.Layout)
 }
 
 func Test_MaximiserData_SetMaximised(t *testing.T) {
@@ -32,11 +28,7 @@ func Test_MaximiserData_SetMaximised(t *testing.T) {
 
 	md = &MaximiserData{}
 	r.NoError(md.SetMaximised())
-
-	r.False(md.IsFullscreen)
-	r.True(md.IsMaximised)
-	r.False(md.IsMinimised)
-	r.False(md.IsNormal)
+	r.Equal(WINDOW_MAXIMISED, md.Layout)
 }
 
 func Test_MaximiserData_SetMinimised(t *testing.T) {
@@ -48,11 +40,7 @@ func Test_MaximiserData_SetMinimised(t *testing.T) {
 
 	md = &MaximiserData{}
 	r.NoError(md.SetMinimised())
-
-	r.False(md.IsFullscreen)
-	r.False(md.IsMaximised)
-	r.True(md.IsMinimised)
-	r.False(md.IsNormal)
+	r.Equal(WINDOW_MINIMISED, md.Layout)
 }
 
 func Test_MaximiserData_SetNormal(t *testing.T) {
@@ -64,11 +52,7 @@ func Test_MaximiserData_SetNormal(t *testing.T) {
 
 	md = &MaximiserData{}
 	r.NoError(md.SetNormal())
-
-	r.False(md.IsFullscreen)
-	r.False(md.IsMaximised)
-	r.False(md.IsMinimised)
-	r.True(md.IsNormal)
+	r.Equal(WINDOW_NORMAL, md.Layout)
 }
 
 func Test_MaximiserData_SetUnfullscreen(t *testing.T) {
@@ -80,11 +64,7 @@ func Test_MaximiserData_SetUnfullscreen(t *testing.T) {
 
 	md = &MaximiserData{}
 	r.NoError(md.SetUnfullscreen())
-
-	r.False(md.IsFullscreen)
-	r.False(md.IsMaximised)
-	r.False(md.IsMinimised)
-	r.True(md.IsNormal)
+	r.Equal(WINDOW_NORMAL, md.Layout)
 }
 
 func Test_MaximiserData_SetUnmaximised(t *testing.T) {
@@ -96,11 +76,7 @@ func Test_MaximiserData_SetUnmaximised(t *testing.T) {
 
 	md = &MaximiserData{}
 	r.NoError(md.SetUnmaximised())
-
-	r.False(md.IsFullscreen)
-	r.False(md.IsMaximised)
-	r.False(md.IsMinimised)
-	r.True(md.IsNormal)
+	r.Equal(WINDOW_NORMAL, md.Layout)
 }
 
 func Test_MaximiserData_SetUnminimised(t *testing.T) {
@@ -112,11 +88,7 @@ func Test_MaximiserData_SetUnminimised(t *testing.T) {
 
 	md = &MaximiserData{}
 	r.NoError(md.SetUnminimised())
-
-	r.False(md.IsFullscreen)
-	r.False(md.IsMaximised)
-	r.False(md.IsMinimised)
-	r.True(md.IsNormal)
+	r.Equal(WINDOW_NORMAL, md.Layout)
 }
 
 func Test_MaximiserData_ToggleMaximised(t *testing.T) {
@@ -129,16 +101,10 @@ func Test_MaximiserData_ToggleMaximised(t *testing.T) {
 	md = &MaximiserData{}
 	r.NoError(md.ToggleMaximised())
 
-	r.False(md.IsFullscreen)
-	r.True(md.IsMaximised)
-	r.False(md.IsMinimised)
-	r.False(md.IsNormal)
+	r.Equal(WINDOW_MAXIMISED, md.Layout)
 
 	r.NoError(md.ToggleMaximised())
-	r.False(md.IsFullscreen)
-	r.False(md.IsMaximised)
-	r.False(md.IsMinimised)
-	r.True(md.IsNormal)
+	r.Equal(WINDOW_NORMAL, md.Layout)
 }
 
 func Test_MaximiserData_StateData(t *testing.T) {
@@ -157,7 +123,6 @@ func Test_MaximiserData_StateData(t *testing.T) {
 	sd, err := md.StateData(ctx)
 	r.NoError(err)
 
-	r.Equal(MaximiserStateDataName, sd.Name)
 	r.Equal(md, sd.Data)
 }
 

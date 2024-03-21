@@ -117,7 +117,7 @@ func Test_Maximiser_WindowFullscreen(t *testing.T) {
 			}
 
 			r.NoError(err)
-			r.True(mm.data.IsFullscreen)
+			r.Equal(WINDOW_FULLSCREEN, mm.data.Layout)
 		})
 	}
 }
@@ -359,7 +359,7 @@ func Test_Maximiser_WindowMaximise(t *testing.T) {
 			}
 
 			r.NoError(err)
-			r.True(mm.data.IsMaximised)
+			r.Equal(WINDOW_MAXIMISED, mm.data.Layout)
 		})
 	}
 }
@@ -418,7 +418,7 @@ func Test_Maximiser_WindowMinimise(t *testing.T) {
 			}
 
 			r.NoError(err)
-			r.True(mm.data.IsMinimised)
+			r.Equal(WINDOW_MINIMISED, mm.data.Layout)
 		})
 	}
 }
@@ -477,7 +477,7 @@ func Test_Maximiser_WindowUnfullscreen(t *testing.T) {
 			}
 
 			r.NoError(err)
-			r.False(mm.data.IsFullscreen)
+			r.Equal(WINDOW_NORMAL, mm.data.Layout)
 		})
 	}
 }
@@ -536,7 +536,7 @@ func Test_Maximiser_WindowUnmaximise(t *testing.T) {
 			}
 
 			r.NoError(err)
-			r.False(mm.data.IsMaximised)
+			r.Equal(WINDOW_NORMAL, mm.data.Layout)
 		})
 	}
 }
@@ -595,7 +595,7 @@ func Test_Maximiser_WindowUnminimise(t *testing.T) {
 			}
 
 			r.NoError(err)
-			r.False(mm.data.IsMinimised)
+			r.Equal(WINDOW_NORMAL, mm.data.Layout)
 		})
 	}
 }
@@ -706,7 +706,7 @@ func Test_Maximiser_WindowToggleMaximise(t *testing.T) {
 				WindowToggleMaximiseFn: tc.fn,
 			}
 
-			r.False(mm.data.IsMaximised)
+			r.Equal(WINDOW_NORMAL, mm.data.Layout)
 
 			err := mm.WindowToggleMaximise(ctx)
 
@@ -717,8 +717,8 @@ func Test_Maximiser_WindowToggleMaximise(t *testing.T) {
 			}
 
 			r.NoError(err)
-			r.True(mm.data.IsMaximised)
 
+			r.Equal(WINDOW_MAXIMISED, mm.data.Layout)
 		})
 	}
 
@@ -731,20 +731,17 @@ func Test_Maximiser_WindowToggleMaximise(t *testing.T) {
 			},
 		}
 
-		r.False(mm.data.IsMaximised)
-		r.False(mm.data.IsMinimised)
+		r.Equal(WINDOW_NORMAL, mm.data.Layout)
 
 		err := mm.WindowToggleMaximise(ctx)
 		r.NoError(err)
 
-		r.True(mm.data.IsMaximised)
-		r.False(mm.data.IsMinimised)
+		r.Equal(WINDOW_MAXIMISED, mm.data.Layout)
 
 		err = mm.WindowToggleMaximise(ctx)
 		r.NoError(err)
 
-		r.False(mm.data.IsMaximised)
-		r.False(mm.data.IsMinimised)
+		r.Equal(WINDOW_NORMAL, mm.data.Layout)
 
 	})
 }
@@ -766,5 +763,63 @@ func Test_NopMaximiser(t *testing.T) {
 	r.NotNil(mm.WindowUnfullscreenFn)
 	r.NotNil(mm.WindowUnmaximiseFn)
 	r.NotNil(mm.WindowUnminimiseFn)
+
+}
+
+func Test_Maximiser_RestoreMaximiser(t *testing.T) {
+	t.Parallel()
+	r := require.New(t)
+
+	ctx := context.Background()
+
+	var mm *Maximiser
+
+	data := &MaximiserData{}
+
+	err := mm.RestoreMaximiser(ctx, data)
+	r.Error(err)
+
+	mm = NopMaximiser()
+
+	err = mm.RestoreMaximiser(ctx, nil)
+	r.Error(err)
+
+	var layout string
+	mm.WindowFullscreenFn = func(ctx context.Context) error {
+		layout = WINDOW_FULLSCREEN
+		return nil
+	}
+
+	mm.WindowMaximiseFn = func(ctx context.Context) error {
+		layout = WINDOW_MAXIMISED
+		return nil
+	}
+
+	mm.WindowMinimiseFn = func(ctx context.Context) error {
+		layout = WINDOW_MINIMISED
+		return nil
+	}
+
+	err = mm.RestoreMaximiser(ctx, data)
+	r.NoError(err)
+	r.Equal(WINDOW_NORMAL, layout)
+
+	data.Layout = WINDOW_FULLSCREEN
+
+	err = mm.RestoreMaximiser(ctx, data)
+	r.NoError(err)
+	r.Equal(WINDOW_FULLSCREEN, layout)
+
+	data.Layout = WINDOW_MAXIMISED
+
+	err = mm.RestoreMaximiser(ctx, data)
+	r.NoError(err)
+	r.Equal(WINDOW_MAXIMISED, layout)
+
+	data.Layout = WINDOW_MINIMISED
+
+	err = mm.RestoreMaximiser(ctx, data)
+	r.NoError(err)
+	r.Equal(WINDOW_MINIMISED, layout)
 
 }

@@ -88,9 +88,7 @@ func (m *Manager) ClipboardSetText(ctx context.Context, text string) error {
 }
 
 func (m *Manager) StateData(ctx context.Context) (statedata.Data[string], error) {
-	sd := statedata.Data[string]{
-		Name: ClipboardManagerStateDataProviderName,
-	}
+	sd := statedata.Data[string]{}
 
 	if m == nil {
 		return sd, nil

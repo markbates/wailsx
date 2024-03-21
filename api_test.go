@@ -7,8 +7,10 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/markbates/wailsx/eventx"
 	"github.com/markbates/wailsx/wailsrun"
 	"github.com/markbates/wailsx/wailstest"
+	"github.com/markbates/wailsx/windowx"
 	"github.com/stretchr/testify/require"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 )
@@ -180,7 +182,6 @@ func Test_API_StateData(t *testing.T) {
 	r.NoError(err)
 
 	r.NotNil(sd.Data)
-	r.Equal(APIStateDataProviderName, sd.Name)
 
 	ed := sd.Data.Events
 	r.NotNil(ed)
@@ -797,4 +798,83 @@ func Test_NopAPI(t *testing.T) {
 			r.NoError(err)
 		})
 	}
+}
+
+var _ eventx.RestorableEventManager = &restoreableEvents{}
+
+type restoreableEvents struct {
+	eventx.EventManager
+	Data *eventx.EventsData
+}
+
+func (re *restoreableEvents) RestoreEvents(ctx context.Context, data *eventx.EventsData) error {
+	re.Data = data
+	return nil
+}
+
+var _ windowx.RestorableWindowManager = &restoreableWindow{}
+
+type restoreableWindow struct {
+	windowx.WindowManager
+	Data *windowx.WindowData
+}
+
+func (rw *restoreableWindow) RestoreWindows(ctx context.Context, data *windowx.WindowData) error {
+	rw.Data = data
+	return nil
+}
+
+func Test_API_RestoreAPI(t *testing.T) {
+	t.Parallel()
+	r := require.New(t)
+
+	ctx := context.Background()
+
+	var api *API
+
+	data := &APIData{}
+
+	err := api.RestoreAPI(ctx, data)
+	r.Error(err)
+
+	api = NopAPI()
+
+	err = api.RestoreAPI(ctx, nil)
+	r.Error(err)
+
+	em := &restoreableEvents{
+		EventManager: eventx.NopManager(),
+	}
+	api.EventManager = em
+
+	wm := &restoreableWindow{
+		WindowManager: windowx.NopManager(),
+	}
+
+	api.WindowManager = wm
+
+	data = &APIData{
+		Events: &eventx.EventsData{
+			DisableWildcardEmits: true,
+		},
+		Window: &windowx.WindowData{
+			MaximiserData: &windowx.MaximiserData{
+				Layout: windowx.WINDOW_MAXIMISED,
+			},
+			PositionData: &windowx.PositionData{
+				X: 100,
+				Y: 200,
+			},
+			ThemeData: &windowx.ThemeData{
+				Theme: windowx.THEME_DARK,
+			},
+		},
+	}
+
+	err = api.RestoreAPI(ctx, data)
+	r.NoError(err)
+
+	r.Equal(data.Events, em.Data)
+	r.Equal(data.Window, wm.Data)
+
 }

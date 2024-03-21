@@ -4,9 +4,13 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"os"
+	"strings"
 	"testing"
 
+	"github.com/markbates/wailsx/eventx"
 	"github.com/markbates/wailsx/statedata"
+	"github.com/markbates/wailsx/windowx"
 	"github.com/stretchr/testify/require"
 )
 
@@ -26,7 +30,6 @@ func (i intProvider) PluginName() string {
 
 func (i intProvider) StateData(ctx context.Context) (statedata.Data[any], error) {
 	sd := statedata.Data[any]{
-		Name: "int-data",
 		Data: int(i),
 	}
 
@@ -41,7 +44,6 @@ func (s stringProvider) PluginName() string {
 
 func (s stringProvider) StateData(ctx context.Context) (statedata.Data[any], error) {
 	sd := statedata.Data[any]{
-		Name: "string-data",
 		Data: string(s),
 	}
 
@@ -49,6 +51,7 @@ func (s stringProvider) StateData(ctx context.Context) (statedata.Data[any], err
 }
 
 func Test_NewApp(t *testing.T) {
+	// t.Skip()
 	t.Parallel()
 	r := require.New(t)
 
@@ -78,6 +81,7 @@ func Test_NewApp(t *testing.T) {
 }
 
 func Test_NopApp(t *testing.T) {
+	// t.Skip()
 	t.Parallel()
 	r := require.New(t)
 
@@ -124,8 +128,6 @@ func Test_App_StateData(t *testing.T) {
 	sd, err := app.StateData(ctx)
 	r.NoError(err)
 
-	r.Equal(AppStateDataProviderName, sd.Name)
-
 	api := sd.Data.API
 	r.NotNil(api)
 
@@ -138,7 +140,16 @@ func Test_App_StateData(t *testing.T) {
 	act := string(b)
 	// fmt.Println(act)
 
-	exp := `{"name":"app","data":{"app_name":"test","api":{"events":{},"window":{"maximiser":{},"positioner":{},"themer":{"background_colour":{}}}},"plugins":{"wailsx.intProvider: 42":{"name":"int-data","data":42},"wailsx.stringProvider: hello":{"name":"string-data","data":"hello"}}}}`
+	// f, err := os.Create("testdata/app1.json")
+	// r.NoError(err)
+	// f.WriteString(act)
+	// r.NoError(f.Close())
+
+	b, err = os.ReadFile("testdata/app1.json")
+	r.NoError(err)
+
+	exp := string(b)
+	exp = strings.TrimSpace(exp)
 
 	r.Equal(exp, act)
 
@@ -172,12 +183,129 @@ func Test_App_StateData(t *testing.T) {
 	r.NoError(err)
 
 	b, err = json.Marshal(sd)
-
 	r.NoError(err)
 
 	act = string(b)
+
 	// fmt.Println(act)
-	exp = `{"name":"app","data":{"app_name":"test","api":{"events":{"callbacks":{"event:test":{"called":1,"max_calls":0,"off":false}},"emitted":{"*":[{"name":"*","data":[{"data":"my data","event":"event:test","text":"my data","time":"2024-01-01T00:00:00Z"}],"emitted_at":"2024-01-01T00:00:00Z"}],"event:test":[{"name":"event:test","data":[{"data":"my data","event":"event:test","text":"my data","time":"2024-01-01T00:00:00Z"}],"emitted_at":"2024-01-01T00:00:00Z"}]},"caught":{"event:test":[{"name":"event:test","data":[{"data":"my data","event":"event:test","text":"my data","time":"2024-01-01T00:00:00Z"}],"emitted_at":"2024-01-01T00:00:00Z"}]}},"window":{"maximiser":{"is_maximised":true},"positioner":{"x":10,"y":20,"w":100,"h":200},"themer":{"background_colour":{"r":1,"g":2,"b":3,"a":4},"is_system_theme":true}}},"plugins":{"wailsx.intProvider: 42":{"name":"int-data","data":42},"wailsx.stringProvider: hello":{"name":"string-data","data":"hello"}}}}`
+	// f, err := os.Create("testdata/app2.json")
+	// r.NoError(err)
+	// f.WriteString(act)
+	// r.NoError(f.Close())
+
+	b, err = os.ReadFile("testdata/app2.json")
+	r.NoError(err)
+
+	exp = string(b)
+	exp = strings.TrimSpace(exp)
 
 	r.Equal(exp, act)
+}
+
+func Test_App_RestoreAPP(t *testing.T) {
+	// t.Skip()
+	t.Parallel()
+	r := require.New(t)
+
+	ctx := context.Background()
+
+	var app *App
+	err := app.RestoreAPP(ctx, AppData{})
+	r.Error(err)
+
+	app, err = NopApp("test")
+	r.NoError(err)
+	r.Equal("test", app.Name)
+
+	em := &restoreableEvents{
+		EventManager: eventx.NopManager(),
+	}
+	app.EventManager = em
+
+	wm := &restoreableWindow{
+		WindowManager: windowx.NopManager(),
+	}
+	app.WindowManager = wm
+
+	err = app.RestoreAPP(ctx, AppData{})
+	r.NoError(err)
+
+	data := AppData{
+		AppName: "My App",
+		API: &APIData{
+			Events: &eventx.EventsData{
+				Callbacks: map[string]*eventx.CallbackCounter{
+					"event:test": {
+						Called: 1,
+					},
+				},
+			},
+			Window: &windowx.WindowData{
+				ThemeData: &windowx.ThemeData{
+					Theme: windowx.THEME_DARK,
+				},
+			},
+		},
+	}
+
+	err = app.RestoreAPP(ctx, data)
+	r.NoError(err)
+
+	r.Equal("My App", app.Name)
+	r.Equal(data.API.Events, em.Data)
+	r.Equal(data.API.Window, wm.Data)
+
+}
+
+var _ PluginDataProvider = &restoreablePlugin{}
+var _ RestorablePlugin = &restoreablePlugin{}
+
+type restoreablePlugin struct {
+	Data int
+}
+
+func (r *restoreablePlugin) PluginName() string {
+	return fmt.Sprintf("%T", r)
+}
+
+func (r *restoreablePlugin) StateData(ctx context.Context) (statedata.Data[any], error) {
+	sd := statedata.Data[any]{
+		Data: r.Data,
+	}
+
+	return sd, nil
+}
+
+func (r *restoreablePlugin) RestorePlugin(ctx context.Context, data any) error {
+	i, ok := data.(int)
+	if !ok {
+		return fmt.Errorf("invalid data type: %T", data)
+	}
+	r.Data = i
+	return nil
+}
+
+func Test_App_RestoreAPP_Plugins(t *testing.T) {
+
+	t.Parallel()
+	r := require.New(t)
+
+	rp := &restoreablePlugin{}
+
+	app, err := NopApp("My App", rp)
+	r.NoError(err)
+	r.Equal("My App", app.Name)
+
+	data := AppData{
+		AppName: "My App",
+		Plugins: map[string]any{
+			rp.PluginName(): 42,
+		},
+	}
+
+	err = app.RestoreAPP(context.Background(), data)
+	r.NoError(err)
+
+	r.Equal(42, rp.Data)
+
 }

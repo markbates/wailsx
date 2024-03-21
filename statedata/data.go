@@ -8,12 +8,11 @@ import (
 var _ DataProvider[any] = Data[any]{}
 
 type Data[T any] struct {
-	Name string `json:"name,omitempty"` // name of the data
-	Data T      `json:"data,omitempty"` // data for the state
+	Data T `json:"data,omitempty"` // data for the state
 }
 
 func (sd Data[T]) PluginName() string {
-	return fmt.Sprintf("%T: %s", sd, sd.Name)
+	return fmt.Sprintf("%T", sd)
 }
 
 func (sd Data[T]) StateData(ctx context.Context) (Data[T], error) {

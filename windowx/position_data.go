@@ -21,7 +21,7 @@ type PositionData struct {
 	MinW       int  `json:"min_w,omitempty"`
 	MinH       int  `json:"min_h,omitempty"`
 
-	my sync.Mutex
+	mu sync.Mutex
 }
 
 func (pd *PositionData) SetCentered() error {
@@ -29,8 +29,8 @@ func (pd *PositionData) SetCentered() error {
 		return fmt.Errorf("positioner data is nil")
 	}
 
-	pd.my.Lock()
-	defer pd.my.Unlock()
+	pd.mu.Lock()
+	defer pd.mu.Unlock()
 
 	pd.IsCentered = true
 	return nil
@@ -45,8 +45,8 @@ func (pd *PositionData) SetPosition(x, y int) error {
 		return fmt.Errorf("x or y is less than 0: %d, %d", x, y)
 	}
 
-	pd.my.Lock()
-	defer pd.my.Unlock()
+	pd.mu.Lock()
+	defer pd.mu.Unlock()
 
 	pd.X = x
 	pd.Y = y
@@ -62,8 +62,8 @@ func (pd *PositionData) SetSize(w, h int) error {
 		return fmt.Errorf("w or h is less than 0: %d, %d", w, h)
 	}
 
-	pd.my.Lock()
-	defer pd.my.Unlock()
+	pd.mu.Lock()
+	defer pd.mu.Unlock()
 
 	pd.W = w
 	pd.H = h
@@ -79,8 +79,8 @@ func (pd *PositionData) SetMaxSize(w, h int) error {
 		return fmt.Errorf("w or h is less than 0: %d, %d", w, h)
 	}
 
-	pd.my.Lock()
-	defer pd.my.Unlock()
+	pd.mu.Lock()
+	defer pd.mu.Unlock()
 
 	pd.MaxW = w
 	pd.MaxH = h
@@ -96,8 +96,8 @@ func (pd *PositionData) SetMinSize(w, h int) error {
 		return fmt.Errorf("w or h is less than 0: %d, %d", w, h)
 	}
 
-	pd.my.Lock()
-	defer pd.my.Unlock()
+	pd.mu.Lock()
+	defer pd.mu.Unlock()
 
 	pd.MinW = w
 	pd.MinH = h
@@ -110,7 +110,6 @@ func (pd *PositionData) PluginName() string {
 
 func (pd *PositionData) StateData(ctx context.Context) (statedata.Data[*PositionData], error) {
 	return statedata.Data[*PositionData]{
-		Name: PositionerStateDataName,
 		Data: pd,
 	}, nil
 }

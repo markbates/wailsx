@@ -22,3 +22,8 @@ type WindowManagerDataProvider interface {
 	WindowManager
 	StateDataProvider
 }
+
+type RestorableWindowManager interface {
+	WindowManager
+	RestoreWindows(ctx context.Context, data *WindowData) error
+}

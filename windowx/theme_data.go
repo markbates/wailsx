@@ -8,11 +8,15 @@ import (
 	"github.com/markbates/wailsx/statedata"
 )
 
+const (
+	THEME_DARK   = "dark"
+	THEME_LIGHT  = "light"
+	THEME_SYSTEM = ""
+)
+
 type ThemeData struct {
 	BackgroundColour Colour `json:"background_colour,omitempty"`
-	IsDarkTheme      bool   `json:"is_dark_theme,omitempty"`
-	IsLightTheme     bool   `json:"is_light_theme,omitempty"`
-	IsSystemTheme    bool   `json:"is_system_theme,omitempty"`
+	Theme            string `json:"theme,omitempty"`
 
 	mu sync.RWMutex
 }
@@ -25,9 +29,7 @@ func (th *ThemeData) SetDarkTheme() error {
 	th.mu.Lock()
 	defer th.mu.Unlock()
 
-	th.IsDarkTheme = true
-	th.IsLightTheme = false
-	th.IsSystemTheme = false
+	th.Theme = THEME_DARK
 
 	return nil
 }
@@ -40,9 +42,7 @@ func (th *ThemeData) SetLightTheme() error {
 	th.mu.Lock()
 	defer th.mu.Unlock()
 
-	th.IsDarkTheme = false
-	th.IsLightTheme = true
-	th.IsSystemTheme = false
+	th.Theme = THEME_LIGHT
 
 	return nil
 }
@@ -55,9 +55,7 @@ func (th *ThemeData) SetSystemTheme() error {
 	th.mu.Lock()
 	defer th.mu.Unlock()
 
-	th.IsDarkTheme = false
-	th.IsLightTheme = false
-	th.IsSystemTheme = true
+	th.Theme = THEME_SYSTEM
 
 	return nil
 }
@@ -84,7 +82,6 @@ func (th *ThemeData) PluginName() string {
 
 func (th *ThemeData) StateData(ctx context.Context) (statedata.Data[*ThemeData], error) {
 	return statedata.Data[*ThemeData]{
-		Name: ThemeStataDataName,
 		Data: th,
 	}, nil
 }

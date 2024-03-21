@@ -289,13 +289,11 @@ func Test_Manager_StateData(t *testing.T) {
 
 	sd, err := wm.StateData(ctx)
 	r.NoError(err)
-	r.Equal(ManagerStateDataName, sd.Name)
 
 	wm = &Manager{}
 
 	sd, err = wm.StateData(ctx)
 	r.NoError(err)
-	r.Equal(ManagerStateDataName, sd.Name)
 
 	r.Nil(sd.Data.MaximiserData)
 	r.Nil(sd.Data.PositionData)
@@ -305,7 +303,6 @@ func Test_Manager_StateData(t *testing.T) {
 
 	sd, err = wm.StateData(ctx)
 	r.NoError(err)
-	r.Equal(ManagerStateDataName, sd.Name)
 
 	r.NotNil(sd.Data.MaximiserData)
 	r.NotNil(sd.Data.PositionData)
@@ -329,4 +326,109 @@ func Test_NopManager(t *testing.T) {
 	r.NotNil(wm.WindowPrintFn)
 	r.NotNil(wm.WindowSetAlwaysOnTopFn)
 	r.NotNil(wm.WindowSetTitleFn)
+}
+
+var _ RestorablePositionManager = &restoreablePositioner{}
+
+type restoreablePositioner struct {
+	*Positioner
+	Data *PositionData
+}
+
+func (pm *restoreablePositioner) RestorePosition(ctx context.Context, data *PositionData) error {
+	pm.Data = data
+	return nil
+}
+
+var _ RestorableMaximiseManager = &restoreableMaximiser{}
+
+type restoreableMaximiser struct {
+	*Maximiser
+	Data *MaximiserData
+}
+
+func (mm *restoreableMaximiser) RestoreMaximiser(ctx context.Context, data *MaximiserData) error {
+	mm.Data = data
+	return nil
+}
+
+var _ RestorableThemeManager = &restoreableThemer{}
+
+type restoreableThemer struct {
+	*Themer
+	Data *ThemeData
+}
+
+func (tm *restoreableThemer) RestoreTheme(ctx context.Context, data *ThemeData) error {
+	tm.Data = data
+	return nil
+}
+
+func Test_Manager_RestoreWindows(t *testing.T) {
+	t.Parallel()
+	r := require.New(t)
+
+	ctx := context.Background()
+
+	var wm *Manager
+
+	data := &WindowData{
+		MaximiserData: &MaximiserData{},
+		PositionData:  &PositionData{},
+		ThemeData:     &ThemeData{},
+	}
+
+	err := wm.RestoreWindows(ctx, data)
+	r.Error(err)
+
+	wm = NopManager()
+
+	err = wm.RestoreWindows(ctx, nil)
+	r.Error(err)
+
+	err = wm.RestoreWindows(ctx, data)
+	r.NoError(err)
+
+	data = &WindowData{
+		MaximiserData: &MaximiserData{
+			Layout: WINDOW_MAXIMISED,
+		},
+		PositionData: &PositionData{
+			X:          1,
+			Y:          2,
+			W:          3,
+			H:          4,
+			MaxW:       5,
+			MaxH:       6,
+			MinW:       7,
+			MinH:       8,
+			IsCentered: true,
+		},
+		ThemeData: &ThemeData{
+			Theme: THEME_LIGHT,
+			BackgroundColour: Colour{
+				R: 10,
+				G: 11,
+				B: 12,
+				A: 13,
+			},
+		},
+	}
+
+	pm := &restoreablePositioner{}
+	wm.PositionManager = pm
+
+	mm := &restoreableMaximiser{}
+	wm.MaximiseManager = mm
+
+	tm := &restoreableThemer{}
+	wm.ThemeManager = tm
+
+	err = wm.RestoreWindows(ctx, data)
+	r.NoError(err)
+
+	r.Equal(mm.Data, data.MaximiserData)
+	r.Equal(pm.Data, data.PositionData)
+	r.Equal(tm.Data, data.ThemeData)
+
 }

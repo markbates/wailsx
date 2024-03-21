@@ -101,9 +101,7 @@ func (app *App) PluginName() string {
 }
 
 func (app *App) StateData(ctx context.Context) (statedata.Data[AppData], error) {
-	sd := statedata.Data[AppData]{
-		Name: AppStateDataProviderName,
-	}
+	sd := statedata.Data[AppData]{}
 
 	if app == nil {
 		return sd, fmt.Errorf("app is nil")
@@ -140,4 +138,43 @@ func (app *App) StateData(ctx context.Context) (statedata.Data[AppData], error) 
 	sd.Data = data
 
 	return sd, nil
+}
+
+func (app *App) RestoreAPP(ctx context.Context, data AppData) error {
+	if app == nil {
+		return fmt.Errorf("app is nil")
+	}
+
+	app.mu.Lock()
+	defer app.mu.Unlock()
+
+	if len(data.AppName) > 0 {
+		app.Name = data.AppName
+	}
+
+	if api := data.API; api != nil {
+		if err := app.RestoreAPI(ctx, data.API); err != nil {
+			return err
+		}
+	}
+
+	plugData := data.Plugins
+	if plugData == nil {
+		return nil
+	}
+
+	plugs := plugins.ByType[RestorablePlugin](app.Plugins)
+
+	for _, p := range plugs {
+		data, ok := plugData[p.PluginName()]
+		if !ok {
+			continue
+		}
+
+		if err := p.RestorePlugin(ctx, data); err != nil {
+			return err
+		}
+
+	}
+	return nil
 }

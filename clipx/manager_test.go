@@ -29,14 +29,12 @@ func Test_Manager_StateData(t *testing.T) {
 	sd, err := m.StateData(ctx)
 	r.NoError(err)
 
-	r.Equal(ClipboardManagerStateDataProviderName, sd.Name)
 	r.Equal(exp, sd.Data)
 
 	m = nil
 
 	sd, err = m.StateData(ctx)
 	r.NoError(err)
-	r.Equal(ClipboardManagerStateDataProviderName, sd.Name)
 	r.Empty(sd.Data)
 }
 

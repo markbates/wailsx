@@ -10,6 +10,7 @@ import (
 )
 
 var _ ThemeManagerDataProvider = &Themer{}
+var _ RestorableThemeManager = &Themer{}
 
 func NopThemer() *Themer {
 	return &Themer{
@@ -110,4 +111,32 @@ func (th *Themer) StateData(ctx context.Context) (statedata.Data[*ThemeData], er
 		return statedata.Data[*ThemeData]{}, fmt.Errorf("themer is nil")
 	}
 	return th.data.StateData(ctx)
+}
+
+func (th *Themer) RestoreTheme(ctx context.Context, data *ThemeData) error {
+	if th == nil {
+		return fmt.Errorf("themer is nil")
+	}
+
+	if data == nil {
+		return fmt.Errorf("data is nil")
+	}
+
+	bc := data.BackgroundColour
+
+	err := th.WindowSetBackgroundColourFn(ctx, bc.R, bc.G, bc.B, bc.A)
+	if err != nil {
+		return err
+	}
+
+	switch data.Theme {
+	case THEME_SYSTEM:
+		return th.WindowSetSystemDefaultTheme(ctx)
+	case THEME_DARK:
+		return th.WindowSetDarkTheme(ctx)
+	case THEME_LIGHT:
+		return th.WindowSetLightTheme(ctx)
+	}
+
+	return fmt.Errorf("unknown theme: %s", data.Theme)
 }

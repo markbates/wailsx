@@ -12,10 +12,12 @@ import (
 var _ statedata.DataProvider[*EventsData] = &EventsData{}
 
 type EventsData struct {
-	DisableStateData bool                        `json:"-"`
-	Callbacks        map[string]*CallbackCounter `json:"callbacks,omitempty"`
-	Emitted          map[string][]Event          `json:"emitted,omitempty"` // emitted events
-	Caught           map[string][]Event          `json:"caught,omitempty"`  // caught events
+	DisableStateData     bool `json:"disableStateData,omitempty"`
+	DisableWildcardEmits bool `json:"disableWildcardEmits,omitempty"`
+
+	Callbacks map[string]*CallbackCounter `json:"callbacks,omitempty"`
+	Emitted   map[string][]Event          `json:"emitted,omitempty"` // emitted events
+	Caught    map[string][]Event          `json:"caught,omitempty"`  // caught events
 
 	mu sync.Mutex
 }
@@ -108,7 +110,6 @@ func (ev *EventsData) AddCallback(event string, cb CallbackFn, max int) error {
 
 func (ev *EventsData) StateData(ctx context.Context) (statedata.Data[*EventsData], error) {
 	sd := statedata.Data[*EventsData]{
-		Name: EventManagerStateDataName,
 		Data: ev,
 	}
 
@@ -142,5 +143,6 @@ func (ev *EventsData) init() error {
 	if ev.Caught == nil {
 		ev.Caught = map[string][]Event{}
 	}
+
 	return nil
 }

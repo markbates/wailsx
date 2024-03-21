@@ -16,7 +16,7 @@ type EventManagerNeeder interface {
 }
 
 var _ EventManagerDataProvider = &Manager{}
-
+var _ RestorableEventManager = &Manager{}
 var _ plugins.Needer = &Manager{}
 
 type Manager struct {
@@ -84,10 +84,35 @@ func (em *Manager) init() error {
 	}
 
 	em.data.DisableStateData = em.DisableStateData
+	em.data.DisableWildcardEmits = em.DisableWildcardEmits
 
 	return nil
 }
 
 func (em *Manager) PluginName() string {
 	return fmt.Sprintf("%T", em)
+}
+
+func (em *Manager) RestoreEvents(ctx context.Context, data *EventsData) error {
+	if em == nil {
+		return fmt.Errorf("error manager is nil")
+	}
+
+	if data == nil {
+		return fmt.Errorf("error data is nil")
+	}
+
+	em.mu.Lock()
+	defer em.mu.Unlock()
+
+	em.DisableStateData = data.DisableStateData
+	em.DisableWildcardEmits = data.DisableWildcardEmits
+
+	em.data.Callbacks = data.Callbacks
+	em.data.Caught = data.Caught
+	em.data.DisableStateData = data.DisableStateData
+	em.data.DisableWildcardEmits = data.DisableWildcardEmits
+	em.data.Emitted = data.Emitted
+
+	return nil
 }

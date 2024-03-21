@@ -64,9 +64,7 @@ type API struct {
 }
 
 func (api *API) StateData(ctx context.Context) (statedata.Data[*APIData], error) {
-	sd := statedata.Data[*APIData]{
-		Name: APIStateDataProviderName,
-	}
+	sd := statedata.Data[*APIData]{}
 
 	if api == nil {
 		return sd, fmt.Errorf("api is nil")
@@ -129,4 +127,36 @@ func (api *API) Quit(ctx context.Context) error {
 
 		return fn(ctx)
 	})
+}
+
+func (api *API) RestoreAPI(ctx context.Context, data *APIData) error {
+	if api == nil {
+		return fmt.Errorf("api is nil")
+	}
+
+	if data == nil {
+		return fmt.Errorf("data is nil")
+	}
+
+	evd := data.Events
+	if evd != nil {
+		if x, ok := api.EventManager.(eventx.RestorableEventManager); ok {
+			err := x.RestoreEvents(ctx, evd)
+			if err != nil {
+				return err
+			}
+		}
+	}
+
+	wnd := data.Window
+	if wnd != nil {
+		if x, ok := api.WindowManager.(windowx.RestorableWindowManager); ok {
+			err := x.RestoreWindows(ctx, wnd)
+			if err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
 }

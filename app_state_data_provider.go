@@ -2,13 +2,14 @@ package wailsx
 
 import (
 	"context"
+	"fmt"
 
+	"github.com/markbates/plugins"
 	"github.com/markbates/wailsx/statedata"
 )
 
-const AppStateDataProviderName = "app"
-
 type AppStateDataProvider interface {
+	plugins.Plugin
 	StateData(ctx context.Context) (statedata.Data[AppData], error)
 }
 
@@ -19,5 +20,5 @@ func (f AppStateDataProviderFn) StateData(ctx context.Context) (statedata.Data[A
 }
 
 func (f AppStateDataProviderFn) PluginName() string {
-	return AppStateDataProviderName
+	return fmt.Sprintf("%T", f)
 }

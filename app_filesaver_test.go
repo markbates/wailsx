@@ -40,7 +40,7 @@ func Test_AppFilesaver_Save(t *testing.T) {
 	act = strings.TrimSpace(act)
 
 	// fmt.Println(act)
-	exp := `{"name":"app","data":{"app_name":"My App","api":{"events":{},"window":{"maximiser":{},"positioner":{},"themer":{"background_colour":{}}}}}}`
+	exp := `{"data":{"app_name":"My App","api":{"events":{},"window":{"maximiser":{},"positioner":{},"themer":{"background_colour":{}}}}}}`
 
 	r.Equal(exp, act)
 

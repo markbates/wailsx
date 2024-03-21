@@ -2,6 +2,7 @@ package windowx
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/markbates/safe"
 	"github.com/markbates/wailsx/wailsrun"
@@ -9,6 +10,7 @@ import (
 
 var _ PositionManager = &Positioner{}
 var _ InitialPositioner = &Positioner{}
+var _ RestorablePositionManager = &Positioner{}
 
 func NopPositioner() *Positioner {
 	return &Positioner{
@@ -34,6 +36,8 @@ type Positioner struct {
 	// default values for the window
 	DefX int `json:"def_x"`
 	DefY int `json:"def_y"`
+	DefW int `json:"def_w"`
+	DefH int `json:"def_h"`
 
 	data PositionData
 }
@@ -42,6 +46,7 @@ func (pm *Positioner) InitPosX() int {
 	if pm == nil {
 		return 0
 	}
+
 	return pm.DefX
 }
 
@@ -49,7 +54,32 @@ func (pm *Positioner) InitPosY() int {
 	if pm == nil {
 		return 0
 	}
+
 	return pm.DefY
+}
+
+func (pm *Positioner) InitWidth() int {
+	if pm == nil {
+		return 1200
+	}
+
+	if pm.DefW > 0 {
+		return pm.DefW
+	}
+
+	return 1200
+}
+
+func (pm *Positioner) InitHeight() int {
+	if pm == nil {
+		return 800
+	}
+
+	if pm.DefH > 0 {
+		return pm.DefH
+	}
+
+	return 800
 }
 
 func (pm *Positioner) WindowCenter(ctx context.Context) error {
@@ -195,4 +225,60 @@ func (pm *Positioner) WindowSetSize(ctx context.Context, width int, height int) 
 
 		return pm.data.SetSize(width, height)
 	})
+}
+
+func (pm *Positioner) RestorePosition(ctx context.Context, data *PositionData) error {
+	if pm == nil {
+		return fmt.Errorf("positioner is nil")
+	}
+
+	if data == nil {
+		return fmt.Errorf("position data is nil")
+	}
+
+	x := data.X
+	if x == 0 {
+		x = pm.InitPosX()
+	}
+
+	y := data.Y
+	if y == 0 {
+		y = pm.InitPosY()
+	}
+
+	if err := pm.WindowSetPosition(ctx, x, y); err != nil {
+		return err
+	}
+
+	w := data.W
+	if w == 0 {
+		w = pm.InitWidth()
+	}
+
+	h := data.H
+	if h == 0 {
+		h = pm.InitHeight()
+	}
+
+	if err := pm.WindowSetSize(ctx, w, h); err != nil {
+		return err
+	}
+
+	maxW := data.MaxW
+	maxH := data.MaxH
+	if maxW > 0 && maxH > 0 {
+		if err := pm.WindowSetMaxSize(ctx, maxW, maxH); err != nil {
+			return err
+		}
+	}
+
+	minW := data.MinW
+	minH := data.MinH
+	if minW > 0 && minH > 0 {
+		if err := pm.WindowSetMinSize(ctx, minW, minH); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

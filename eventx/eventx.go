@@ -8,10 +8,6 @@ import (
 	"github.com/markbates/wailsx/wailstest"
 )
 
-const (
-	EventManagerStateDataName = "events"
-)
-
 type CallbackFn = wailsrun.CallbackFn
 type CancelFn = wailsrun.CancelFn
 

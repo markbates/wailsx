@@ -1,0 +1,1 @@
+{"data":{"app_name":"test","api":{"events":{},"window":{"maximiser":{},"positioner":{},"themer":{"background_colour":{}}}},"plugins":{"wailsx.intProvider: 42":{"data":42},"wailsx.stringProvider: hello":{"data":"hello"}}}}

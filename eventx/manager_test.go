@@ -72,7 +72,6 @@ func Test_Manager_StateData_JSON(t *testing.T) {
 
 	sd, err := em.StateData(ctx)
 	r.NoError(err)
-	r.Equal(EventManagerStateDataName, sd.Name)
 
 	data := sd.Data
 	r.Len(data.Emitted, 1)
@@ -177,4 +176,55 @@ func Test_Nil_Manager(t *testing.T) {
 
 	exp = wailsrun.ErrNotAvailable("EventsOnce")
 	r.Equal(exp, err)
+}
+
+func Test_Manager_RestoreEvents(t *testing.T) {
+	t.Parallel()
+	r := require.New(t)
+
+	ctx := context.Background()
+
+	var em *Manager
+
+	err := em.RestoreEvents(ctx, &EventsData{})
+	r.Error(err)
+
+	em = NopManager()
+	err = em.RestoreEvents(ctx, nil)
+	r.Error(err)
+
+	const name = "test:event"
+
+	evt := Event{
+		Name: name,
+		Data: []msgx.Messenger{
+			msgx.Message{},
+		},
+		EmittedAt: wailstest.NowTime(),
+	}
+
+	data := &EventsData{
+		Callbacks: map[string]*CallbackCounter{
+			name: {
+				MaxCalls: 5,
+				Called:   3,
+			},
+		},
+		Emitted:              map[string][]Event{name: {evt}},
+		Caught:               map[string][]Event{name: {evt}},
+		DisableStateData:     true,
+		DisableWildcardEmits: true,
+	}
+
+	err = em.RestoreEvents(ctx, data)
+	r.NoError(err)
+
+	r.Equal(data.Callbacks, em.data.Callbacks)
+	r.Equal(data.Emitted, em.data.Emitted)
+	r.Equal(data.Caught, em.data.Caught)
+	r.Equal(data.DisableStateData, em.data.DisableStateData)
+	r.Equal(data.DisableWildcardEmits, em.data.DisableWildcardEmits)
+
+	r.True(em.DisableStateData)
+	r.True(em.DisableWildcardEmits)
 }

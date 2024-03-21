@@ -17,9 +17,7 @@ func Test_ThemeData_SetDarkTheme(t *testing.T) {
 	th = &ThemeData{}
 	r.NoError(th.SetDarkTheme())
 
-	r.True(th.IsDarkTheme)
-	r.False(th.IsLightTheme)
-	r.False(th.IsSystemTheme)
+	r.Equal(THEME_DARK, th.Theme)
 }
 
 func Test_ThemeData_SetLightTheme(t *testing.T) {
@@ -32,9 +30,7 @@ func Test_ThemeData_SetLightTheme(t *testing.T) {
 	th = &ThemeData{}
 	r.NoError(th.SetLightTheme())
 
-	r.False(th.IsDarkTheme)
-	r.True(th.IsLightTheme)
-	r.False(th.IsSystemTheme)
+	r.Equal(THEME_LIGHT, th.Theme)
 }
 
 func Test_ThemeData_SetSystemTheme(t *testing.T) {
@@ -47,9 +43,7 @@ func Test_ThemeData_SetSystemTheme(t *testing.T) {
 	th = &ThemeData{}
 	r.NoError(th.SetSystemTheme())
 
-	r.False(th.IsDarkTheme)
-	r.False(th.IsLightTheme)
-	r.True(th.IsSystemTheme)
+	r.Equal(THEME_SYSTEM, th.Theme)
 }
 
 func Test_ThemeData_SetBackgroundColour(t *testing.T) {
@@ -83,9 +77,7 @@ func Test_ThemeData_StateData(t *testing.T) {
 	r := require.New(t)
 
 	th := &ThemeData{
-		IsDarkTheme:   true,
-		IsLightTheme:  false,
-		IsSystemTheme: false,
+		Theme: THEME_DARK,
 		BackgroundColour: Colour{
 			R: 1,
 			G: 2,
@@ -99,6 +91,5 @@ func Test_ThemeData_StateData(t *testing.T) {
 	sd, err := th.StateData(ctx)
 	r.NoError(err)
 
-	r.Equal(ThemeStataDataName, sd.Name)
 	r.Equal(th, sd.Data)
 }

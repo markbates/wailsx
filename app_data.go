@@ -2,6 +2,7 @@ package wailsx
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/markbates/wailsx/statedata"
 )
@@ -16,7 +17,10 @@ type AppData struct {
 
 func (ad AppData) StateData(ctx context.Context) (statedata.Data[AppData], error) {
 	return statedata.Data[AppData]{
-		Name: AppStateDataProviderName,
 		Data: ad,
 	}, nil
+}
+
+func (ad AppData) PluginName() string {
+	return fmt.Sprintf("%T", ad)
 }

@@ -20,3 +20,8 @@ type PositionManagerDataProvider interface {
 	PositionManager
 	StateData(ctx context.Context) (statedata.Data[*PositionData], error)
 }
+
+type RestorablePositionManager interface {
+	PositionManager
+	RestorePosition(ctx context.Context, data *PositionData) error
+}

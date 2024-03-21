@@ -440,3 +440,80 @@ func Test_NopPositioner(t *testing.T) {
 	r.NotNil(pm.WindowSetPositionFn)
 	r.NotNil(pm.WindowSetSizeFn)
 }
+
+func Test_Positioner_RestorePosition(t *testing.T) {
+	t.Parallel()
+	r := require.New(t)
+
+	ctx := context.Background()
+
+	var pm *Positioner
+
+	err := pm.RestorePosition(ctx, &PositionData{})
+	r.Error(err)
+
+	pm = NopPositioner()
+	err = pm.RestorePosition(ctx, nil)
+	r.Error(err)
+
+	var ax, ay, aw, ah, maxw, maxh, minw, minh int
+
+	pm.WindowSetPositionFn = func(ctx context.Context, x int, y int) error {
+		ax = x
+		ay = y
+		return nil
+	}
+
+	pm.WindowSetSizeFn = func(ctx context.Context, w int, h int) error {
+		aw = w
+		ah = h
+		return nil
+	}
+
+	pm.WindowSetMaxSizeFn = func(ctx context.Context, w int, h int) error {
+		maxw = w
+		maxh = h
+		return nil
+	}
+
+	pm.WindowSetMinSizeFn = func(ctx context.Context, w int, h int) error {
+		minw = w
+		minh = h
+		return nil
+	}
+
+	data := &PositionData{}
+
+	err = pm.RestorePosition(ctx, data)
+	r.NoError(err)
+
+	r.Equal(pm.InitPosX(), ax)
+	r.Equal(pm.InitPosY(), ay)
+	r.Equal(pm.InitWidth(), aw)
+	r.Equal(pm.InitHeight(), ah)
+	r.Zero(maxw)
+	r.Zero(maxh)
+	r.Zero(minw)
+	r.Zero(minh)
+
+	data.X = 10
+	data.Y = 20
+	data.W = 30
+	data.H = 40
+	data.MaxW = 50
+	data.MaxH = 60
+	data.MinW = 70
+	data.MinH = 80
+
+	err = pm.RestorePosition(ctx, data)
+	r.NoError(err)
+
+	r.Equal(data.X, ax)
+	r.Equal(data.Y, ay)
+	r.Equal(data.W, aw)
+	r.Equal(data.H, ah)
+	r.Equal(data.MaxW, maxw)
+	r.Equal(data.MaxH, maxh)
+	r.Equal(data.MinW, minw)
+	r.Equal(data.MinH, minh)
+}
